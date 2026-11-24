@@ -47,7 +47,11 @@ interface LayerProps {
 
 function ArtLayer({ layer, hour }: { layer: SceneLayer; hour: number }) {
   const w = todWeights(hour);
-  const imgs = TIMES.map((t) => ({ t, src: sceneImage(layer, t) })).filter((x) => x.src);
+  // Only mount the paintings that are visible right now (one, or two while crossfading):
+  // every mounted full-size image costs ~6 MB of decoded memory, which matters on phones.
+  const imgs = TIMES.map((t) => ({ t, src: sceneImage(layer, t) })).filter(
+    (x) => x.src && w[x.t] > 0.005,
+  );
   if (!imgs.length) return null;
   return (
     <>

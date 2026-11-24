@@ -45,7 +45,7 @@ Anything missing falls back to the code-drawn placeholder, so the game runs with
 ## Adding art
 
 1. Drop files at the paths below (PNG is fine). Variants \`fg_{time}\` (for \`fg_near_{time}\`) and \`firefly_gold\` are accepted.
-2. \`npm run assets:optimize\` converts PNGs to web-sized WebP (scenes 1920 wide, props 384, pets 1024) and fixes those name variants. The full-size masters stay in git history.
+2. \`npm run assets:optimize\` converts PNGs to web-sized WebP (scenes 1600 wide, props 384, pets 1024) and fixes those name variants. The full-size masters stay in git history.
 3. \`npm run assets:check\` checks sizes, transparency and the feet line; \`node scripts/assets-md.mjs\` refreshes this file.
 
 Specs: pet poses are 1024×1024 transparent, character centred, feet on y = 900, same scale for every pose of a form. Scenes are 16:9 to match the world layout (fern left, meadow centre, pond and burrow right); \`bg_far\` is opaque, \`bg_mid\` and \`fg_near\` are transparent. Props are transparent squares.
