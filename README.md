@@ -13,6 +13,10 @@ npm run build        # type-check + production build (PWA, service worker)
 npm run preview      # serve the build
 ```
 
+## Play online
+
+The game is published to **https://pinbound.github.io/Mossling/** by `.github/workflows/deploy.yml` on every push to `main` (it runs the tests, builds with `BASE_PATH=/Mossling/`, and deploys to GitHub Pages). On a phone, open the link and use **Add to Home Screen** to install it; it then works offline.
+
 ## Test
 
 ```bash
