@@ -110,7 +110,7 @@ export const FORM_META: Record<
   dewdrop: { scale: 0.6, anchorY: 900 },
   sprig: { scale: 0.78, anchorY: 900 },
   fernlet: { scale: 1.0, anchorY: 900 },
-  lanternmoss: { scale: 1.05, anchorY: 900, hover: true, blinkArt: false },
+  lanternmoss: { scale: 1.05, anchorY: 900, hover: true },
   burrowbun: { scale: 1.0, anchorY: 900 },
   mirefuzz: { scale: 0.98, anchorY: 900 },
   starwick: { scale: 1.05, anchorY: 900, hover: true, blinkArt: false },
