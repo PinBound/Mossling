@@ -1,0 +1,130 @@
+:root {
+  /* Palette */
+  --moss: #7fa36b;
+  --fern: #3f5e3a;
+  --mint: #cfe8d5;
+  --teal: #5fa3a0;
+  --gold: #f2c76e;
+  --berry: #d86b6b;
+  --bark: #6b4f3a;
+  --parchment: #f6f0e1;
+  --ink: #1e2a3a;
+
+  /* Day theme (UI surfaces) */
+  --surface: #f6f0e1;
+  --surface-2: #ece3cc;
+  --surface-edge: #d9ccab;
+  --text: #2b3a2a;
+  --text-soft: #4f5e4a;
+  --accent: var(--fern);
+  --accent-text: #fdfaf2;
+  --focus: #e6a93c;
+  --shadow: 0 6px 18px rgb(30 42 58 / 0.18), 0 1px 3px rgb(30 42 58 / 0.18);
+  --warn: #a8443f;
+  --good: #3f6b39;
+
+  --font-display: 'Fredoka', 'Baloo 2', ui-rounded, system-ui, sans-serif;
+  --font-ui: 'Nunito', ui-sans-serif, system-ui, sans-serif;
+  --text-scale: 1;
+
+  --r-pebble: 22px 26px 24px 20px / 20px 24px 26px 22px;
+  --r-soft: 18px;
+  color-scheme: light;
+}
+
+:root[data-theme='night'] {
+  --surface: #263447;
+  --surface-2: #2e3e54;
+  --surface-edge: #41536b;
+  --text: #f1ead8;
+  --text-soft: #c6c9c4;
+  --accent: #f2c76e;
+  --accent-text: #1e2a3a;
+  --shadow: 0 6px 18px rgb(0 0 0 / 0.4), 0 1px 3px rgb(0 0 0 / 0.4);
+  --warn: #f19a92;
+  --good: #a9d79a;
+  color-scheme: dark;
+}
+
+:root[data-text='s'] {
+  --text-scale: 0.9;
+}
+:root[data-text='l'] {
+  --text-scale: 1.18;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--ink);
+}
+
+body {
+  font-family: var(--font-ui);
+  font-size: calc(16px * var(--text-scale));
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+  touch-action: manipulation;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 14px;
+}
+
+.sr-only {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+:root[data-rm='on'] *,
+:root[data-rm='on'] *::before,
+:root[data-rm='on'] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}

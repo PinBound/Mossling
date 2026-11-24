@@ -1,0 +1,162 @@
+.layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.twinkle {
+  animation: twinkle 3.2s ease-in-out infinite;
+}
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+.fernSway {
+  transform-origin: 0 1000px;
+  animation: fern 9s ease-in-out infinite;
+}
+@keyframes fern {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(0.8deg);
+  }
+}
+.grassSway {
+  animation: grass 4.5s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+@keyframes grass {
+  0%,
+  100% {
+    transform: skewX(0deg);
+  }
+  50% {
+    transform: skewX(-4deg);
+  }
+}
+.lanternSwing {
+  animation: swing 5s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+}
+@keyframes swing {
+  0%,
+  100% {
+    rotate: -2deg;
+  }
+  50% {
+    rotate: 2deg;
+  }
+}
+.ripple {
+  animation: ripple 4s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+@keyframes ripple {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+.flame {
+  animation: flame 0.6s ease-in-out infinite alternate;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+@keyframes flame {
+  from {
+    transform: scaleY(1) skewX(-3deg);
+  }
+  to {
+    transform: scaleY(1.15) skewX(3deg);
+  }
+}
+.dropIn {
+  animation: dropIn 0.5s cubic-bezier(0.3, 1.6, 0.5, 1);
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  pointer-events: auto;
+}
+@keyframes dropIn {
+  from {
+    transform: scale(0.2);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+.stink {
+  animation: stink 2s ease-in-out infinite;
+}
+@keyframes stink {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(-6px);
+  }
+}
+.fadeIn {
+  animation: fadeIn 2s ease both;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+}
+.mist {
+  background:
+    radial-gradient(ellipse 70% 18% at 30% 72%, rgb(255 255 255 / 0.5), transparent 70%),
+    radial-gradient(ellipse 60% 14% at 75% 78%, rgb(255 255 255 / 0.42), transparent 70%),
+    linear-gradient(to bottom, transparent 45%, rgb(255 255 255 / 0.22) 70%, transparent);
+  animation: mist 14s ease-in-out infinite alternate;
+}
+@keyframes mist {
+  from {
+    transform: translateX(-3%);
+  }
+  to {
+    transform: translateX(3%);
+  }
+}
+.canvas {
+  z-index: 21;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}

@@ -1,0 +1,176 @@
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.dim {
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+}
+.night .dim {
+  background: radial-gradient(circle at 50% 30%, #23336a, #0a1122 70%);
+}
+.dusk .dim {
+  background: linear-gradient(to bottom, #5d5486, #f0a077 85%);
+}
+.sad .dim {
+  background: linear-gradient(to bottom, #2b3547, #57606e);
+}
+.center {
+  position: relative;
+  width: 62%;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+}
+.art {
+  width: 100%;
+  aspect-ratio: 1;
+  position: relative;
+}
+.art img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.center > div {
+  width: 100%;
+}
+.rays {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  width: 160%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  background: repeating-conic-gradient(
+    from 0deg,
+    rgb(255 248 200 / 0.38) 0deg 6deg,
+    transparent 6deg 22deg
+  );
+  mask: radial-gradient(circle, #000 10%, transparent 60%);
+  animation: rays 6s linear infinite;
+}
+@keyframes rays {
+  to {
+    rotate: 360deg;
+  }
+}
+.flash {
+  position: absolute;
+  inset: 0;
+  background: #fffbe6;
+  pointer-events: none;
+}
+.swirlGlow {
+  position: absolute;
+  inset: 10%;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff8d8, rgb(242 199 110 / 0.5) 40%, transparent 70%);
+}
+.nameCard {
+  z-index: 3;
+  position: absolute;
+  bottom: 7%;
+  left: 8%;
+  right: 8%;
+  padding: 18px 20px;
+  background: var(--parchment);
+  color: #2b3a2a;
+  border-radius: 28px 24px 30px 22px;
+  box-shadow: 0 10px 40px rgb(0 0 0 / 0.4);
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: calc(clamp(16px, 4.6cqi, 24px) * var(--text-scale));
+  display: grid;
+  gap: 12px;
+  justify-items: center;
+}
+.nameCard p {
+  margin: 0;
+}
+.nameCard strong {
+  color: var(--fern);
+}
+.small {
+  font-family: var(--font-ui);
+  font-size: 0.75em;
+  opacity: 0.8;
+}
+.caption {
+  position: absolute;
+  top: 16%;
+  left: 10%;
+  right: 10%;
+  text-align: center;
+  color: #f6f0e1;
+  font-family: var(--font-display);
+  font-size: calc(clamp(18px, 5cqi, 28px) * var(--text-scale));
+  text-shadow: 0 2px 12px rgb(0 0 0 / 0.5);
+  margin: 0;
+  animation: fadeUp 1s ease both;
+}
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+.skip {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 5;
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 16px;
+  background: rgb(246 240 225 / 0.85);
+  color: #2b3a2a;
+  font-weight: 700;
+}
+.constellation {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.walker {
+  position: absolute;
+  width: 55%;
+  left: 22%;
+  bottom: 12%;
+}
+.ferns {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.fernL,
+.fernR {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 60%;
+  z-index: 1;
+}
+.fernL svg,
+.fernR svg {
+  width: 100%;
+  height: 100%;
+}
+.fernL {
+  left: 0;
+}
+.fernR {
+  right: 0;
+  scale: -1 1;
+}
+.stone {
+  position: absolute;
+  width: 70%;
+  bottom: -6%;
+}

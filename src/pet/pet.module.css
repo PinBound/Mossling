@@ -1,0 +1,200 @@
+.pet {
+  position: absolute;
+  touch-action: none;
+  cursor: grab;
+  outline: none;
+  z-index: 2;
+}
+.pet:active {
+  cursor: grabbing;
+}
+.pet:focus-visible::after {
+  content: '';
+  position: absolute;
+  inset: 20% 15% 8% 15%;
+  border-radius: 50%;
+  outline: 3px dashed var(--focus);
+  outline-offset: 4px;
+}
+.art {
+  position: absolute;
+  inset: 0;
+  transition: filter 0.8s ease;
+}
+.img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.shadow {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(20 30 20 / 0.32), transparent);
+  pointer-events: none;
+  z-index: 1;
+}
+.sickIcon {
+  position: absolute;
+  width: 18%;
+  left: 62%;
+  top: 22%;
+  animation: bob 1.6s ease-in-out infinite;
+}
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-6deg);
+  }
+  50% {
+    transform: translateY(-10%) rotate(6deg);
+  }
+}
+.prop {
+  position: absolute;
+  width: 22%;
+  pointer-events: none;
+}
+.wish {
+  position: absolute;
+  left: 50%;
+  bottom: 92%;
+  translate: -50% 0;
+  min-width: 160px;
+  max-width: 240px;
+  padding: 10px 14px 12px;
+  background: var(--parchment);
+  color: #2b3a2a;
+  border-radius: 24px 26px 22px 28px;
+  box-shadow: var(--shadow);
+  font-family: var(--font-display);
+  font-size: calc(15px * var(--text-scale));
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  transform-origin: 50% 100%;
+}
+.wish::after {
+  content: '';
+  position: absolute;
+  bottom: -14px;
+  left: 46%;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--parchment);
+}
+.wishDoodle {
+  width: 44px;
+}
+.butterfly {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 14%;
+  pointer-events: none;
+}
+.flap {
+  animation: flap 0.25s ease-in-out infinite alternate;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+@keyframes flap {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0.3);
+  }
+}
+.glass {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 14% 9% at 38% 62%, rgb(255 255 255 / 0.35), transparent 70%),
+    radial-gradient(ellipse 14% 9% at 62% 62%, rgb(255 255 255 / 0.35), transparent 70%),
+    linear-gradient(115deg, transparent 30%, rgb(255 255 255 / 0.16) 45%, transparent 55%);
+  animation: glass 1.6s ease both;
+}
+@keyframes glass {
+  from {
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+:global(.egg-pulse) {
+  animation: eggPulse 1.6s ease-in-out infinite;
+}
+@keyframes eggPulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  15% {
+    opacity: 0.85;
+  }
+  30% {
+    opacity: 0.5;
+  }
+  45% {
+    opacity: 0.8;
+  }
+}
+:global(.pet-wings) {
+  animation: wings 2.6s ease-in-out infinite;
+  transform-origin: 512px 600px;
+}
+@keyframes wings {
+  0%,
+  100% {
+    transform: scaleX(1);
+  }
+  50% {
+    transform: scaleX(0.9);
+  }
+}
+:global(.pet-spore) {
+  animation: spore 2.4s ease-in-out infinite;
+}
+@keyframes spore {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+:global(.pet-flame) {
+  animation: petFlame 1.2s ease-in-out infinite alternate;
+}
+@keyframes petFlame {
+  from {
+    transform: translateY(0) scale(1);
+  }
+  to {
+    transform: translateY(-8px) scale(1.06);
+  }
+}
