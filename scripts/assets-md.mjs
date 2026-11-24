@@ -13,7 +13,7 @@ const P = {
   medicine_vial: 'Medicine animation', lantern_on: 'The Hollow (lantern lit)', lantern_off: 'The Hollow (lantern dark)',
   mushroom_stool: 'The Hollow', birthday_candle_mushroom: 'The Hollow on birthdays', dropping: 'Moss pellets',
   lilypad: 'Lilypad Hop', lilypad_glow: 'Lilypad Hop (beat glow)', firefly: 'Firefly Catch', firefly_golden: 'Firefly Catch (rare)',
-  memory_leaf: 'Journal: Memory Leaves', spoon: 'Feeding animation (optional)', snail: 'Rare visiting snail (optional)',
+  memory_leaf: 'Journal: Memory Leaves', puddle: 'Rain puddles in the meadow', spoon: 'Feeding animation (optional)', snail: 'Rare visiting snail (optional)',
   four_leaf_clover: 'Journal treasure (optional)', leaf_ball: 'Not used yet (optional)', burrow: 'Only for the code-drawn scene; painted bg_mid already has the burrow',
 };
 const alias = { 'props/firefly_golden': 'props/firefly_gold' };

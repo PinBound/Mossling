@@ -520,13 +520,29 @@ function Droppings({ items, onClickAny }: { items: Dropping[]; onClickAny?: () =
   );
 }
 
+/** Puddles that appear in the meadow while it rains (world coords: centre x, centre y, width). */
+const PUDDLES = [
+  { x: 440, y: 805, w: 230 },
+  { x: 770, y: 842, w: 300 },
+  { x: 975, y: 792, w: 170 },
+];
+
 function Puddles({ show }: { show: boolean }) {
   if (!show) return null;
+  const src = propImage('puddle');
+  if (src)
+    return (
+      <g className={styles.fadeIn}>
+        {PUDDLES.map((d, i) => (
+          <image key={i} href={src} x={d.x - d.w / 2} y={d.y - d.w / 2} width={d.w} height={d.w} />
+        ))}
+      </g>
+    );
   return (
     <g opacity="0.65" className={styles.fadeIn}>
-      <ellipse cx="250" cy="1080" rx="70" ry="13" fill="#9cc4d4" />
-      <ellipse cx="560" cy="1120" rx="90" ry="15" fill="#9cc4d4" />
-      <ellipse cx="800" cy="1060" rx="50" ry="10" fill="#9cc4d4" />
+      {PUDDLES.map((d, i) => (
+        <ellipse key={i} cx={d.x} cy={d.y} rx={d.w * 0.32} ry={d.w * 0.06} fill="#9cc4d4" />
+      ))}
     </g>
   );
 }
@@ -585,9 +601,7 @@ export const HollowBack = memo(function HollowBack(props: BackProps) {
         )}
       </motion.div>
       <svg viewBox={vb} className={styles.svg} preserveAspectRatio="none">
-        <g transform={LEGACY}>
-          <Puddles show={props.rain} />
-        </g>
+        <Puddles show={props.rain} />
         <Stool p={p} candles={props.candles} />
         <Lantern on={props.lightsOn} dark={p.dark} />
         <Droppings items={props.droppings} />

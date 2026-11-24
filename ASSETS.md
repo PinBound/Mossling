@@ -3,7 +3,7 @@
 Living checklist of every art file the game looks for. Paths are relative to `src/assets/img/`, without the extension: **.webp or .png both work** (WebP wins if both exist).
 Anything missing falls back to the code-drawn placeholder, so the game runs with any subset.
 
-**Progress: 58 of 129 final.**
+**Progress: 58 of 130 final.**
 
 ## Adding art
 
@@ -187,6 +187,7 @@ Prompt IDs follow `PET-{FORM}-{POSE}`, `SCENE-{LAYER}-{TIME}` and `PROP-{NAME}`.
 | `props/firefly` | **final** | PROP-FIREFLY | Firefly Catch |
 | `props/firefly_golden` | **final** | PROP-FIREFLY-GOLDEN | Firefly Catch (rare) |
 | `props/memory_leaf` | **final** | PROP-MEMORY-LEAF | Journal: Memory Leaves |
+| `props/puddle` | placeholder | PROP-PUDDLE | Rain puddles in the meadow |
 | `props/spoon` | placeholder | PROP-SPOON | Feeding animation (optional) |
 | `props/snail` | placeholder | PROP-SNAIL | Rare visiting snail (optional) |
 | `props/four_leaf_clover` | placeholder | PROP-FOUR-LEAF-CLOVER | Journal treasure (optional) |

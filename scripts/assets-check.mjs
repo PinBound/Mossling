@@ -11,7 +11,7 @@ const EGG = ['egg_idle', 'egg_crack1', 'egg_crack2', 'egg_crack3', 'egg_shell_ba
 const FORMS = ['dewdrop', 'sprig', 'fernlet', 'lanternmoss', 'burrowbun', 'mirefuzz', 'starwick'];
 const LAYERS = ['bg_far', 'bg_mid', 'fg_near'];
 const TIMES = ['dawn', 'day', 'dusk', 'night'];
-const PROPS = ['food_dewberry_mash', 'food_mossbread', 'snack_honeydrop', 'spoon', 'medicine_vial', 'lantern_on', 'lantern_off', 'mushroom_stool', 'birthday_candle_mushroom', 'burrow', 'dropping', 'leaf_ball', 'lilypad', 'lilypad_glow', 'firefly', 'firefly_golden', 'snail', 'four_leaf_clover', 'memory_leaf'];
+const PROPS = ['food_dewberry_mash', 'food_mossbread', 'snack_honeydrop', 'spoon', 'medicine_vial', 'lantern_on', 'lantern_off', 'mushroom_stool', 'birthday_candle_mushroom', 'burrow', 'dropping', 'leaf_ball', 'lilypad', 'lilypad_glow', 'puddle', 'firefly', 'firefly_golden', 'snail', 'four_leaf_clover', 'memory_leaf'];
 // Names the game also accepts.
 const ALIASES = { 'props/firefly_golden': ['props/firefly_gold'], ...Object.fromEntries(TIMES.map((t) => [`scene/fg_near_${t}`, [`scene/fg_${t}`]])) };
 

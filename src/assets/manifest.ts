@@ -79,6 +79,7 @@ export const PROPS = [
   'leaf_ball',
   'lilypad',
   'lilypad_glow',
+  'puddle',
   'birthday_candle_mushroom',
   'firefly',
   'firefly_golden',
