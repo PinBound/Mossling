@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { runParticles, W, type Ambient } from './particles';
+import { H, runParticles, W, type Ambient } from './particles';
 import styles from './scene.module.css';
 
 /** Canvas overlay. `ambient` is read every frame so emitters can change without re-mounting. */
@@ -16,7 +16,7 @@ export function ParticleLayer({
       const dpr = Math.min(2, window.devicePixelRatio || 1);
       const w = c.clientWidth || W;
       c.width = Math.round(w * dpr);
-      c.height = Math.round(((w * 4) / 3) * dpr);
+      c.height = Math.round(((w * H) / W) * dpr);
     };
     resize();
     const ro = new ResizeObserver(resize);

@@ -1,4 +1,4 @@
-/** A tiny hand-rolled particle system drawn on one canvas, in stage units (900×1200). */
+/** A tiny hand-rolled particle system drawn on one canvas, in world units (1600×900). */
 export type ParticleKind =
   | 'crumb'
   | 'sparkle'
@@ -35,8 +35,8 @@ export interface Particle {
   oy?: number;
 }
 
-export const W = 900;
-export const H = 1200;
+export const W = 1600;
+export const H = 900;
 const MAX = 320;
 
 const list: Particle[] = [];

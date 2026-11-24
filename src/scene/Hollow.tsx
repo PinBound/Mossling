@@ -7,11 +7,37 @@ import type { Season } from './weather';
 import { TIMES } from '../assets/manifest';
 import styles from './scene.module.css';
 
-export const GROUND_Y = 1010;
-export const BURROW_X = 150;
-export const POND = { cx: 655, cy: 862, rx: 190, ry: 44 };
-export const STOOL = { x: 300, y: 930 };
-export const LANTERN = { x: 800, y: 676 };
+/**
+ * The Hollow is a 16:9 world, 1600×900 units, laid out to match the scene art
+ * (giant fern on the left, open meadow in the middle, pond and burrow on the right).
+ * The stage shows all of it on wide screens, or a tall window that follows the pet.
+ */
+export const WORLD_W = 1600;
+export const WORLD_H = 900;
+/** Feet line in the meadow. */
+export const GROUND_Y = 760;
+/** Walkable meadow. */
+export const MEADOW = { min: 300, max: 1000 };
+/** Burrow mouth (where the pet sleeps) and the spot in the meadow it hops up from. */
+export const BURROW = { x: 1432, y: 606, scale: 0.72, approachX: 1060 };
+export const POND = { cx: 1312, cy: 722, rx: 270, ry: 62 };
+export const STOOL = { x: 360, y: 778 };
+export const LANTERN = { x: 1208, y: 470, base: 640 };
+/** Painted lantern: a fern stem holding a paper lantern, drawn this big with its stem on the ground. */
+const LANTERN_ART = { size: 270, stemX: 0.22, stemY: 0.9, globeX: 0.65, globeY: 0.56 };
+/** Where the lantern's light comes from (painted globe, or the code-drawn lamp). */
+export function lanternGlowPoint(): { x: number; y: number } {
+  if (propImage('lantern_on')) {
+    const a = LANTERN_ART;
+    const left = LANTERN.x - a.stemX * a.size;
+    const top = LANTERN.base - a.stemY * a.size;
+    return { x: left + a.globeX * a.size, y: top + a.globeY * a.size };
+  }
+  return { x: LANTERN.x - 40, y: LANTERN.y + 40 };
+}
+
+/** Older placeholder art was drawn for a 900×1200 frame; this stretches it to the world. */
+const LEGACY = `scale(${WORLD_W / 900} ${WORLD_H / 1200})`;
 
 interface LayerProps {
   hour: number;
@@ -237,17 +263,18 @@ function Pond({ p, rain }: { p: Palette; rain: boolean }) {
 }
 
 function Burrow({ p }: { p: Palette }) {
+  const GROUND_Y = BURROW.y + 30;
   const src = propImage('burrow');
   if (src)
-    return <image href={src} x={BURROW_X - 150} y={GROUND_Y - 250} width="300" height="300" />;
+    return <image href={src} x={BURROW.x - 150} y={GROUND_Y - 250} width="300" height="300" />;
   return (
     <g>
       <path
-        d={`M${BURROW_X - 160} ${GROUND_Y - 30} C ${BURROW_X - 150} ${GROUND_Y - 240} ${BURROW_X + 150} ${GROUND_Y - 240} ${BURROW_X + 170} ${GROUND_Y - 30}Z`}
+        d={`M${BURROW.x - 160} ${GROUND_Y - 30} C ${BURROW.x - 150} ${GROUND_Y - 240} ${BURROW.x + 150} ${GROUND_Y - 240} ${BURROW.x + 170} ${GROUND_Y - 30}Z`}
         fill={p.mid}
       />
       <path
-        d={`M${BURROW_X - 150} ${GROUND_Y - 40} C ${BURROW_X - 130} ${GROUND_Y - 200} ${BURROW_X + 130} ${GROUND_Y - 210} ${BURROW_X + 160} ${GROUND_Y - 40}`}
+        d={`M${BURROW.x - 150} ${GROUND_Y - 40} C ${BURROW.x - 130} ${GROUND_Y - 200} ${BURROW.x + 130} ${GROUND_Y - 210} ${BURROW.x + 160} ${GROUND_Y - 40}`}
         fill="none"
         stroke={p.fernLight}
         strokeWidth="10"
@@ -256,17 +283,18 @@ function Burrow({ p }: { p: Palette }) {
         opacity="0.7"
       />
       <path
-        d={`M${BURROW_X - 80} ${GROUND_Y - 30} C ${BURROW_X - 76} ${GROUND_Y - 150} ${BURROW_X + 76} ${GROUND_Y - 150} ${BURROW_X + 84} ${GROUND_Y - 30}Z`}
+        d={`M${BURROW.x - 80} ${GROUND_Y - 30} C ${BURROW.x - 76} ${GROUND_Y - 150} ${BURROW.x + 76} ${GROUND_Y - 150} ${BURROW.x + 84} ${GROUND_Y - 30}Z`}
         fill="#20160f"
         opacity="0.88"
       />
-      <ellipse cx={BURROW_X} cy={GROUND_Y - 34} rx="86" ry="14" fill="#3a2a1d" opacity="0.6" />
+      <ellipse cx={BURROW.x} cy={GROUND_Y - 34} rx="86" ry="14" fill="#3a2a1d" opacity="0.6" />
     </g>
   );
 }
 
 function Stool({ p, candles }: { p: Palette; candles: number }) {
-  const src = propImage('mushroom_stool');
+  const birthday = candles > 0 ? propImage('birthday_candle_mushroom') : null;
+  const src = birthday ?? propImage('mushroom_stool');
   const { x, y } = STOOL;
   return (
     <g>
@@ -293,37 +321,60 @@ function Stool({ p, candles }: { p: Palette; candles: number }) {
           <ellipse cx={x} cy={y + 2} rx="36" ry="6" fill={p.groundDark} opacity="0.5" />
         </g>
       )}
-      {Array.from({ length: Math.min(candles, 10) }, (_, i) => {
-        const cx = x - (Math.min(candles, 10) - 1) * 9 + i * 18;
-        return (
-          <g key={i} transform={`translate(${cx} ${y - 118})`}>
-            <rect
-              x="-3.5"
-              y="-26"
-              width="7"
-              height="26"
-              rx="2"
-              fill={i % 2 ? '#f2c76e' : '#cfe8d5'}
-            />
-            <path
-              d="M0 -40 C 6 -32 4 -28 0 -26 C -4 -28 -6 -32 0 -40Z"
-              fill="#ffb347"
-              className={styles.flame}
-            />
-          </g>
-        );
-      })}
+      {!birthday &&
+        Array.from({ length: Math.min(candles, 10) }, (_, i) => {
+          const cx = x - (Math.min(candles, 10) - 1) * 9 + i * 18;
+          return (
+            <g key={i} transform={`translate(${cx} ${y - 118})`}>
+              <rect
+                x="-3.5"
+                y="-26"
+                width="7"
+                height="26"
+                rx="2"
+                fill={i % 2 ? '#f2c76e' : '#cfe8d5'}
+              />
+              <path
+                d="M0 -40 C 6 -32 4 -28 0 -26 C -4 -28 -6 -32 0 -40Z"
+                fill="#ffb347"
+                className={styles.flame}
+              />
+            </g>
+          );
+        })}
     </g>
   );
 }
 
 function Lantern({ on, dark }: { on: boolean; dark: number }) {
-  const src = propImage('lantern');
+  const src = propImage(on ? 'lantern_on' : 'lantern_off');
   const { x, y } = LANTERN;
+  if (src) {
+    const a = LANTERN_ART;
+    const g = lanternGlowPoint();
+    return (
+      <g>
+        {on && <circle cx={g.x} cy={g.y} r={90 + dark * 90} fill="url(#lanternGlow)" />}
+        <image
+          href={src}
+          x={x - a.stemX * a.size}
+          y={LANTERN.base - a.stemY * a.size}
+          width={a.size}
+          height={a.size}
+        />
+        <defs>
+          <radialGradient id="lanternGlow">
+            <stop offset="0" stopColor="#ffd98a" stopOpacity={0.35 + dark * 0.35} />
+            <stop offset="1" stopColor="#ffd98a" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+      </g>
+    );
+  }
   return (
     <g>
       <path
-        d={`M${x} ${GROUND_Y - 60} L${x} ${y - 40} Q ${x} ${y - 70} ${x - 40} ${y - 70}`}
+        d={`M${x} ${LANTERN.base} L${x} ${y - 40} Q ${x} ${y - 70} ${x - 40} ${y - 70}`}
         stroke="#5a4433"
         strokeWidth="8"
         fill="none"
@@ -332,7 +383,7 @@ function Lantern({ on, dark }: { on: boolean; dark: number }) {
       <g transform={`translate(${x - 40} ${y - 66})`} className={styles.lanternSwing}>
         <line x1="0" y1="0" x2="0" y2="18" stroke="#5a4433" strokeWidth="3" />
         {src ? (
-          <image href={src} x="-30" y="14" width="60" height="80" />
+          <image href={src} x="-46" y="8" width="92" height="92" />
         ) : (
           <g>
             <path d="M-20 22 L20 22 L26 30 L-26 30Z" fill="#5a4433" />
@@ -431,8 +482,8 @@ function Droppings({ items, onClickAny }: { items: Dropping[]; onClickAny?: () =
   return (
     <g>
       {items.map((d) => {
-        const x = 120 + d.x * 660;
-        const y = GROUND_Y + 30 + ((d.id * 37) % 60);
+        const x = MEADOW.min + d.x * (MEADOW.max - MEADOW.min);
+        const y = GROUND_Y + 18 + ((d.id * 37) % 50);
         return (
           <g
             key={d.id}
@@ -495,35 +546,48 @@ export const HollowBack = memo(function HollowBack(props: BackProps) {
   const farX = useTransform(props.px, (v) => v * -6);
   const midX = useTransform(props.px, (v) => v * -12);
   const farY = useTransform(props.py, (v) => v * -3);
+  const vb = `0 0 ${WORLD_W} ${WORLD_H}`;
   return (
     <div className={styles.layer} aria-hidden="true">
-      <svg viewBox="0 0 900 1200" className={styles.svg} preserveAspectRatio="xMidYMid slice">
-        <Sky p={p} hour={props.hour} />
+      <svg viewBox={vb} className={styles.svg} preserveAspectRatio="none">
+        <g transform={LEGACY}>
+          <Sky p={p} hour={props.hour} />
+        </g>
       </svg>
-      <motion.div className={styles.layer} style={{ x: farX, y: farY }}>
+      <motion.div className={`${styles.layer} ${styles.bleed}`} style={{ x: farX, y: farY }}>
         {sceneImage('bg_far', 'day') ? (
           <ArtLayer layer="bg_far" hour={props.hour} />
         ) : (
-          <svg viewBox="0 0 900 1200" className={styles.svg} preserveAspectRatio="xMidYMid slice">
-            <FarLayer p={p} />
-            <Rainbow show={props.rainbow} />
+          <svg viewBox={vb} className={styles.svg} preserveAspectRatio="none">
+            <g transform={LEGACY}>
+              <FarLayer p={p} />
+            </g>
           </svg>
         )}
+        <svg viewBox={vb} className={styles.svg} preserveAspectRatio="none">
+          <g transform={LEGACY}>
+            <Rainbow show={props.rainbow} />
+          </g>
+        </svg>
       </motion.div>
-      <motion.div className={styles.layer} style={{ x: midX }}>
+      <motion.div className={`${styles.layer} ${styles.bleed}`} style={{ x: midX }}>
         {sceneImage('bg_mid', 'day') ? (
           <ArtLayer layer="bg_mid" hour={props.hour} />
         ) : (
-          <svg viewBox="0 0 900 1200" className={styles.svg} preserveAspectRatio="xMidYMid slice">
-            <Ground p={p} season={props.season} />
+          <svg viewBox={vb} className={styles.svg} preserveAspectRatio="none">
+            <g transform={LEGACY}>
+              <Ground p={p} season={props.season} />
+              <GiantFern p={p} />
+            </g>
             <Pond p={p} rain={props.rain} />
-            <GiantFern p={p} />
             <Burrow p={p} />
           </svg>
         )}
       </motion.div>
-      <svg viewBox="0 0 900 1200" className={styles.svg} preserveAspectRatio="xMidYMid slice">
-        <Puddles show={props.rain} />
+      <svg viewBox={vb} className={styles.svg} preserveAspectRatio="none">
+        <g transform={LEGACY}>
+          <Puddles show={props.rain} />
+        </g>
         <Stool p={p} candles={props.candles} />
         <Lantern on={props.lightsOn} dark={p.dark} />
         <Droppings items={props.droppings} />
@@ -537,30 +601,36 @@ export const HollowNear = memo(function HollowNear({ hour, px }: LayerProps) {
   const p = paletteAt(hour);
   const x = useTransform(px, (v) => v * -22);
   return (
-    <motion.div className={styles.layer} style={{ x }} aria-hidden="true">
+    <motion.div className={`${styles.layer} ${styles.bleed}`} style={{ x }} aria-hidden="true">
       {sceneImage('fg_near', 'day') ? (
         <ArtLayer layer="fg_near" hour={hour} />
       ) : (
-        <svg viewBox="0 0 900 1200" className={styles.svg} preserveAspectRatio="xMidYMid slice">
-          {[-20, 90, 700, 820, 900].map((gx, i) => (
-            <g
-              key={gx}
-              transform={`translate(${gx} 1210)`}
-              className={styles.grassSway}
-              style={{ animationDelay: `${i * 0.4}s` }}
-            >
-              {[-30, -12, 6, 22, 38].map((dx, j) => (
-                <path
-                  key={j}
-                  d={`M${dx} 0 Q ${dx + 8} -${70 + j * 12} ${dx + 20 + j * 4} -${120 + ((j * 23) % 50)}`}
-                  stroke={j % 2 ? p.fern : p.fernLight}
-                  strokeWidth="10"
-                  fill="none"
-                  strokeLinecap="round"
-                />
-              ))}
-            </g>
-          ))}
+        <svg
+          viewBox={`0 0 ${WORLD_W} ${WORLD_H}`}
+          className={styles.svg}
+          preserveAspectRatio="none"
+        >
+          <g transform={LEGACY}>
+            {[-20, 90, 700, 820, 900].map((gx, i) => (
+              <g
+                key={gx}
+                transform={`translate(${gx} 1210)`}
+                className={styles.grassSway}
+                style={{ animationDelay: `${i * 0.4}s` }}
+              >
+                {[-30, -12, 6, 22, 38].map((dx, j) => (
+                  <path
+                    key={j}
+                    d={`M${dx} 0 Q ${dx + 8} -${70 + j * 12} ${dx + 20 + j * 4} -${120 + ((j * 23) % 50)}`}
+                    stroke={j % 2 ? p.fern : p.fernLight}
+                    strokeWidth="10"
+                    fill="none"
+                    strokeLinecap="round"
+                  />
+                ))}
+              </g>
+            ))}
+          </g>
         </svg>
       )}
     </motion.div>
@@ -578,7 +648,9 @@ export function HollowLight({
   mist: boolean;
 }) {
   const p = paletteAt(hour);
-  const darkness = p.dark * 0.32 + (lightsOn ? 0 : 0.42);
+  // Painted scenes already carry their own night; only the code-drawn one needs extra shade.
+  const painted = !!sceneImage('bg_far', 'night');
+  const darkness = p.dark * (painted ? 0.12 : 0.32) + (lightsOn ? 0 : 0.42);
   return (
     <>
       <div
@@ -586,7 +658,7 @@ export function HollowLight({
         aria-hidden="true"
         style={{
           background: lightsOn
-            ? `radial-gradient(circle at ${(LANTERN.x - 40) / 9}% ${(LANTERN.y - 13) / 12}%, rgba(255,217,138,${0.12 * p.dark}) 0%, rgba(30,42,58,${darkness}) 45%)`
+            ? `radial-gradient(circle at ${(lanternGlowPoint().x / WORLD_W) * 100}% ${(lanternGlowPoint().y / WORLD_H) * 100}%, rgba(255,217,138,${0.12 * p.dark}) 0%, rgba(30,42,58,${darkness}) 45%)`
             : `rgba(18,26,40,${darkness})`,
           transition: 'background 1.2s ease',
           pointerEvents: 'none',

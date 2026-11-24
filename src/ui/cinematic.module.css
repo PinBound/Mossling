@@ -174,3 +174,21 @@
   width: 70%;
   bottom: -6%;
 }
+
+.hatched {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+}
+.hatched > div {
+  position: absolute;
+  inset: 0;
+}
+.shell {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}

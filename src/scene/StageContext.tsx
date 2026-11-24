@@ -1,4 +1,5 @@
 import { createContext, useContext } from 'react';
+import type { MotionValue } from 'framer-motion';
 
 export interface PointerState {
   x: number;
@@ -8,10 +9,18 @@ export interface PointerState {
 }
 
 export interface StageCtx {
-  /** CSS px per stage unit (stage is 900×1200 units) */
+  /** CSS px per world unit (the world is 1600×900 units; the stage shows part or all of it) */
   unit: number;
+  /** world units visible across the stage */
+  viewW: number;
+  /** left edge of the visible window, in world units */
+  camX: MotionValue<number>;
+  /** the pet's x in world units; the camera follows it on narrow stages */
+  petX: MotionValue<number>;
   pointer: React.MutableRefObject<PointerState>;
   el: React.RefObject<HTMLDivElement>;
+  /** client (screen) point to world units */
+  toWorld(clientX: number, clientY: number): { x: number; y: number };
 }
 
 export const StageContext = createContext<StageCtx | null>(null);
@@ -20,11 +29,4 @@ export function useStage(): StageCtx {
   const c = useContext(StageContext);
   if (!c) throw new Error('useStage outside Stage');
   return c;
-}
-
-/** Convert a client point to stage units. */
-export function toStage(el: HTMLElement | null, clientX: number, clientY: number) {
-  if (!el) return { x: 450, y: 600 };
-  const r = el.getBoundingClientRect();
-  return { x: ((clientX - r.left) / r.width) * 900, y: ((clientY - r.top) / r.height) * 1200 };
 }

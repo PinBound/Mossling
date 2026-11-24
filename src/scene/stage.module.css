@@ -1,7 +1,6 @@
 .stage {
   position: relative;
   width: 100%;
-  aspect-ratio: 3 / 4;
   overflow: hidden;
   border-radius: clamp(14px, 3vw, 32px);
   box-shadow:
@@ -36,11 +35,17 @@
 }
 .snail {
   position: absolute;
-  bottom: 7%;
-  width: 9%;
+  bottom: 12%;
+  width: 5%;
   padding: 0;
   border: 0;
   background: none;
   z-index: 3;
   cursor: pointer;
+}
+
+.world {
+  position: absolute;
+  left: 0;
+  top: 0;
 }

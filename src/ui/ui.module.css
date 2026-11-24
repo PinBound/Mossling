@@ -40,7 +40,7 @@
   padding: 8px 12px 6px;
 }
 .layoutArc .stageBox {
-  width: min(100%, calc((100dvh - 128px) * 0.75), 680px);
+  width: min(100%, calc((100dvh - 128px) * var(--ar, 0.75)), 1200px);
   flex: none;
 }
 .layoutArc {
@@ -51,10 +51,10 @@
   padding: 20px;
 }
 .layoutRail .stageBox {
-  width: min(calc((100dvh - 40px) * 0.75), calc(100vw - 300px), 820px);
+  width: min(calc((100dvh - 40px) * var(--ar, 0.75)), calc(100vw - 270px), 1500px);
 }
 .layoutDevice .stageBox {
-  width: min(calc(100vw - 16px), calc((100dvh - 24px) * 0.62), 620px);
+  width: min(calc(100vw - 16px), calc((100dvh - 24px) * 0.75), 640px);
 }
 .stageBox {
   position: relative;
@@ -1037,4 +1037,93 @@
   color: #f6f0e1;
   font-weight: 800;
   text-shadow: 0 1px 3px rgb(0 0 0 / 0.6);
+}
+
+/* Device Mode with the painted shell (ui/device_shell). The opening is 24.7–74% × 28–60.75%. */
+.deviceArt {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+}
+.deviceScreen {
+  position: absolute;
+  left: 23.8%;
+  top: 27.2%;
+  width: 51.2%;
+  container-type: inline-size;
+}
+.deviceScreen > div:first-child {
+  border-radius: 0;
+  box-shadow: none;
+}
+.deviceShellImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  filter: drop-shadow(0 24px 40px rgb(0 0 0 / 0.45));
+  user-select: none;
+}
+.deviceStrip {
+  position: absolute;
+  left: 18%;
+  right: 6%;
+  bottom: 3%;
+  z-index: 31;
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5% 3%;
+  border-radius: 999px;
+  background: rgb(30 42 58 / 0.45);
+  pointer-events: none;
+}
+.deviceStrip .lcdIcon {
+  width: 9%;
+}
+.hwBtnArt {
+  position: absolute;
+  width: 12%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: rgb(63 94 58 / 0.75);
+  font-family: var(--font-display);
+  font-size: clamp(12px, 3cqi, 20px);
+  container-type: normal;
+}
+.hwBtnArt:active {
+  background: rgb(0 0 0 / 0.08);
+}
+.devHintArt {
+  position: absolute;
+  top: 82%;
+  left: 0;
+  right: 0;
+  margin: 0;
+  text-align: center;
+  color: #2f4a33;
+  font-weight: 800;
+}
+
+.leaf {
+  position: relative;
+}
+.leafBadge {
+  position: absolute;
+  right: 8px;
+  top: -10px;
+  width: 44px;
+  rotate: 18deg;
+  pointer-events: none;
+}
+
+/* Inside Device Mode's small screen the HUD is drawn at 60% size. */
+.deviceScreen .hud {
+  transform: scale(0.6);
+  transform-origin: top left;
+  width: calc(100% / 0.6);
+  padding: 9% 5% 0 16%;
 }

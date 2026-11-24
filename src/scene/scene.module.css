@@ -160,3 +160,7 @@
   height: 100%;
   pointer-events: none;
 }
+/* Parallax layers are slightly oversized so their edges never show. */
+.bleed {
+  inset: 0 -2%;
+}

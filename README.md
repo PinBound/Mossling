@@ -20,7 +20,8 @@ npm test             # Vitest: simulation engine
 npm run coverage     # with coverage (src/sim is at ~100% lines; gate is 90%)
 npm run e2e          # Playwright smoke test: hatch → feed → clean → sleep
 npm run lint
-npm run assets:check # missing art, wrong sizes, missing transparency
+npm run assets:check # missing art, wrong sizes, missing transparency, feet line
+npm run assets:optimize # convert dropped-in PNGs to web-sized WebP
 ```
 
 The Playwright test builds the app and serves it on port 4173. To use a particular Chromium binary, set `PW_CHROMIUM=/path/to/chromium`.
@@ -38,9 +39,10 @@ Press **`** (backtick) or open `/?dev=1`. It provides:
 ## Adding art
 
 1. Generate images following `ASSETS.md` (paths, sizes and prompt IDs).
-2. Drop them into `src/assets/img/…` using the exact names.
-3. Run `npm run assets:check`, then rebuild. Done: `src/assets/manifest.ts` discovers files at build time. Missing files keep using the placeholders.
-4. If a form reads too big or too small, tune `FORM_META` (`scale`, `anchorY`) in the manifest.
+2. Drop them into `src/assets/img/…` using the exact names (PNG or WebP).
+3. Run `npm run assets:optimize` to shrink them for the web, then `npm run assets:check`, then rebuild. `src/assets/manifest.ts` discovers files at build time, and missing files keep using the placeholders. `node scripts/assets-md.mjs` refreshes the checklist.
+4. If a form reads too big or too small, tune `FORM_META` (`scale`, `anchorY`) in the manifest. To re-lay out the world around new scene paintings, edit the constants at the top of `src/scene/Hollow.tsx` (`GROUND_Y`, `MEADOW`, `BURROW`, `POND`, `STOOL`, `LANTERN`).
+5. A new `art-source/app_icon.png` regenerates the PWA icons with `node scripts/make-icons.mjs`.
 
 ## Project map
 

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useGame } from '../../game/store';
 import { bus, haptic } from '../../game/bus';
 import { copy } from '../../ui/copy';
+import { propImage } from '../../assets/manifest';
 import { GamePet, GameShell, type GameApi } from '../GameShell';
 import styles from '../games.module.css';
 
@@ -18,6 +19,7 @@ interface Fly {
 }
 
 const DURATION = 30_000;
+const flyArt = (golden: boolean) => propImage(golden ? 'firefly_golden' : 'firefly');
 
 function Game({ phase, difficulty, end }: GameApi) {
   const [flies, setFlies] = useState<Fly[]>([]);
@@ -185,6 +187,9 @@ function Game({ phase, difficulty, end }: GameApi) {
               left: `${fl.x}%`,
               top: `${fl.y}%`,
               opacity: age > 0.7 ? (1 - age) / 0.3 : Math.min(1, age * 6),
+              ...(flyArt(fl.golden)
+                ? { background: `center / contain no-repeat url(${flyArt(fl.golden)})` }
+                : {}),
             }}
             onPointerDown={() => catchFly(fl)}
             aria-label={fl.golden ? 'Golden firefly' : 'Firefly'}

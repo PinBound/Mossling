@@ -1,16 +1,25 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { AnimatePresence, motion, useMotionValue, useSpring } from 'framer-motion';
+import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { DAY, HOUR, localHour } from '../sim';
 import { useGame } from '../game/store';
 import { bus } from '../game/bus';
 import { useReducedMotion } from '../game/prefs';
 import { PetActor } from '../pet/PetActor';
-import { HollowBack, HollowLight, HollowNear, GROUND_Y, POND } from './Hollow';
+import {
+  HollowBack,
+  HollowLight,
+  HollowNear,
+  GROUND_Y,
+  MEADOW,
+  POND,
+  WORLD_H,
+  WORLD_W,
+} from './Hollow';
 import { ParticleLayer } from './ParticleLayer';
 import { emit, type Ambient } from './particles';
 import { paletteAt } from './palette';
 import { seasonOf, weatherAt } from './weather';
-import { StageContext, toStage, type PointerState } from './StageContext';
+import { StageContext, type PointerState } from './StageContext';
 import { copy } from '../ui/copy';
 import { propImage } from '../assets/manifest';
 import styles from './stage.module.css';
@@ -18,12 +27,23 @@ import styles from './stage.module.css';
 export function Stage({
   children,
   stageRef,
+  aspect,
 }: {
   children?: ReactNode;
   stageRef: React.RefObject<HTMLDivElement>;
+  /** width / height of the stage; 16/9 shows the whole Hollow */
+  aspect: number;
 }) {
   const [unit, setUnit] = useState(0.5);
-  const pointer = useRef<PointerState>({ x: 450, y: 700, lastMove: 0, inside: false });
+  const pointer = useRef<PointerState>({ x: 650, y: 600, lastMove: 0, inside: false });
+  const viewW = Math.min(WORLD_W, WORLD_H * aspect);
+  // Camera: on narrow stages a window follows the pet across the Hollow.
+  const petX = useMotionValue(650);
+  const camTarget = useTransform(petX, (x) =>
+    Math.max(0, Math.min(WORLD_W - viewW, x - viewW / 2)),
+  );
+  const camX = useSpring(camTarget, { stiffness: 50, damping: 18 });
+  const worldX = useTransform(camX, (c) => -c * unit);
   const reduced = useReducedMotion();
   const pxRaw = useMotionValue(0);
   const pyRaw = useMotionValue(0);
@@ -48,9 +68,9 @@ export function Stage({
   useEffect(() => {
     const el = stageRef.current;
     if (!el) return;
-    const ro = new ResizeObserver(() => setUnit(el.clientWidth / 900));
+    const ro = new ResizeObserver(() => setUnit(el.clientHeight / WORLD_H));
     ro.observe(el);
-    setUnit(el.clientWidth / 900);
+    setUnit(el.clientHeight / WORLD_H);
     return () => ro.disconnect();
   }, [stageRef]);
 
@@ -81,7 +101,7 @@ export function Stage({
         const pick = Math.random() * rate;
         let r = pick;
         if (rain && (r -= 40) < 0) {
-          emit('rain', Math.random() * 960, -20);
+          emit('rain', Math.random() * 1700, -20);
           if (Math.random() < 0.05)
             emit(
               'ripple',
@@ -90,10 +110,10 @@ export function Stage({
             );
           continue;
         }
-        if (season === 'autumn' && (r -= 0.5) < 0) emit('leaf', Math.random() * 900, -20);
-        else if (season === 'winter' && (r -= 3) < 0) emit('snow', Math.random() * 900, -10);
-        else if (season === 'spring' && (r -= 0.7) < 0) emit('petal', Math.random() * 900, -10);
-        else if (fireflies) emit('firefly', 80 + Math.random() * 740, 600 + Math.random() * 450);
+        if (season === 'autumn' && (r -= 0.5) < 0) emit('leaf', Math.random() * WORLD_W, -20);
+        else if (season === 'winter' && (r -= 3) < 0) emit('snow', Math.random() * WORLD_W, -10);
+        else if (season === 'spring' && (r -= 0.7) < 0) emit('petal', Math.random() * WORLD_W, -10);
+        else if (fireflies) emit('firefly', 150 + Math.random() * 1300, 420 + Math.random() * 380);
       }
     };
   }, [reduced, rain, season, dark, pet.lightsOn, pet.sleep]);
@@ -121,45 +141,65 @@ export function Stage({
         if (e.type === 'fx' && e.name === 'wave') setWave((n) => n + 1);
         if (e.type === 'sim' && e.live && e.event.type === 'CLEANED') {
           for (const d of useGame.getState().pet.droppings)
-            emit('sparkle', 120 + d.x * 660, GROUND_Y + 20, 6);
-          setTimeout(() => emit('sparkle', 450, GROUND_Y, 10), 500);
+            emit('sparkle', MEADOW.min + d.x * (MEADOW.max - MEADOW.min), GROUND_Y + 20, 6);
+          setTimeout(() => emit('sparkle', petX.get(), GROUND_Y, 10), 500);
         }
         if (e.type === 'sim' && e.live && e.event.type === 'BATHED')
-          emit('bubble', 450, GROUND_Y - 120, 14);
+          emit('bubble', petX.get(), GROUND_Y - 120, 14);
       }),
-    [],
+    [petX],
   );
 
+  const toWorld = (clientX: number, clientY: number) => {
+    const r = stageRef.current?.getBoundingClientRect();
+    if (!r || !unit) return { x: camX.get() + viewW / 2, y: WORLD_H / 2 };
+    return { x: (clientX - r.left) / unit + camX.get(), y: (clientY - r.top) / unit };
+  };
   const onMove = (e: React.PointerEvent) => {
-    const s = toStage(stageRef.current, e.clientX, e.clientY);
+    const s = toWorld(e.clientX, e.clientY);
     pointer.current = { x: s.x, y: s.y, lastMove: performance.now(), inside: true };
     if (!reduced) {
-      pxRaw.set((s.x - 450) / 450);
-      pyRaw.set((s.y - 600) / 600);
+      pxRaw.set((s.x - camX.get() - viewW / 2) / (viewW / 2));
+      pyRaw.set((s.y - WORLD_H / 2) / (WORLD_H / 2));
     }
   };
 
-  const ctx = useMemo(() => ({ unit, pointer, el: stageRef }), [unit, stageRef]);
+  const ctx = useMemo(
+    () => ({ unit, viewW, camX, petX, pointer, el: stageRef, toWorld }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [unit, viewW, stageRef],
+  );
 
   return (
     <StageContext.Provider value={ctx}>
-      <div ref={stageRef} className={styles.stage} onPointerMove={onMove} data-testid="stage">
-        <HollowBack
-          hour={hour}
-          px={px}
-          py={py}
-          lightsOn={pet.lightsOn}
-          droppings={pet.droppings}
-          season={season}
-          rain={rain}
-          rainbow={rainbow}
-          candles={birthdayCandles}
-        />
-        <Snail at={scene.snailAt} now={now} />
-        <PetActor raining={rain} />
-        <HollowNear hour={hour} px={px} py={py} />
-        <HollowLight hour={hour} lightsOn={pet.lightsOn} mist={w.mist && !rain} />
-        <ParticleLayer ambientRef={ambientRef} />
+      <div
+        ref={stageRef}
+        className={styles.stage}
+        style={{ aspectRatio: aspect }}
+        onPointerMove={onMove}
+        data-testid="stage"
+      >
+        <motion.div
+          className={styles.world}
+          style={{ x: worldX, width: WORLD_W * unit, height: WORLD_H * unit }}
+        >
+          <HollowBack
+            hour={hour}
+            px={px}
+            py={py}
+            lightsOn={pet.lightsOn}
+            droppings={pet.droppings}
+            season={season}
+            rain={rain}
+            rainbow={rainbow}
+            candles={birthdayCandles}
+          />
+          <Snail at={scene.snailAt} now={now} />
+          <PetActor raining={rain} />
+          <HollowNear hour={hour} px={px} py={py} />
+          <HollowLight hour={hour} lightsOn={pet.lightsOn} mist={w.mist && !rain} />
+          <ParticleLayer ambientRef={ambientRef} />
+        </motion.div>
         <FallingStar at={scene.starAt} now={now} />
         <AnimatePresence>
           {wave > 0 && <Wave key={wave} onDone={() => setWave(0)} />}

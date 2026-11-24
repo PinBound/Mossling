@@ -38,6 +38,22 @@ function useRail() {
   return rail;
 }
 
+/** Device Mode's screen opening is a little wider than tall. */
+export const DEVICE_SCREEN_ASPECT = 1.14;
+
+/** Wide 16:9 on landscape screens (the whole Hollow), tall 3:4 on upright ones (a window that follows the pet). */
+function useLandscape() {
+  const q = '(min-aspect-ratio: 1/1)';
+  const [land, setLand] = useState(() => window.matchMedia(q).matches);
+  useEffect(() => {
+    const m = window.matchMedia(q);
+    const f = () => setLand(m.matches);
+    m.addEventListener('change', f);
+    return () => m.removeEventListener('change', f);
+  }, []);
+  return land;
+}
+
 function useShortcuts() {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -128,6 +144,8 @@ export function App() {
   const tz = useGame((s) => s.pet.tzOffsetMin);
   const stageRef = useRef<HTMLDivElement>(null);
   const rail = useRail();
+  const landscape = useLandscape();
+  const aspect = settings.deviceMode ? DEVICE_SCREEN_ASPECT : landscape ? 16 / 9 : 3 / 4;
   const hour = localHour(now || Date.now(), tz);
   useAudio();
   useShortcuts();
@@ -160,7 +178,7 @@ export function App() {
   }, [hour, settings.textSize, settings.reducedMotion, settings.haptics]);
 
   const stage = (
-    <Stage stageRef={stageRef}>
+    <Stage stageRef={stageRef} aspect={aspect}>
       {!photo && <Hud />}
       {!photo && <NudgeArrow />}
       <Suspense fallback={null}>
@@ -186,7 +204,7 @@ export function App() {
           className={`${styles.layout} ${rail ? styles.layoutRail : styles.layoutArc} ${settings.deviceMode ? styles.layoutDevice : ''}`}
         >
           <h1 className="sr-only">Mossling</h1>
-          <div className={styles.stageBox}>
+          <div className={styles.stageBox} style={{ ['--ar' as string]: aspect }}>
             {settings.deviceMode ? <DeviceFrame>{stage}</DeviceFrame> : stage}
           </div>
           {!settings.deviceMode && !photo && <ActionRing layout={rail ? 'rail' : 'arc'} />}

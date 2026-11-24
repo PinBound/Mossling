@@ -3,14 +3,17 @@
  * picked up at build time — no code changes. Anything missing falls back to the code placeholders.
  *
  *   img/pet/{form}/{form}_{pose}.png     1024×1024, transparent, feet on y = 900
- *   img/scene/{layer}_{timeOfDay}.png    layer: bg_far | bg_mid | fg_near
+ *   img/scene/{layer}_{timeOfDay}.png    16:9, layer: bg_far | bg_mid | fg_near
  *   img/props/{prop}.png
  *   img/ui/{icon}.png
+ *
+ * PNG or WebP both work (WebP wins if both exist). `npm run assets:optimize` converts PNGs to
+ * web-sized WebP.
  */
 import type { Form } from '../sim';
 import type { TimeOfDay } from '../sim/clock';
 
-const files = import.meta.glob('./img/**/*.png', {
+const files = import.meta.glob(['./img/**/*.png', './img/**/*.webp'], {
   eager: true,
   query: '?url',
   import: 'default',
@@ -68,12 +71,15 @@ export const PROPS = [
   'snack_honeydrop',
   'spoon',
   'medicine_vial',
-  'lantern',
+  'lantern_on',
+  'lantern_off',
   'mushroom_stool',
   'burrow',
   'dropping',
   'leaf_ball',
   'lilypad',
+  'lilypad_glow',
+  'birthday_candle_mushroom',
   'firefly',
   'firefly_golden',
   'snail',
@@ -97,10 +103,11 @@ export const FORM_META: Record<Form, { scale: number; anchorY: number; hover?: b
   starwick: { scale: 1.05, anchorY: 900, hover: true },
 };
 
-const find = (path: string): string | null => files[`./img/${path}`] ?? null;
+const find = (path: string): string | null =>
+  files[`./img/${path}.webp`] ?? files[`./img/${path}.png`] ?? null;
 
 export function petImage(form: Form, pose: Pose | EggPose): string | null {
-  return find(`pet/${form}/${form === 'egg' ? pose : `${form}_${pose}`}.png`);
+  return find(`pet/${form}/${form === 'egg' ? pose : `${form}_${pose}`}`);
 }
 
 /** A form "has art" once its idle pose exists; other poses then fall back to idle. */
@@ -109,15 +116,16 @@ export function petPose(form: Form, pose: Pose): string | null {
 }
 
 export function sceneImage(layer: SceneLayer, tod: TimeOfDay): string | null {
-  return find(`scene/${layer}_${tod}.png`);
+  // `fg_{time}` is accepted as an alias of `fg_near_{time}`.
+  return find(`scene/${layer}_${tod}`) ?? (layer === 'fg_near' ? find(`scene/fg_${tod}`) : null);
 }
 
 export function propImage(prop: Prop): string | null {
-  return find(`props/${prop}.png`);
+  return find(`props/${prop}`) ?? (prop === 'firefly_golden' ? find('props/firefly_gold') : null);
 }
 
 export function uiImage(icon: string): string | null {
-  return find(`ui/${icon}.png`);
+  return find(`ui/${icon}`);
 }
 
 /** Every expected file (relative to src/assets/img), for ASSETS.md and `npm run assets:check`. */
@@ -136,5 +144,6 @@ export function expectedFiles(): string[] {
     for (const p of POSES) out.push(`pet/${f}/${f}_${p}.png`);
   for (const l of SCENE_LAYERS) for (const t of TIMES) out.push(`scene/${l}_${t}.png`);
   for (const p of PROPS) out.push(`props/${p}.png`);
+  out.push('ui/device_shell.png');
   return out;
 }

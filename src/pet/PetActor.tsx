@@ -11,16 +11,16 @@ import { TUNING, type PetSpot } from '../sim';
 import { useGame, type PetAnimKind } from '../game/store';
 import { bus, haptic } from '../game/bus';
 import { useReducedMotion } from '../game/prefs';
-import { FORM_META, petImage, petPose, type Pose } from '../assets/manifest';
+import { FORM_META, petImage, petPose, propImage, type Pose } from '../assets/manifest';
 import { emit } from '../scene/particles';
-import { BURROW_X, GROUND_Y, POND, STOOL } from '../scene/Hollow';
-import { toStage, useStage } from '../scene/StageContext';
+import { BURROW, GROUND_Y, MEADOW, POND, STOOL } from '../scene/Hollow';
+import { useStage } from '../scene/StageContext';
 import { PlaceholderPet, anchors } from './PlaceholderPet';
 import { chooseBehavior, moodOf, type BehaviorKind } from './behavior';
 import { copy, formName } from '../ui/copy';
 import styles from './pet.module.css';
 
-const BASE = 520; // art box size in stage units at scale 1
+const BASE = 400; // art box size in world units at scale 1
 const FEET = 900 / 1024;
 
 const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
@@ -33,7 +33,7 @@ export function PetActor({ raining }: { raining: boolean }) {
   const petAnim = useGame((s) => s.petAnim);
   const hover = useGame((s) => s.hoverAction);
   const dispatch = useGame((s) => s.dispatch);
-  const { unit, pointer, el } = useStage();
+  const { unit, pointer, el, petX, toWorld, camX, viewW } = useStage();
   const reduced = useReducedMotion();
 
   const meta = FORM_META[pet.form];
@@ -41,7 +41,10 @@ export function PetActor({ raining }: { raining: boolean }) {
   const hoverLift = meta.hover ? 70 : 0;
 
   // Motion values, in stage units.
-  const x = useMotionValue(450);
+  const x = petX;
+  /** feet line (rises when the pet climbs into the burrow) and depth scale (smaller further back) */
+  const ground = useMotionValue(GROUND_Y);
+  const depth = useMotionValue(1);
   const hop = useMotionValue(0);
   const sx = useMotionValue(1);
   const sy = useMotionValue(1);
@@ -82,8 +85,8 @@ export function PetActor({ raining }: { raining: boolean }) {
 
   // Screen-space helpers for particles.
   const geo = () => {
-    const h = size * zoom.get();
-    const top = GROUND_Y - hoverLift - FEET * h + hop.get() + float.get();
+    const h = size * zoom.get() * depth.get();
+    const top = ground.get() - hoverLift - FEET * h + hop.get() + float.get();
     const a = anchors(pet.form);
     return {
       x: x.get(),
@@ -92,7 +95,7 @@ export function PetActor({ raining }: { raining: boolean }) {
       head: { x: x.get() + (a.head.x - 0.5) * h, y: top + a.head.y * h },
       mouth: { x: x.get() + (a.mouth.x - 0.5) * h * facing, y: top + a.mouth.y * h },
       sprout: { x: x.get() + (a.sprout.x - 0.5) * h, y: top + a.sprout.y * h },
-      feet: { x: x.get(), y: GROUND_Y - hoverLift },
+      feet: { x: x.get(), y: ground.get() - hoverLift },
     };
   };
 
@@ -202,7 +205,7 @@ export function PetActor({ raining }: { raining: boolean }) {
     }
     const r = el.current?.getBoundingClientRect();
     if (!r) return;
-    const s = toStage(el.current, hover.x, hover.y);
+    const s = toWorld(hover.x, hover.y);
     const g = geo();
     const angle = (Math.atan2(s.x - g.sprout.x, -(s.y - g.sprout.y)) * 180) / Math.PI;
     const eager = hover.id === 'feed' && mood.hungry;
@@ -277,13 +280,31 @@ export function PetActor({ raining }: { raining: boolean }) {
     }
   };
 
+  /** Hop up from the meadow into the burrow mouth (it sits further back, so it gets smaller). */
+  const enterBurrow = async () => {
+    setFacing(1);
+    const d = reduced ? 0.01 : 0.7;
+    void animate(hop, [0, -90, 0], { duration: d });
+    void animate(depth, BURROW.scale, { duration: d });
+    void animate(ground, BURROW.y, { duration: d, ease: 'easeOut' });
+    await animate(x, BURROW.x, { duration: d, ease: 'easeInOut' });
+  };
+  const leaveBurrow = async () => {
+    setFacing(-1);
+    const d = reduced ? 0.01 : 0.7;
+    void animate(hop, [0, -70, 0], { duration: d });
+    void animate(depth, 1, { duration: d });
+    void animate(ground, GROUND_Y, { duration: d, ease: 'easeIn' });
+    await animate(x, BURROW.approachX, { duration: d, ease: 'easeInOut' });
+  };
+
   const perform = async (kind: BehaviorKind, token: number) => {
     const ok = () => mounted.current && behaviorToken.current === token;
     const spring = { type: 'spring' as const, stiffness: 300, damping: 14 };
     switch (kind) {
       case 'wander': {
-        let tx = rand(220, 700);
-        if (Math.abs(tx - x.get()) < 80) tx = x.get() > 450 ? tx - 160 : tx + 160;
+        let tx = rand(MEADOW.min, MEADOW.max);
+        if (Math.abs(tx - x.get()) < 100) tx = x.get() > 650 ? tx - 200 : tx + 200;
         await walkTo(tx, token);
         break;
       }
@@ -370,9 +391,9 @@ export function PetActor({ raining }: { raining: boolean }) {
         rot.set(0);
         break;
       case 'sulk':
-        await walkTo(x.get() > 450 ? 760 : 200, token);
+        await walkTo(x.get() > 650 ? MEADOW.max : MEADOW.min, token);
         if (!ok()) break;
-        setFacing(x.get() > 450 ? 1 : -1);
+        setFacing(x.get() > 650 ? 1 : -1);
         setPose('sad');
         await animate(sy, 0.94, { duration: 0.5 });
         await wait(3500);
@@ -462,10 +483,12 @@ export function PetActor({ raining }: { raining: boolean }) {
           await wait(1000);
           continue;
         }
+        if (!p.sleep && ground.get() !== GROUND_Y) await leaveBurrow();
         if (p.sleep) {
-          if (Math.abs(x.get() - (BURROW_X + 20)) > 10) {
+          if (Math.abs(x.get() - BURROW.x) > 10) {
             setPose('sleep');
-            await walkTo(BURROW_X + 20, token);
+            await walkTo(BURROW.approachX, token);
+            if (behaviorToken.current === token) await enterBurrow();
           }
           setPose('sleep');
           lookX.set(0);
@@ -653,7 +676,9 @@ export function PetActor({ raining }: { raining: boolean }) {
       case 'greet': {
         bus.fx('greet');
         setPose('happy');
-        await walkTo(450, behaviorToken.current);
+        const center = Math.max(MEADOW.min, Math.min(MEADOW.max, camX.get() + viewW / 2));
+        if (ground.get() !== GROUND_Y) await leaveBurrow();
+        await walkTo(center, behaviorToken.current);
         if (reduced) {
           await wait(1200);
           break;
@@ -663,7 +688,7 @@ export function PetActor({ raining }: { raining: boolean }) {
         haptic([20, 40, 20]);
         await animate(sx, 1.16, { duration: 0.12 });
         await animate(sy, 0.9, { duration: 0.12 });
-        emit('heart', 450, 520, 6);
+        emit('heart', x.get(), GROUND_Y - 260, 6);
         await wait(1500);
         setGlass(false);
         void animate(sx, 1, spring);
@@ -790,16 +815,20 @@ export function PetActor({ raining }: { raining: boolean }) {
 
   // px conversions
   const left = useTransform(x, (v) => (v - size / 2) * unit);
-  const shadowScale = useTransform(hop, (v) => 1 + v / 200);
   const bodyY = useTransform<number, number>(
-    [hop, float, zoom],
-    ([h, f, z]) => (h + f + (z - 1) * 140) * unit,
+    [hop, float, zoom, ground],
+    ([h, f, z, g]) => (h + f + (z - 1) * 120 + (g - GROUND_Y)) * unit,
   );
   const bodySX = useTransform<number, number>(
-    [sx, breathe, zoom],
-    ([a, b, z]) => a * (2 - b) * z * (overweight ? 1.08 : 1),
+    [sx, breathe, zoom, depth],
+    ([a, b, z, d]) => a * (2 - b) * z * d * (overweight ? 1.08 : 1),
   );
-  const bodySY = useTransform<number, number>([sy, breathe, zoom], ([a, b, z]) => a * b * z);
+  const bodySY = useTransform<number, number>(
+    [sy, breathe, zoom, depth],
+    ([a, b, z, d]) => a * b * z * d,
+  );
+  const shadowY = useTransform(ground, (g) => (g - GROUND_Y) * unit);
+  const shadowScaleD = useTransform<number, number>([hop, depth], ([h, d]) => (1 + h / 200) * d);
 
   if (pet.status !== 'alive' && !useGame.getState().cinematic) return null;
 
@@ -814,10 +843,11 @@ export function PetActor({ raining }: { raining: boolean }) {
         className={styles.shadow}
         style={{
           left,
-          top: (GROUND_Y - 22) * unit,
+          top: (GROUND_Y - 18) * unit,
+          y: shadowY,
           width: px,
-          height: 44 * unit,
-          scale: shadowScale,
+          height: 36 * unit,
+          scale: shadowScaleD,
           opacity: meta.hover ? 0.5 : 0.85,
         }}
         aria-hidden="true"
@@ -1003,6 +1033,25 @@ function PropAt({
           strokeWidth="2"
         />
       </svg>
+    );
+  const art =
+    prop === 'vial'
+      ? propImage('medicine_vial')
+      : prop === 'candy'
+        ? propImage('snack_honeydrop')
+        : null;
+  if (art)
+    return (
+      <motion.img
+        src={art}
+        alt=""
+        className={styles.prop}
+        style={style}
+        initial={{ x: 160 * facing, y: -40, opacity: 0, rotate: 20 * facing }}
+        animate={{ x: 0, y: 0, opacity: 1, rotate: 0 }}
+        transition={{ type: 'spring', stiffness: 160, damping: 14 }}
+        aria-hidden="true"
+      />
     );
   return (
     <motion.svg

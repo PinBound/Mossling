@@ -2,7 +2,9 @@ import { useState } from 'react';
 import { useMotionValue } from 'framer-motion';
 import { ALL_FORMS, MOSSLING, type Form } from '../sim';
 import { useGame } from '../game/store';
-import { petImage, type Pose } from '../assets/manifest';
+import { petImage, propImage, type Pose } from '../assets/manifest';
+
+const leafArt = propImage('memory_leaf');
 import { PlaceholderPet } from '../pet/PlaceholderPet';
 import { Sheet } from './primitives';
 import { copy, formName } from './copy';
@@ -112,6 +114,7 @@ export function Journal() {
             <ul className={styles.leafList}>
               {j.memoryLeaves.map((l) => (
                 <li key={l.id + l.endedAt} className={styles.leaf}>
+                  {leafArt && <img src={leafArt} alt="" className={styles.leafBadge} />}
                   <Portrait form={l.form} pose="happy" />
                   <div>
                     <h3>{l.name}</h3>

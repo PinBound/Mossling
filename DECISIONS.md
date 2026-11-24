@@ -40,6 +40,21 @@ Choices made where the spec was silent or ambiguous, plus any deviations from it
 - **The Starwick form** stays out of the Journal's form grid until it has been met once.
 - **The test hook** `window.__mossling` (`jumpTo`, `store`) exists only on `?dev=1` URLs. It is used by the Playwright smoke test.
 
+## Art integration (starter art drop)
+
+- **The Hollow became a 16:9 world.** The painted scenes are 16:9 (giant fern left, meadow centre, pond and burrow right). The original stage was a tall 3:4. The world is now 1600×900 units laid out to match the paintings. The stage shows it two ways:
+  - **Wide** (any landscape screen, including desktop): the whole Hollow, in 16:9.
+  - **Tall** (upright phones): a 3:4 window that follows the pet across the Hollow with a soft spring camera. While the pet sleeps, the window settles on the burrow.
+  - Device Mode uses the shape of the painted shell's screen opening (about 1.14:1) with the same following camera.
+- **Sleeping in the burrow.** The painted burrow sits behind the pond, so the pet walks to the meadow's edge and hops up into the burrow mouth, getting smaller because it is further back. It hops back down on waking.
+- **The code-drawn scene is still the fallback.** It is stretched from its old 900×1200 design into the world, and only shows if the scene paintings are missing.
+- **Night darkening.** The painted night scenes already carry their own darkness, so the extra code shading is reduced when they're present.
+- **Web-sized art.** The delivered PNGs totalled about 95 MB, too heavy for a phone or an offline PWA. `npm run assets:optimize` converts them to WebP: scenes at 1920 wide, props at 384, pets at 1024, all with alpha kept. The total is now about 6 MB. Full-size masters remain in git history, and the app icon master is kept in `art-source/`.
+- **Accepted name variants.** `fg_{time}` works for `fg_near_{time}`, and `firefly_gold` for `firefly_golden`. New props were added to the manifest: `lantern_on`/`lantern_off` (the painted lantern includes its own fern stem, so no code post is drawn), `lilypad_glow`, and `birthday_candle_mushroom` (replaces the stool on birthdays).
+- **Device Mode** uses the painted shell (`ui/device_shell`). Invisible A/B/C hit areas sit over its painted buttons, and the HUD is drawn at 60% size inside the small screen.
+- **Eggshell halves** (`egg_shell_back` / `egg_shell_front`) frame the new Dewdrop at the end of the hatching scene.
+- **Missing poses** of a form fall back to that form's idle pose; for example, `dewdrop_play` isn't in this drop.
+
 ## Deviations from the stack
 
 - None in libraries. Versions are pinned to a mutually compatible set: Vite 6, Vitest 3, `@vitejs/plugin-react` 4, React 18, vite-plugin-pwa 1, Framer Motion (`framer-motion@^14`), and `@playwright/test` matching the installed browser.

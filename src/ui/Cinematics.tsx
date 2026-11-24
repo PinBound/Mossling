@@ -7,6 +7,9 @@ import { bus, haptic } from '../game/bus';
 import { useReducedMotion } from '../game/prefs';
 import { PlaceholderPet } from '../pet/PlaceholderPet';
 import { petImage } from '../assets/manifest';
+
+const shellBack = petImage('egg', 'egg_shell_back');
+const shellFront = petImage('egg', 'egg_shell_front');
 import { emit } from '../scene/particles';
 import { copy, formName } from './copy';
 import { Button } from './primitives';
@@ -212,13 +215,21 @@ function CinematicPlayer({ c }: { c: Cinematic }) {
               <Art form="egg" crack={Math.min(3, phase)} />
             </motion.div>
           ) : (
-            <motion.div
-              initial={{ scale: 0.4, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ type: 'spring', stiffness: 160, damping: 12 }}
-            >
-              <Art form="dewdrop" pose="happy" blink={phase === 6 || phase === 99 ? false : true} />
-            </motion.div>
+            <div className={styles.hatched}>
+              {shellBack && <img src={shellBack} alt="" className={styles.shell} />}
+              <motion.div
+                initial={{ scale: 0.4, opacity: 0, y: '10%' }}
+                animate={{ scale: 1, opacity: 1, y: '0%' }}
+                transition={{ type: 'spring', stiffness: 160, damping: 12 }}
+              >
+                <Art
+                  form="dewdrop"
+                  pose="happy"
+                  blink={phase === 6 || phase === 99 ? false : true}
+                />
+              </motion.div>
+              {shellFront && <img src={shellFront} alt="" className={styles.shell} />}
+            </div>
           )}
         </div>
         <AnimatePresence>

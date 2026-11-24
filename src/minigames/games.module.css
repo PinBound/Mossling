@@ -277,3 +277,15 @@
     opacity: 0;
   }
 }
+
+.padImg {
+  position: absolute;
+  inset: -30% -10%;
+  width: 120%;
+  height: 160%;
+  object-fit: contain;
+  pointer-events: none;
+}
+.pad:has(.padImg)::after {
+  display: none;
+}

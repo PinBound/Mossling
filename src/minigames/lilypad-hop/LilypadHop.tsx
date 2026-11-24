@@ -2,6 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 import { motion, useAnimationControls } from 'framer-motion';
 import { bus, haptic } from '../../game/bus';
 import { copy } from '../../ui/copy';
+import { propImage } from '../../assets/manifest';
+
+const padArt = propImage('lilypad');
+const glowArt = propImage('lilypad_glow');
 import { GamePet, GameShell, type GameApi } from '../GameShell';
 import styles from '../games.module.css';
 
@@ -139,13 +143,28 @@ function Game({ phase, difficulty, end }: GameApi) {
               initial={{ left: `${10 + i * 28}%`, opacity: 0 }}
               animate={{ left: `${10 + (i - 1) * 28}%`, opacity: 1 }}
               transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-              style={{
-                boxShadow: next ? `0 0 ${10 + glow * 40}px rgba(220,255,140,${glow})` : undefined,
-                background: next
-                  ? `color-mix(in srgb, #c9f08a ${Math.round(glow * 100)}%, #6d9a55)`
-                  : undefined,
-              }}
-            />
+              style={
+                padArt
+                  ? { background: 'none', aspectRatio: '1.6' }
+                  : {
+                      boxShadow: next
+                        ? `0 0 ${10 + glow * 40}px rgba(220,255,140,${glow})`
+                        : undefined,
+                      background: next
+                        ? `color-mix(in srgb, #c9f08a ${Math.round(glow * 100)}%, #6d9a55)`
+                        : undefined,
+                    }
+              }
+            >
+              {padArt && (
+                <>
+                  <img src={padArt} alt="" className={styles.padImg} />
+                  {next && glowArt && (
+                    <img src={glowArt} alt="" className={styles.padImg} style={{ opacity: glow }} />
+                  )}
+                </>
+              )}
+            </motion.div>
           );
         })}
         <motion.div className={styles.hopper} animate={pet}>
