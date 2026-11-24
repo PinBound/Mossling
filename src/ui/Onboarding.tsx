@@ -4,9 +4,48 @@ import { useGame } from '../game/store';
 import { bus } from '../game/bus';
 import { Button } from './primitives';
 import { copy } from './copy';
+import { petImage, propImage, sceneImage } from '../assets/manifest';
 import styles from './ui.module.css';
 
+/** Onboarding pictures composed from the painted scene and character art. */
+function ArtIllustration({ i }: { i: number }) {
+  const tod = (['dusk', 'night', 'day'] as const)[i];
+  const far = sceneImage('bg_far', tod);
+  const mid = sceneImage('bg_mid', tod);
+  const egg = petImage('egg', 'egg_idle');
+  const sprig = petImage('sprig', 'happy');
+  const lantern = propImage('lantern_on');
+  // Card 2 moves in close on the glowing stone.
+  const zoom = i === 1 ? { transform: 'scale(1.7)', transformOrigin: '58% 88%' } : undefined;
+  return (
+    <div className={styles.onbArtBox} aria-hidden="true">
+      <div className={styles.onbArtScene} style={zoom}>
+        {far && <img src={far} alt="" className={styles.onbBg} />}
+        {mid && <img src={mid} alt="" className={styles.onbBg} />}
+        {i < 2 && egg && (
+          <div className={styles.onbEgg}>
+            <span className={styles.onbGlow} />
+            <img src={egg} alt="" />
+          </div>
+        )}
+        {i === 2 && (
+          <>
+            {lantern && <img src={lantern} alt="" className={styles.onbLantern} />}
+            {sprig && <img src={sprig} alt="" className={styles.onbSprig} />}
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function Illustration({ i }: { i: number }) {
+  if (sceneImage('bg_far', 'day') && petImage('egg', 'egg_idle')) return <ArtIllustration i={i} />;
+  return <DrawnIllustration i={i} />;
+}
+
+/** Code-drawn fallback used until scene art exists. */
+function DrawnIllustration({ i }: { i: number }) {
   return (
     <svg viewBox="0 0 300 200" className={styles.onbArt} aria-hidden="true">
       <defs>
@@ -134,7 +173,9 @@ export function Onboarding() {
                 <Button
                   onClick={() => (i < cards.length - 1 ? (bus.fx('page'), setI(i + 1)) : done())}
                   data-testid="onboarding-next"
-                  autoFocus
+                  autoFocus={
+                    typeof window !== 'undefined' && window.matchMedia('(pointer: fine)').matches
+                  }
                 >
                   {i < cards.length - 1 ? copy.onboardingNext : copy.onboardingBegin}
                 </Button>

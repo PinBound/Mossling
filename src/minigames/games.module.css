@@ -63,6 +63,10 @@
   background: rgb(20 28 40 / 0.55);
 }
 .card {
+  --text: #2b3a2a;
+  --accent: #3f5e3a;
+  --accent-text: #fdfaf2;
+  --surface-2: #ece3cc;
   width: min(88%, 420px);
   background: var(--parchment);
   color: #2b3a2a;

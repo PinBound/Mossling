@@ -73,6 +73,10 @@
   background: radial-gradient(circle, #fff8d8, rgb(242 199 110 / 0.5) 40%, transparent 70%);
 }
 .nameCard {
+  --text: #2b3a2a;
+  --accent: #3f5e3a;
+  --accent-text: #fdfaf2;
+  --surface-2: #ece3cc;
   z-index: 3;
   position: absolute;
   bottom: 7%;
