@@ -113,7 +113,7 @@ export const FORM_META: Record<
   lanternmoss: { scale: 1.05, anchorY: 900, hover: true },
   burrowbun: { scale: 1.0, anchorY: 900 },
   mirefuzz: { scale: 0.98, anchorY: 900 },
-  starwick: { scale: 1.05, anchorY: 900, hover: true, blinkArt: false },
+  starwick: { scale: 1.05, anchorY: 900, hover: true },
 };
 
 const find = (path: string): string | null =>
