@@ -93,15 +93,27 @@ export type Prop = (typeof PROPS)[number];
  * Per-form layout metadata: how big the form should read on stage relative to the others,
  * and where its feet sit in the 1024 box. Tune these when final art lands.
  */
-export const FORM_META: Record<Form, { scale: number; anchorY: number; hover?: boolean }> = {
+export const FORM_META: Record<
+  Form,
+  {
+    scale: number;
+    anchorY: number;
+    hover?: boolean;
+    /**
+     * Set false when a form's blink art doesn't line up with its idle art (it would flicker every
+     * few seconds). Regenerate the blink as "idle with eyes closed" and remove the flag.
+     */
+    blinkArt?: boolean;
+  }
+> = {
   egg: { scale: 0.62, anchorY: 900 },
   dewdrop: { scale: 0.6, anchorY: 900 },
   sprig: { scale: 0.78, anchorY: 900 },
-  fernlet: { scale: 0.92, anchorY: 900 },
-  lanternmoss: { scale: 1.05, anchorY: 900, hover: true },
+  fernlet: { scale: 1.0, anchorY: 900 },
+  lanternmoss: { scale: 1.05, anchorY: 900, hover: true, blinkArt: false },
   burrowbun: { scale: 1.0, anchorY: 900 },
   mirefuzz: { scale: 0.98, anchorY: 900 },
-  starwick: { scale: 1.05, anchorY: 900, hover: true },
+  starwick: { scale: 1.05, anchorY: 900, hover: true, blinkArt: false },
 };
 
 const find = (path: string): string | null =>
@@ -113,7 +125,8 @@ export function petImage(form: Form, pose: Pose | EggPose): string | null {
 
 /** A form "has art" once its idle pose exists; other poses then fall back to idle. */
 export function petPose(form: Form, pose: Pose): string | null {
-  return petImage(form, pose) ?? (pose === 'blink' ? null : petImage(form, 'idle'));
+  if (pose === 'blink') return FORM_META[form].blinkArt === false ? null : petImage(form, 'blink');
+  return petImage(form, pose) ?? petImage(form, 'idle');
 }
 
 export function sceneImage(layer: SceneLayer, tod: TimeOfDay): string | null {

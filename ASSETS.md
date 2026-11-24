@@ -3,7 +3,7 @@
 Living checklist of every art file the game looks for. Paths are relative to `src/assets/img/`, without the extension: **.webp or .png both work** (WebP wins if both exist).
 Anything missing falls back to the code-drawn placeholder, so the game runs with any subset.
 
-**Progress: 58 of 130 final.**
+**Progress: 129 of 130 final.**
 
 ## Adding art
 
@@ -40,7 +40,7 @@ Prompt IDs follow `PET-{FORM}-{POSE}`, `SCENE-{LAYER}-{TIME}` and `PROP-{NAME}`.
 | `pet/dewdrop/dewdrop_sick` | **final** | PET-DEWDROP-SICK |
 | `pet/dewdrop/dewdrop_refuse` | **final** | PET-DEWDROP-REFUSE |
 | `pet/dewdrop/dewdrop_angry` | **final** | PET-DEWDROP-ANGRY |
-| `pet/dewdrop/dewdrop_play` | placeholder | PET-DEWDROP-PLAY |
+| `pet/dewdrop/dewdrop_play` | **final** | PET-DEWDROP-PLAY |
 | `pet/dewdrop/dewdrop_call` | **final** | PET-DEWDROP-CALL |
 | `pet/dewdrop/dewdrop_surprised` | **final** | PET-DEWDROP-SURPRISED |
 
@@ -66,91 +66,91 @@ Prompt IDs follow `PET-{FORM}-{POSE}`, `SCENE-{LAYER}-{TIME}` and `PROP-{NAME}`.
 
 | File | Status | Prompt ID |
 |---|---|---|
-| `pet/fernlet/fernlet_idle` | placeholder | PET-FERNLET-IDLE |
-| `pet/fernlet/fernlet_blink` | placeholder | PET-FERNLET-BLINK |
-| `pet/fernlet/fernlet_happy` | placeholder | PET-FERNLET-HAPPY |
-| `pet/fernlet/fernlet_sad` | placeholder | PET-FERNLET-SAD |
-| `pet/fernlet/fernlet_eat_open` | placeholder | PET-FERNLET-EAT-OPEN |
-| `pet/fernlet/fernlet_eat_closed` | placeholder | PET-FERNLET-EAT-CLOSED |
-| `pet/fernlet/fernlet_sleep` | placeholder | PET-FERNLET-SLEEP |
-| `pet/fernlet/fernlet_sick` | placeholder | PET-FERNLET-SICK |
-| `pet/fernlet/fernlet_refuse` | placeholder | PET-FERNLET-REFUSE |
-| `pet/fernlet/fernlet_angry` | placeholder | PET-FERNLET-ANGRY |
-| `pet/fernlet/fernlet_play` | placeholder | PET-FERNLET-PLAY |
-| `pet/fernlet/fernlet_call` | placeholder | PET-FERNLET-CALL |
-| `pet/fernlet/fernlet_surprised` | placeholder | PET-FERNLET-SURPRISED |
+| `pet/fernlet/fernlet_idle` | **final** | PET-FERNLET-IDLE |
+| `pet/fernlet/fernlet_blink` | **final** | PET-FERNLET-BLINK |
+| `pet/fernlet/fernlet_happy` | **final** | PET-FERNLET-HAPPY |
+| `pet/fernlet/fernlet_sad` | **final** | PET-FERNLET-SAD |
+| `pet/fernlet/fernlet_eat_open` | **final** | PET-FERNLET-EAT-OPEN |
+| `pet/fernlet/fernlet_eat_closed` | **final** | PET-FERNLET-EAT-CLOSED |
+| `pet/fernlet/fernlet_sleep` | **final** | PET-FERNLET-SLEEP |
+| `pet/fernlet/fernlet_sick` | **final** | PET-FERNLET-SICK |
+| `pet/fernlet/fernlet_refuse` | **final** | PET-FERNLET-REFUSE |
+| `pet/fernlet/fernlet_angry` | **final** | PET-FERNLET-ANGRY |
+| `pet/fernlet/fernlet_play` | **final** | PET-FERNLET-PLAY |
+| `pet/fernlet/fernlet_call` | **final** | PET-FERNLET-CALL |
+| `pet/fernlet/fernlet_surprised` | **final** | PET-FERNLET-SURPRISED |
 
 ## Pet: Lanternmoss
 
 | File | Status | Prompt ID |
 |---|---|---|
-| `pet/lanternmoss/lanternmoss_idle` | placeholder | PET-LANTERNMOSS-IDLE |
-| `pet/lanternmoss/lanternmoss_blink` | placeholder | PET-LANTERNMOSS-BLINK |
-| `pet/lanternmoss/lanternmoss_happy` | placeholder | PET-LANTERNMOSS-HAPPY |
-| `pet/lanternmoss/lanternmoss_sad` | placeholder | PET-LANTERNMOSS-SAD |
-| `pet/lanternmoss/lanternmoss_eat_open` | placeholder | PET-LANTERNMOSS-EAT-OPEN |
-| `pet/lanternmoss/lanternmoss_eat_closed` | placeholder | PET-LANTERNMOSS-EAT-CLOSED |
-| `pet/lanternmoss/lanternmoss_sleep` | placeholder | PET-LANTERNMOSS-SLEEP |
-| `pet/lanternmoss/lanternmoss_sick` | placeholder | PET-LANTERNMOSS-SICK |
-| `pet/lanternmoss/lanternmoss_refuse` | placeholder | PET-LANTERNMOSS-REFUSE |
-| `pet/lanternmoss/lanternmoss_angry` | placeholder | PET-LANTERNMOSS-ANGRY |
-| `pet/lanternmoss/lanternmoss_play` | placeholder | PET-LANTERNMOSS-PLAY |
-| `pet/lanternmoss/lanternmoss_call` | placeholder | PET-LANTERNMOSS-CALL |
-| `pet/lanternmoss/lanternmoss_surprised` | placeholder | PET-LANTERNMOSS-SURPRISED |
+| `pet/lanternmoss/lanternmoss_idle` | **final** | PET-LANTERNMOSS-IDLE |
+| `pet/lanternmoss/lanternmoss_blink` | **final** | PET-LANTERNMOSS-BLINK |
+| `pet/lanternmoss/lanternmoss_happy` | **final** | PET-LANTERNMOSS-HAPPY |
+| `pet/lanternmoss/lanternmoss_sad` | **final** | PET-LANTERNMOSS-SAD |
+| `pet/lanternmoss/lanternmoss_eat_open` | **final** | PET-LANTERNMOSS-EAT-OPEN |
+| `pet/lanternmoss/lanternmoss_eat_closed` | **final** | PET-LANTERNMOSS-EAT-CLOSED |
+| `pet/lanternmoss/lanternmoss_sleep` | **final** | PET-LANTERNMOSS-SLEEP |
+| `pet/lanternmoss/lanternmoss_sick` | **final** | PET-LANTERNMOSS-SICK |
+| `pet/lanternmoss/lanternmoss_refuse` | **final** | PET-LANTERNMOSS-REFUSE |
+| `pet/lanternmoss/lanternmoss_angry` | **final** | PET-LANTERNMOSS-ANGRY |
+| `pet/lanternmoss/lanternmoss_play` | **final** | PET-LANTERNMOSS-PLAY |
+| `pet/lanternmoss/lanternmoss_call` | **final** | PET-LANTERNMOSS-CALL |
+| `pet/lanternmoss/lanternmoss_surprised` | **final** | PET-LANTERNMOSS-SURPRISED |
 
 ## Pet: Burrowbun
 
 | File | Status | Prompt ID |
 |---|---|---|
-| `pet/burrowbun/burrowbun_idle` | placeholder | PET-BURROWBUN-IDLE |
-| `pet/burrowbun/burrowbun_blink` | placeholder | PET-BURROWBUN-BLINK |
-| `pet/burrowbun/burrowbun_happy` | placeholder | PET-BURROWBUN-HAPPY |
-| `pet/burrowbun/burrowbun_sad` | placeholder | PET-BURROWBUN-SAD |
-| `pet/burrowbun/burrowbun_eat_open` | placeholder | PET-BURROWBUN-EAT-OPEN |
-| `pet/burrowbun/burrowbun_eat_closed` | placeholder | PET-BURROWBUN-EAT-CLOSED |
-| `pet/burrowbun/burrowbun_sleep` | placeholder | PET-BURROWBUN-SLEEP |
-| `pet/burrowbun/burrowbun_sick` | placeholder | PET-BURROWBUN-SICK |
-| `pet/burrowbun/burrowbun_refuse` | placeholder | PET-BURROWBUN-REFUSE |
-| `pet/burrowbun/burrowbun_angry` | placeholder | PET-BURROWBUN-ANGRY |
-| `pet/burrowbun/burrowbun_play` | placeholder | PET-BURROWBUN-PLAY |
-| `pet/burrowbun/burrowbun_call` | placeholder | PET-BURROWBUN-CALL |
-| `pet/burrowbun/burrowbun_surprised` | placeholder | PET-BURROWBUN-SURPRISED |
+| `pet/burrowbun/burrowbun_idle` | **final** | PET-BURROWBUN-IDLE |
+| `pet/burrowbun/burrowbun_blink` | **final** | PET-BURROWBUN-BLINK |
+| `pet/burrowbun/burrowbun_happy` | **final** | PET-BURROWBUN-HAPPY |
+| `pet/burrowbun/burrowbun_sad` | **final** | PET-BURROWBUN-SAD |
+| `pet/burrowbun/burrowbun_eat_open` | **final** | PET-BURROWBUN-EAT-OPEN |
+| `pet/burrowbun/burrowbun_eat_closed` | **final** | PET-BURROWBUN-EAT-CLOSED |
+| `pet/burrowbun/burrowbun_sleep` | **final** | PET-BURROWBUN-SLEEP |
+| `pet/burrowbun/burrowbun_sick` | **final** | PET-BURROWBUN-SICK |
+| `pet/burrowbun/burrowbun_refuse` | **final** | PET-BURROWBUN-REFUSE |
+| `pet/burrowbun/burrowbun_angry` | **final** | PET-BURROWBUN-ANGRY |
+| `pet/burrowbun/burrowbun_play` | **final** | PET-BURROWBUN-PLAY |
+| `pet/burrowbun/burrowbun_call` | **final** | PET-BURROWBUN-CALL |
+| `pet/burrowbun/burrowbun_surprised` | **final** | PET-BURROWBUN-SURPRISED |
 
 ## Pet: Mirefuzz
 
 | File | Status | Prompt ID |
 |---|---|---|
-| `pet/mirefuzz/mirefuzz_idle` | placeholder | PET-MIREFUZZ-IDLE |
-| `pet/mirefuzz/mirefuzz_blink` | placeholder | PET-MIREFUZZ-BLINK |
-| `pet/mirefuzz/mirefuzz_happy` | placeholder | PET-MIREFUZZ-HAPPY |
-| `pet/mirefuzz/mirefuzz_sad` | placeholder | PET-MIREFUZZ-SAD |
-| `pet/mirefuzz/mirefuzz_eat_open` | placeholder | PET-MIREFUZZ-EAT-OPEN |
-| `pet/mirefuzz/mirefuzz_eat_closed` | placeholder | PET-MIREFUZZ-EAT-CLOSED |
-| `pet/mirefuzz/mirefuzz_sleep` | placeholder | PET-MIREFUZZ-SLEEP |
-| `pet/mirefuzz/mirefuzz_sick` | placeholder | PET-MIREFUZZ-SICK |
-| `pet/mirefuzz/mirefuzz_refuse` | placeholder | PET-MIREFUZZ-REFUSE |
-| `pet/mirefuzz/mirefuzz_angry` | placeholder | PET-MIREFUZZ-ANGRY |
-| `pet/mirefuzz/mirefuzz_play` | placeholder | PET-MIREFUZZ-PLAY |
-| `pet/mirefuzz/mirefuzz_call` | placeholder | PET-MIREFUZZ-CALL |
-| `pet/mirefuzz/mirefuzz_surprised` | placeholder | PET-MIREFUZZ-SURPRISED |
+| `pet/mirefuzz/mirefuzz_idle` | **final** | PET-MIREFUZZ-IDLE |
+| `pet/mirefuzz/mirefuzz_blink` | **final** | PET-MIREFUZZ-BLINK |
+| `pet/mirefuzz/mirefuzz_happy` | **final** | PET-MIREFUZZ-HAPPY |
+| `pet/mirefuzz/mirefuzz_sad` | **final** | PET-MIREFUZZ-SAD |
+| `pet/mirefuzz/mirefuzz_eat_open` | **final** | PET-MIREFUZZ-EAT-OPEN |
+| `pet/mirefuzz/mirefuzz_eat_closed` | **final** | PET-MIREFUZZ-EAT-CLOSED |
+| `pet/mirefuzz/mirefuzz_sleep` | **final** | PET-MIREFUZZ-SLEEP |
+| `pet/mirefuzz/mirefuzz_sick` | **final** | PET-MIREFUZZ-SICK |
+| `pet/mirefuzz/mirefuzz_refuse` | **final** | PET-MIREFUZZ-REFUSE |
+| `pet/mirefuzz/mirefuzz_angry` | **final** | PET-MIREFUZZ-ANGRY |
+| `pet/mirefuzz/mirefuzz_play` | **final** | PET-MIREFUZZ-PLAY |
+| `pet/mirefuzz/mirefuzz_call` | **final** | PET-MIREFUZZ-CALL |
+| `pet/mirefuzz/mirefuzz_surprised` | **final** | PET-MIREFUZZ-SURPRISED |
 
 ## Pet: Starwick
 
 | File | Status | Prompt ID |
 |---|---|---|
-| `pet/starwick/starwick_idle` | placeholder | PET-STARWICK-IDLE |
-| `pet/starwick/starwick_blink` | placeholder | PET-STARWICK-BLINK |
-| `pet/starwick/starwick_happy` | placeholder | PET-STARWICK-HAPPY |
-| `pet/starwick/starwick_sad` | placeholder | PET-STARWICK-SAD |
-| `pet/starwick/starwick_eat_open` | placeholder | PET-STARWICK-EAT-OPEN |
-| `pet/starwick/starwick_eat_closed` | placeholder | PET-STARWICK-EAT-CLOSED |
-| `pet/starwick/starwick_sleep` | placeholder | PET-STARWICK-SLEEP |
-| `pet/starwick/starwick_sick` | placeholder | PET-STARWICK-SICK |
-| `pet/starwick/starwick_refuse` | placeholder | PET-STARWICK-REFUSE |
-| `pet/starwick/starwick_angry` | placeholder | PET-STARWICK-ANGRY |
-| `pet/starwick/starwick_play` | placeholder | PET-STARWICK-PLAY |
-| `pet/starwick/starwick_call` | placeholder | PET-STARWICK-CALL |
-| `pet/starwick/starwick_surprised` | placeholder | PET-STARWICK-SURPRISED |
+| `pet/starwick/starwick_idle` | **final** | PET-STARWICK-IDLE |
+| `pet/starwick/starwick_blink` | **final** | PET-STARWICK-BLINK |
+| `pet/starwick/starwick_happy` | **final** | PET-STARWICK-HAPPY |
+| `pet/starwick/starwick_sad` | **final** | PET-STARWICK-SAD |
+| `pet/starwick/starwick_eat_open` | **final** | PET-STARWICK-EAT-OPEN |
+| `pet/starwick/starwick_eat_closed` | **final** | PET-STARWICK-EAT-CLOSED |
+| `pet/starwick/starwick_sleep` | **final** | PET-STARWICK-SLEEP |
+| `pet/starwick/starwick_sick` | **final** | PET-STARWICK-SICK |
+| `pet/starwick/starwick_refuse` | **final** | PET-STARWICK-REFUSE |
+| `pet/starwick/starwick_angry` | **final** | PET-STARWICK-ANGRY |
+| `pet/starwick/starwick_play` | **final** | PET-STARWICK-PLAY |
+| `pet/starwick/starwick_call` | **final** | PET-STARWICK-CALL |
+| `pet/starwick/starwick_surprised` | **final** | PET-STARWICK-SURPRISED |
 
 ## Scene: The Hollow (16:9)
 
@@ -187,11 +187,11 @@ Prompt IDs follow `PET-{FORM}-{POSE}`, `SCENE-{LAYER}-{TIME}` and `PROP-{NAME}`.
 | `props/firefly` | **final** | PROP-FIREFLY | Firefly Catch |
 | `props/firefly_golden` | **final** | PROP-FIREFLY-GOLDEN | Firefly Catch (rare) |
 | `props/memory_leaf` | **final** | PROP-MEMORY-LEAF | Journal: Memory Leaves |
-| `props/puddle` | placeholder | PROP-PUDDLE | Rain puddles in the meadow |
-| `props/spoon` | placeholder | PROP-SPOON | Feeding animation (optional) |
-| `props/snail` | placeholder | PROP-SNAIL | Rare visiting snail (optional) |
-| `props/four_leaf_clover` | placeholder | PROP-FOUR-LEAF-CLOVER | Journal treasure (optional) |
-| `props/leaf_ball` | placeholder | PROP-LEAF-BALL | Not used yet (optional) |
+| `props/puddle` | **final** | PROP-PUDDLE | Rain puddles in the meadow |
+| `props/spoon` | **final** | PROP-SPOON | Feeding animation (optional) |
+| `props/snail` | **final** | PROP-SNAIL | Rare visiting snail (optional) |
+| `props/four_leaf_clover` | **final** | PROP-FOUR-LEAF-CLOVER | Journal treasure (optional) |
+| `props/leaf_ball` | **final** | PROP-LEAF-BALL | Not used yet (optional) |
 | `props/burrow` | placeholder | PROP-BURROW | Only for the code-drawn scene; painted bg_mid already has the burrow |
 
 ## UI

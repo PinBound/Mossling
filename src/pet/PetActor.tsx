@@ -810,7 +810,8 @@ export function PetActor({ raining }: { raining: boolean }) {
   const img =
     pet.stage === 'egg'
       ? null
-      : petPose(pet.form, blink && !['sleep', 'happy'].includes(shownPose) ? 'blink' : shownPose);
+      : (blink && !['sleep', 'happy'].includes(shownPose) && petPose(pet.form, 'blink')) ||
+        petPose(pet.form, shownPose);
   const eggImg = pet.stage === 'egg' ? petPoseEgg(crack) : null;
 
   // px conversions
