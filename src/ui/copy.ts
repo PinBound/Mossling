@@ -333,6 +333,11 @@ export const copy = {
     releaseNo: 'Keep it',
     replayIntro: 'Replay introduction',
     credits: 'Credits',
+    updates: 'Updates',
+    version: (v: string) => `Version: ${v}`,
+    checkUpdates: 'Check for updates',
+    reloadToUpdate: 'Reload to update',
+    reloadNote: 'Your game is saved first; nothing is lost.',
     creditsBody:
       'Mossling was made with care. All sounds and music are synthesized live in your browser. Placeholder art is drawn in code; illustrations drop in from the art pipeline.',
     close: 'Done',

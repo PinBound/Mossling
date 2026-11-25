@@ -4,6 +4,13 @@ import { useGame } from '../game/store';
 import { notificationsSupported, requestNotifications } from '../game/notifications';
 import { Button, Sheet, Toggle } from './primitives';
 import { copy } from './copy';
+import {
+  checkForUpdates,
+  reloadToUpdate,
+  useUpdates,
+  versionLabel,
+  type UpdateStatus,
+} from '../game/updates';
 import styles from './ui.module.css';
 
 function Slider({
@@ -226,6 +233,7 @@ export function Settings() {
           </div>
         )}
       </section>
+      <UpdatesSection />
       <section className={styles.section}>
         <Button variant="ghost" onClick={() => setCredits((v) => !v)} aria-expanded={credits}>
           {c.credits}
@@ -236,5 +244,55 @@ export function Settings() {
         <Button onClick={close}>{c.close}</Button>
       </div>
     </Sheet>
+  );
+}
+
+const UPDATE_TEXT: Record<UpdateStatus, string> = {
+  idle: '',
+  checking: 'Checking for a new version…',
+  current: 'You have the latest version.',
+  downloading: 'Downloading the new version…',
+  ready: 'A new version is ready.',
+  offline: 'Couldn’t check: you seem to be offline. Try again when you’re connected.',
+  unavailable:
+    'Updates are handled by your browser here (only the installed web app checks itself).',
+};
+
+function UpdatesSection() {
+  const { status, checkedAt } = useUpdates();
+  const busy = status === 'checking' || status === 'downloading';
+  const time = checkedAt
+    ? new Date(checkedAt).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })
+    : '';
+  return (
+    <section className={styles.section} aria-labelledby="updates-title">
+      <h3 id="updates-title">{copy.settings.updates}</h3>
+      <p className={styles.rowDesc} data-testid="version">
+        {copy.settings.version(versionLabel())}
+      </p>
+      <div className={styles.rowWrap}>
+        {status === 'ready' ? (
+          <Button onClick={() => void reloadToUpdate()} data-testid="update-reload">
+            {copy.settings.reloadToUpdate}
+          </Button>
+        ) : (
+          <Button
+            variant="soft"
+            onClick={() => void checkForUpdates()}
+            disabled={busy}
+            data-testid="update-check"
+          >
+            {copy.settings.checkUpdates}
+          </Button>
+        )}
+      </div>
+      {status !== 'idle' && (
+        <p className={styles.rowDesc} role="status" data-testid="update-status">
+          {UPDATE_TEXT[status]}
+          {status === 'current' && time ? ` (checked ${time})` : ''}
+          {status === 'ready' ? ` ${copy.settings.reloadNote}` : ''}
+        </p>
+      )}
+    </section>
   );
 }

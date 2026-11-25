@@ -70,6 +70,15 @@ Choices made where the spec was silent or ambiguous, plus any deviations from it
 - **Nothing is overlaid on the small screen.** A one-line readout (name, age, bell, pause) sits on the shell under the opening. The eight care icons (tap directly, or cycle with A and pick with B), a hint line and the menu buttons sit in rows under the device, and toasts float above it.
 - **The device is sized to the phone's height**, leaving room for those rows.
 
+## App updates
+
+- **Settings → Updates** shows the running version (build date and commit) and has **Check for updates**. When a new version has downloaded, the button becomes **Reload to update**.
+- **The service worker is in "prompt" mode**, so the game decides when to switch versions, and always saves first:
+  - **Right away** if the app was opened in the last 20 seconds and nothing is happening.
+  - **Otherwise, the next time the app goes into the background**, with a note saying an update is ready. A new version never interrupts a minigame or cinematic.
+- **The game checks for updates every time it comes back to the foreground**, as well as on launch. iOS often pauses a home-screen app rather than closing it, so a launch-only check could miss updates for days.
+- **The first offline install isn't treated as an update.** Updates are only offered when an older version is already running the page.
+
 ## Deviations from the stack
 
 - None in libraries. Versions are pinned to a mutually compatible set: Vite 6, Vitest 3, `@vitejs/plugin-react` 4, React 18, vite-plugin-pwa 1, Framer Motion (`framer-motion@^14`), and `@playwright/test` matching the installed browser.

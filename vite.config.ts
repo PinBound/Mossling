@@ -2,14 +2,28 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
+import { execSync } from 'node:child_process';
+
+// Shown in Settings so you can tell which version is running.
+const commit = (() => {
+  if (process.env.GITHUB_SHA) return process.env.GITHUB_SHA.slice(0, 7);
+  try {
+    return execSync('git rev-parse --short HEAD').toString().trim();
+  } catch {
+    return 'dev';
+  }
+})();
+const BUILD = { commit: process.env.BUILD_ID ?? commit, builtAt: new Date().toISOString() };
 
 export default defineConfig({
   // GitHub Pages serves the game from /Mossling/; local dev and preview use /.
   base: process.env.BASE_PATH ?? '/',
+  define: { __BUILD__: JSON.stringify(BUILD) },
   plugins: [
     react(),
     VitePWA({
-      registerType: 'autoUpdate',
+      // 'prompt': the game decides when to switch versions (it saves first, and never mid-play).
+      registerType: 'prompt',
       includeAssets: ['icons/*.png', 'icons/*.svg'],
       manifest: {
         name: 'Mossling',
