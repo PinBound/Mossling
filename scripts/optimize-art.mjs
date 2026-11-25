@@ -23,6 +23,22 @@ for (const file of walk(ROOT).filter((f) => f.toLowerCase().endsWith('.png'))) {
   if (rel.startsWith('scene/') && meta.width > 1600) img = img.resize(1600);
   if (rel.startsWith('ui/device_shell') && meta.width > 1024) img = img.resize(1024);
   if (rel.startsWith('props/') && meta.width > 384) img = img.resize(384);
+  // Pet poses: nudge the character onto the feet line (y = 900) if it's slightly off, so poses
+  // of one form never jump up and down when they swap.
+  if (rel.startsWith('pet/') && meta.width === 1024 && meta.height === 1024 && meta.hasAlpha) {
+    const { data } = await sharp(file).extractChannel('alpha').raw().toBuffer({ resolveWithObject: true });
+    let bottom = 0;
+    for (let y = 1023; y >= 0 && !bottom; y--) for (let x = 0; x < 1024; x += 2) if (data[y * 1024 + x] > 128) { bottom = y; break; }
+    const shift = 900 - bottom;
+    if (bottom && Math.abs(shift) >= 4 && Math.abs(shift) <= 48) {
+      const buf = await sharp(file).png().toBuffer();
+      img = sharp({ create: { width: 1024, height: 1024, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } } })
+        .composite([{ input: buf, left: 0, top: shift }])
+        .png();
+      img = sharp(await img.toBuffer());
+      console.log(`  ${rel}: moved ${shift > 0 ? 'down' : 'up'} ${Math.abs(shift)} px onto the feet line`);
+    }
+  }
   const opaque = rel.startsWith('scene/bg_far') || rel.startsWith('ui/app_icon');
   await (opaque ? img.removeAlpha() : img).webp({ quality: rel.startsWith('scene/') ? 80 : 88, alphaQuality: 100, effort: 5 }).toFile(out);
   before += statSync(file).size;

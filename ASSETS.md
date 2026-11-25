@@ -3,7 +3,7 @@
 Living checklist of every art file the game looks for. Paths are relative to `src/assets/img/`, without the extension: **.webp or .png both work** (WebP wins if both exist).
 Anything missing falls back to the code-drawn placeholder, so the game runs with any subset.
 
-**Progress: 129 of 322 final** (Mossling: 97 of 97 · Capling: 0 of 96 · Ripplet: 0 of 96). A new species joins the egg draw once each of its forms has art.
+**Progress: 225 of 322 final** (Mossling: 97 of 97 · Capling: 96 of 96 · Ripplet: 0 of 96). A new species joins the egg draw once each of its forms has art.
 
 ## Adding art
 
@@ -160,137 +160,137 @@ Prompt IDs follow `PET-{FORM}-{POSE}`, `SCENE-{LAYER}-{TIME}` and `PROP-{NAME}`.
 
 | File | Status | Prompt ID |
 |---|---|---|
-| `pet/sporepod/sporepod_idle` | placeholder | PET-SPOREPOD-IDLE |
-| `pet/sporepod/sporepod_crack1` | placeholder | PET-SPOREPOD-CRACK1 |
-| `pet/sporepod/sporepod_crack2` | placeholder | PET-SPOREPOD-CRACK2 |
-| `pet/sporepod/sporepod_crack3` | placeholder | PET-SPOREPOD-CRACK3 |
-| `pet/sporepod/sporepod_shell_back` | placeholder | PET-SPOREPOD-SHELL-BACK |
-| `pet/sporepod/sporepod_shell_front` | placeholder | PET-SPOREPOD-SHELL-FRONT |
+| `pet/sporepod/sporepod_idle` | **final** | PET-SPOREPOD-IDLE |
+| `pet/sporepod/sporepod_crack1` | **final** | PET-SPOREPOD-CRACK1 |
+| `pet/sporepod/sporepod_crack2` | **final** | PET-SPOREPOD-CRACK2 |
+| `pet/sporepod/sporepod_crack3` | **final** | PET-SPOREPOD-CRACK3 |
+| `pet/sporepod/sporepod_shell_back` | **final** | PET-SPOREPOD-SHELL-BACK |
+| `pet/sporepod/sporepod_shell_front` | **final** | PET-SPOREPOD-SHELL-FRONT |
 
 ### Puffkin
 
 | File | Status | Prompt ID |
 |---|---|---|
-| `pet/puffkin/puffkin_idle` | placeholder | PET-PUFFKIN-IDLE |
-| `pet/puffkin/puffkin_blink` | placeholder | PET-PUFFKIN-BLINK |
-| `pet/puffkin/puffkin_happy` | placeholder | PET-PUFFKIN-HAPPY |
-| `pet/puffkin/puffkin_sad` | placeholder | PET-PUFFKIN-SAD |
-| `pet/puffkin/puffkin_eat_open` | placeholder | PET-PUFFKIN-EAT-OPEN |
-| `pet/puffkin/puffkin_eat_closed` | placeholder | PET-PUFFKIN-EAT-CLOSED |
-| `pet/puffkin/puffkin_sleep` | placeholder | PET-PUFFKIN-SLEEP |
-| `pet/puffkin/puffkin_sick` | placeholder | PET-PUFFKIN-SICK |
-| `pet/puffkin/puffkin_refuse` | placeholder | PET-PUFFKIN-REFUSE |
-| `pet/puffkin/puffkin_angry` | placeholder | PET-PUFFKIN-ANGRY |
-| `pet/puffkin/puffkin_call` | placeholder | PET-PUFFKIN-CALL |
-| `pet/puffkin/puffkin_surprised` | placeholder | PET-PUFFKIN-SURPRISED |
+| `pet/puffkin/puffkin_idle` | **final** | PET-PUFFKIN-IDLE |
+| `pet/puffkin/puffkin_blink` | **final** | PET-PUFFKIN-BLINK |
+| `pet/puffkin/puffkin_happy` | **final** | PET-PUFFKIN-HAPPY |
+| `pet/puffkin/puffkin_sad` | **final** | PET-PUFFKIN-SAD |
+| `pet/puffkin/puffkin_eat_open` | **final** | PET-PUFFKIN-EAT-OPEN |
+| `pet/puffkin/puffkin_eat_closed` | **final** | PET-PUFFKIN-EAT-CLOSED |
+| `pet/puffkin/puffkin_sleep` | **final** | PET-PUFFKIN-SLEEP |
+| `pet/puffkin/puffkin_sick` | **final** | PET-PUFFKIN-SICK |
+| `pet/puffkin/puffkin_refuse` | **final** | PET-PUFFKIN-REFUSE |
+| `pet/puffkin/puffkin_angry` | **final** | PET-PUFFKIN-ANGRY |
+| `pet/puffkin/puffkin_call` | **final** | PET-PUFFKIN-CALL |
+| `pet/puffkin/puffkin_surprised` | **final** | PET-PUFFKIN-SURPRISED |
 
 ### Caplet
 
 | File | Status | Prompt ID |
 |---|---|---|
-| `pet/caplet/caplet_idle` | placeholder | PET-CAPLET-IDLE |
-| `pet/caplet/caplet_blink` | placeholder | PET-CAPLET-BLINK |
-| `pet/caplet/caplet_happy` | placeholder | PET-CAPLET-HAPPY |
-| `pet/caplet/caplet_sad` | placeholder | PET-CAPLET-SAD |
-| `pet/caplet/caplet_eat_open` | placeholder | PET-CAPLET-EAT-OPEN |
-| `pet/caplet/caplet_eat_closed` | placeholder | PET-CAPLET-EAT-CLOSED |
-| `pet/caplet/caplet_sleep` | placeholder | PET-CAPLET-SLEEP |
-| `pet/caplet/caplet_sick` | placeholder | PET-CAPLET-SICK |
-| `pet/caplet/caplet_refuse` | placeholder | PET-CAPLET-REFUSE |
-| `pet/caplet/caplet_angry` | placeholder | PET-CAPLET-ANGRY |
-| `pet/caplet/caplet_play` | placeholder | PET-CAPLET-PLAY |
-| `pet/caplet/caplet_call` | placeholder | PET-CAPLET-CALL |
-| `pet/caplet/caplet_surprised` | placeholder | PET-CAPLET-SURPRISED |
+| `pet/caplet/caplet_idle` | **final** | PET-CAPLET-IDLE |
+| `pet/caplet/caplet_blink` | **final** | PET-CAPLET-BLINK |
+| `pet/caplet/caplet_happy` | **final** | PET-CAPLET-HAPPY |
+| `pet/caplet/caplet_sad` | **final** | PET-CAPLET-SAD |
+| `pet/caplet/caplet_eat_open` | **final** | PET-CAPLET-EAT-OPEN |
+| `pet/caplet/caplet_eat_closed` | **final** | PET-CAPLET-EAT-CLOSED |
+| `pet/caplet/caplet_sleep` | **final** | PET-CAPLET-SLEEP |
+| `pet/caplet/caplet_sick` | **final** | PET-CAPLET-SICK |
+| `pet/caplet/caplet_refuse` | **final** | PET-CAPLET-REFUSE |
+| `pet/caplet/caplet_angry` | **final** | PET-CAPLET-ANGRY |
+| `pet/caplet/caplet_play` | **final** | PET-CAPLET-PLAY |
+| `pet/caplet/caplet_call` | **final** | PET-CAPLET-CALL |
+| `pet/caplet/caplet_surprised` | **final** | PET-CAPLET-SURPRISED |
 
 ### Glimcap
 
 | File | Status | Prompt ID |
 |---|---|---|
-| `pet/glimcap/glimcap_idle` | placeholder | PET-GLIMCAP-IDLE |
-| `pet/glimcap/glimcap_blink` | placeholder | PET-GLIMCAP-BLINK |
-| `pet/glimcap/glimcap_happy` | placeholder | PET-GLIMCAP-HAPPY |
-| `pet/glimcap/glimcap_sad` | placeholder | PET-GLIMCAP-SAD |
-| `pet/glimcap/glimcap_eat_open` | placeholder | PET-GLIMCAP-EAT-OPEN |
-| `pet/glimcap/glimcap_eat_closed` | placeholder | PET-GLIMCAP-EAT-CLOSED |
-| `pet/glimcap/glimcap_sleep` | placeholder | PET-GLIMCAP-SLEEP |
-| `pet/glimcap/glimcap_sick` | placeholder | PET-GLIMCAP-SICK |
-| `pet/glimcap/glimcap_refuse` | placeholder | PET-GLIMCAP-REFUSE |
-| `pet/glimcap/glimcap_angry` | placeholder | PET-GLIMCAP-ANGRY |
-| `pet/glimcap/glimcap_play` | placeholder | PET-GLIMCAP-PLAY |
-| `pet/glimcap/glimcap_call` | placeholder | PET-GLIMCAP-CALL |
-| `pet/glimcap/glimcap_surprised` | placeholder | PET-GLIMCAP-SURPRISED |
+| `pet/glimcap/glimcap_idle` | **final** | PET-GLIMCAP-IDLE |
+| `pet/glimcap/glimcap_blink` | **final** | PET-GLIMCAP-BLINK |
+| `pet/glimcap/glimcap_happy` | **final** | PET-GLIMCAP-HAPPY |
+| `pet/glimcap/glimcap_sad` | **final** | PET-GLIMCAP-SAD |
+| `pet/glimcap/glimcap_eat_open` | **final** | PET-GLIMCAP-EAT-OPEN |
+| `pet/glimcap/glimcap_eat_closed` | **final** | PET-GLIMCAP-EAT-CLOSED |
+| `pet/glimcap/glimcap_sleep` | **final** | PET-GLIMCAP-SLEEP |
+| `pet/glimcap/glimcap_sick` | **final** | PET-GLIMCAP-SICK |
+| `pet/glimcap/glimcap_refuse` | **final** | PET-GLIMCAP-REFUSE |
+| `pet/glimcap/glimcap_angry` | **final** | PET-GLIMCAP-ANGRY |
+| `pet/glimcap/glimcap_play` | **final** | PET-GLIMCAP-PLAY |
+| `pet/glimcap/glimcap_call` | **final** | PET-GLIMCAP-CALL |
+| `pet/glimcap/glimcap_surprised` | **final** | PET-GLIMCAP-SURPRISED |
 
 ### Moonmorel
 
 | File | Status | Prompt ID |
 |---|---|---|
-| `pet/moonmorel/moonmorel_idle` | placeholder | PET-MOONMOREL-IDLE |
-| `pet/moonmorel/moonmorel_blink` | placeholder | PET-MOONMOREL-BLINK |
-| `pet/moonmorel/moonmorel_happy` | placeholder | PET-MOONMOREL-HAPPY |
-| `pet/moonmorel/moonmorel_sad` | placeholder | PET-MOONMOREL-SAD |
-| `pet/moonmorel/moonmorel_eat_open` | placeholder | PET-MOONMOREL-EAT-OPEN |
-| `pet/moonmorel/moonmorel_eat_closed` | placeholder | PET-MOONMOREL-EAT-CLOSED |
-| `pet/moonmorel/moonmorel_sleep` | placeholder | PET-MOONMOREL-SLEEP |
-| `pet/moonmorel/moonmorel_sick` | placeholder | PET-MOONMOREL-SICK |
-| `pet/moonmorel/moonmorel_refuse` | placeholder | PET-MOONMOREL-REFUSE |
-| `pet/moonmorel/moonmorel_angry` | placeholder | PET-MOONMOREL-ANGRY |
-| `pet/moonmorel/moonmorel_play` | placeholder | PET-MOONMOREL-PLAY |
-| `pet/moonmorel/moonmorel_call` | placeholder | PET-MOONMOREL-CALL |
-| `pet/moonmorel/moonmorel_surprised` | placeholder | PET-MOONMOREL-SURPRISED |
+| `pet/moonmorel/moonmorel_idle` | **final** | PET-MOONMOREL-IDLE |
+| `pet/moonmorel/moonmorel_blink` | **final** | PET-MOONMOREL-BLINK |
+| `pet/moonmorel/moonmorel_happy` | **final** | PET-MOONMOREL-HAPPY |
+| `pet/moonmorel/moonmorel_sad` | **final** | PET-MOONMOREL-SAD |
+| `pet/moonmorel/moonmorel_eat_open` | **final** | PET-MOONMOREL-EAT-OPEN |
+| `pet/moonmorel/moonmorel_eat_closed` | **final** | PET-MOONMOREL-EAT-CLOSED |
+| `pet/moonmorel/moonmorel_sleep` | **final** | PET-MOONMOREL-SLEEP |
+| `pet/moonmorel/moonmorel_sick` | **final** | PET-MOONMOREL-SICK |
+| `pet/moonmorel/moonmorel_refuse` | **final** | PET-MOONMOREL-REFUSE |
+| `pet/moonmorel/moonmorel_angry` | **final** | PET-MOONMOREL-ANGRY |
+| `pet/moonmorel/moonmorel_play` | **final** | PET-MOONMOREL-PLAY |
+| `pet/moonmorel/moonmorel_call` | **final** | PET-MOONMOREL-CALL |
+| `pet/moonmorel/moonmorel_surprised` | **final** | PET-MOONMOREL-SURPRISED |
 
 ### Truffletum
 
 | File | Status | Prompt ID |
 |---|---|---|
-| `pet/truffletum/truffletum_idle` | placeholder | PET-TRUFFLETUM-IDLE |
-| `pet/truffletum/truffletum_blink` | placeholder | PET-TRUFFLETUM-BLINK |
-| `pet/truffletum/truffletum_happy` | placeholder | PET-TRUFFLETUM-HAPPY |
-| `pet/truffletum/truffletum_sad` | placeholder | PET-TRUFFLETUM-SAD |
-| `pet/truffletum/truffletum_eat_open` | placeholder | PET-TRUFFLETUM-EAT-OPEN |
-| `pet/truffletum/truffletum_eat_closed` | placeholder | PET-TRUFFLETUM-EAT-CLOSED |
-| `pet/truffletum/truffletum_sleep` | placeholder | PET-TRUFFLETUM-SLEEP |
-| `pet/truffletum/truffletum_sick` | placeholder | PET-TRUFFLETUM-SICK |
-| `pet/truffletum/truffletum_refuse` | placeholder | PET-TRUFFLETUM-REFUSE |
-| `pet/truffletum/truffletum_angry` | placeholder | PET-TRUFFLETUM-ANGRY |
-| `pet/truffletum/truffletum_play` | placeholder | PET-TRUFFLETUM-PLAY |
-| `pet/truffletum/truffletum_call` | placeholder | PET-TRUFFLETUM-CALL |
-| `pet/truffletum/truffletum_surprised` | placeholder | PET-TRUFFLETUM-SURPRISED |
+| `pet/truffletum/truffletum_idle` | **final** | PET-TRUFFLETUM-IDLE |
+| `pet/truffletum/truffletum_blink` | **final** | PET-TRUFFLETUM-BLINK |
+| `pet/truffletum/truffletum_happy` | **final** | PET-TRUFFLETUM-HAPPY |
+| `pet/truffletum/truffletum_sad` | **final** | PET-TRUFFLETUM-SAD |
+| `pet/truffletum/truffletum_eat_open` | **final** | PET-TRUFFLETUM-EAT-OPEN |
+| `pet/truffletum/truffletum_eat_closed` | **final** | PET-TRUFFLETUM-EAT-CLOSED |
+| `pet/truffletum/truffletum_sleep` | **final** | PET-TRUFFLETUM-SLEEP |
+| `pet/truffletum/truffletum_sick` | **final** | PET-TRUFFLETUM-SICK |
+| `pet/truffletum/truffletum_refuse` | **final** | PET-TRUFFLETUM-REFUSE |
+| `pet/truffletum/truffletum_angry` | **final** | PET-TRUFFLETUM-ANGRY |
+| `pet/truffletum/truffletum_play` | **final** | PET-TRUFFLETUM-PLAY |
+| `pet/truffletum/truffletum_call` | **final** | PET-TRUFFLETUM-CALL |
+| `pet/truffletum/truffletum_surprised` | **final** | PET-TRUFFLETUM-SURPRISED |
 
 ### Mudpuff
 
 | File | Status | Prompt ID |
 |---|---|---|
-| `pet/mudpuff/mudpuff_idle` | placeholder | PET-MUDPUFF-IDLE |
-| `pet/mudpuff/mudpuff_blink` | placeholder | PET-MUDPUFF-BLINK |
-| `pet/mudpuff/mudpuff_happy` | placeholder | PET-MUDPUFF-HAPPY |
-| `pet/mudpuff/mudpuff_sad` | placeholder | PET-MUDPUFF-SAD |
-| `pet/mudpuff/mudpuff_eat_open` | placeholder | PET-MUDPUFF-EAT-OPEN |
-| `pet/mudpuff/mudpuff_eat_closed` | placeholder | PET-MUDPUFF-EAT-CLOSED |
-| `pet/mudpuff/mudpuff_sleep` | placeholder | PET-MUDPUFF-SLEEP |
-| `pet/mudpuff/mudpuff_sick` | placeholder | PET-MUDPUFF-SICK |
-| `pet/mudpuff/mudpuff_refuse` | placeholder | PET-MUDPUFF-REFUSE |
-| `pet/mudpuff/mudpuff_angry` | placeholder | PET-MUDPUFF-ANGRY |
-| `pet/mudpuff/mudpuff_play` | placeholder | PET-MUDPUFF-PLAY |
-| `pet/mudpuff/mudpuff_call` | placeholder | PET-MUDPUFF-CALL |
-| `pet/mudpuff/mudpuff_surprised` | placeholder | PET-MUDPUFF-SURPRISED |
+| `pet/mudpuff/mudpuff_idle` | **final** | PET-MUDPUFF-IDLE |
+| `pet/mudpuff/mudpuff_blink` | **final** | PET-MUDPUFF-BLINK |
+| `pet/mudpuff/mudpuff_happy` | **final** | PET-MUDPUFF-HAPPY |
+| `pet/mudpuff/mudpuff_sad` | **final** | PET-MUDPUFF-SAD |
+| `pet/mudpuff/mudpuff_eat_open` | **final** | PET-MUDPUFF-EAT-OPEN |
+| `pet/mudpuff/mudpuff_eat_closed` | **final** | PET-MUDPUFF-EAT-CLOSED |
+| `pet/mudpuff/mudpuff_sleep` | **final** | PET-MUDPUFF-SLEEP |
+| `pet/mudpuff/mudpuff_sick` | **final** | PET-MUDPUFF-SICK |
+| `pet/mudpuff/mudpuff_refuse` | **final** | PET-MUDPUFF-REFUSE |
+| `pet/mudpuff/mudpuff_angry` | **final** | PET-MUDPUFF-ANGRY |
+| `pet/mudpuff/mudpuff_play` | **final** | PET-MUDPUFF-PLAY |
+| `pet/mudpuff/mudpuff_call` | **final** | PET-MUDPUFF-CALL |
+| `pet/mudpuff/mudpuff_surprised` | **final** | PET-MUDPUFF-SURPRISED |
 
 ### Auroracap
 
 | File | Status | Prompt ID |
 |---|---|---|
-| `pet/auroracap/auroracap_idle` | placeholder | PET-AURORACAP-IDLE |
-| `pet/auroracap/auroracap_blink` | placeholder | PET-AURORACAP-BLINK |
-| `pet/auroracap/auroracap_happy` | placeholder | PET-AURORACAP-HAPPY |
-| `pet/auroracap/auroracap_sad` | placeholder | PET-AURORACAP-SAD |
-| `pet/auroracap/auroracap_eat_open` | placeholder | PET-AURORACAP-EAT-OPEN |
-| `pet/auroracap/auroracap_eat_closed` | placeholder | PET-AURORACAP-EAT-CLOSED |
-| `pet/auroracap/auroracap_sleep` | placeholder | PET-AURORACAP-SLEEP |
-| `pet/auroracap/auroracap_sick` | placeholder | PET-AURORACAP-SICK |
-| `pet/auroracap/auroracap_refuse` | placeholder | PET-AURORACAP-REFUSE |
-| `pet/auroracap/auroracap_angry` | placeholder | PET-AURORACAP-ANGRY |
-| `pet/auroracap/auroracap_play` | placeholder | PET-AURORACAP-PLAY |
-| `pet/auroracap/auroracap_call` | placeholder | PET-AURORACAP-CALL |
-| `pet/auroracap/auroracap_surprised` | placeholder | PET-AURORACAP-SURPRISED |
+| `pet/auroracap/auroracap_idle` | **final** | PET-AURORACAP-IDLE |
+| `pet/auroracap/auroracap_blink` | **final** | PET-AURORACAP-BLINK |
+| `pet/auroracap/auroracap_happy` | **final** | PET-AURORACAP-HAPPY |
+| `pet/auroracap/auroracap_sad` | **final** | PET-AURORACAP-SAD |
+| `pet/auroracap/auroracap_eat_open` | **final** | PET-AURORACAP-EAT-OPEN |
+| `pet/auroracap/auroracap_eat_closed` | **final** | PET-AURORACAP-EAT-CLOSED |
+| `pet/auroracap/auroracap_sleep` | **final** | PET-AURORACAP-SLEEP |
+| `pet/auroracap/auroracap_sick` | **final** | PET-AURORACAP-SICK |
+| `pet/auroracap/auroracap_refuse` | **final** | PET-AURORACAP-REFUSE |
+| `pet/auroracap/auroracap_angry` | **final** | PET-AURORACAP-ANGRY |
+| `pet/auroracap/auroracap_play` | **final** | PET-AURORACAP-PLAY |
+| `pet/auroracap/auroracap_call` | **final** | PET-AURORACAP-CALL |
+| `pet/auroracap/auroracap_surprised` | **final** | PET-AURORACAP-SURPRISED |
 
 ## Ripplets
 
