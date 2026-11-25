@@ -1,7 +1,7 @@
 import { dayKey, inWindow, localHour, nightKey } from './clock';
 import { evolutionInputOf, resolveAdultForm } from './evolution';
 import { createRng, type RNG } from './rng';
-import { MOSSLING, NEXT_STAGE } from './species/mossling';
+import { NEXT_STAGE, outcomeOf, speciesOf } from './species';
 import { clamp, clonePet, totalMistakes } from './state';
 import { DAY, HOUR, MIN, TUNING } from './tuning';
 import type {
@@ -123,7 +123,7 @@ function shiftSchedules(s: PetState, d: number) {
 
 export function hatch(s: PetState, now: number, r: RNG, ev: SimEvent[]) {
   s.stage = 'baby';
-  s.form = MOSSLING.stageForms.baby;
+  s.form = speciesOf(s.species).stageForms.baby;
   s.bornAt = now;
   s.stageMs = 0;
   s.ageMs = 0;
@@ -147,7 +147,7 @@ export function bedtimeFor(s: PetState): { sleep: number; wake: number } | null 
   if (s.stage === 'egg' || s.stage === 'baby') return null;
   const base = TUNING.bedtime[s.stage];
   if (s.stage !== 'adult') return base;
-  const shift = TUNING.adultBedtimeShift[s.form as AdultForm] ?? 0;
+  const shift = TUNING.adultBedtimeShift[outcomeOf(s.form as AdultForm)] ?? 0;
   return { sleep: base.sleep + shift, wake: base.wake + shift };
 }
 
@@ -387,8 +387,8 @@ export function evolve(s: PetState, now: number, r: RNG, ev: SimEvent[], forceFo
   s.stage = next;
   s.form =
     next === 'adult'
-      ? (forceForm ?? resolveAdultForm(evolutionInputOf(s)))
-      : MOSSLING.stageForms[next as Exclude<Grown, 'adult'>];
+      ? (forceForm ?? resolveAdultForm(evolutionInputOf(s), undefined, s.species))
+      : speciesOf(s.species).stageForms[next as Exclude<Grown, 'adult'>];
   s.stageMs = 0;
   s.stats.weight += TUNING.growthWeight[next as keyof typeof TUNING.growthWeight] ?? 0;
   s.stats.weight = Math.max(s.stats.weight, TUNING.minWeight[next]);

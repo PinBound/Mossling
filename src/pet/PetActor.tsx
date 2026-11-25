@@ -7,7 +7,7 @@ import {
   useTransform,
   type MotionValue,
 } from 'framer-motion';
-import { TUNING, type PetSpot } from '../sim';
+import { TUNING, type Form, type PetSpot } from '../sim';
 import { useGame, type PetAnimKind } from '../game/store';
 import { bus, haptic } from '../game/bus';
 import { useReducedMotion } from '../game/prefs';
@@ -812,7 +812,7 @@ export function PetActor({ raining }: { raining: boolean }) {
       ? null
       : (blink && !['sleep', 'happy'].includes(shownPose) && petPose(pet.form, 'blink')) ||
         petPose(pet.form, shownPose);
-  const eggImg = pet.stage === 'egg' ? petPoseEgg(crack) : null;
+  const eggImg = pet.stage === 'egg' ? petPoseEgg(pet.form, crack) : null;
 
   // px conversions
   const left = useTransform(x, (v) => (v - size / 2) * unit);
@@ -874,7 +874,7 @@ export function PetActor({ raining }: { raining: boolean }) {
         onKeyDown={onKey}
         role="button"
         tabIndex={0}
-        aria-label={pet.stage === 'egg' ? copy.aria.egg : copy.aria.pet(name)}
+        aria-label={pet.stage === 'egg' ? copy.aria.egg(formName(pet.form)) : copy.aria.pet(name)}
         data-testid="pet"
         data-form={pet.form}
         data-pose={shownPose}
@@ -885,7 +885,7 @@ export function PetActor({ raining }: { raining: boolean }) {
               <img src={eggImg} alt="" draggable={false} className={styles.img} />
             ) : (
               <PlaceholderPet
-                form="egg"
+                form={pet.form}
                 pose="idle"
                 blink={false}
                 lookX={lookX}
@@ -925,13 +925,9 @@ export function PetActor({ raining }: { raining: boolean }) {
   );
 }
 
-function petPoseEgg(crack: number) {
+function petPoseEgg(form: Form, crack: number) {
   const pose = (['egg_idle', 'egg_crack1', 'egg_crack2', 'egg_crack3'] as const)[crack];
-  return eggImage(pose);
-}
-
-function eggImage(p: 'egg_idle' | 'egg_crack1' | 'egg_crack2' | 'egg_crack3') {
-  return petImage('egg', p) ?? petImage('egg', 'egg_idle');
+  return petImage(form, pose) ?? petImage(form, 'egg_idle');
 }
 
 /** Final PNG art: the whole image gets the sprout's sway as a tiny secondary wobble. */

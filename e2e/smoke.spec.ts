@@ -25,7 +25,10 @@ async function clearCinematics(page: Page) {
 
 test('hatch → feed → clean → sleep', async ({ page }) => {
   await page.goto('/?dev=1');
+  // The Dev Panel covers part of a phone screen; hide it during the intro cards.
+  await page.getByRole('button', { name: 'Close dev panel' }).click();
   await finishOnboarding(page);
+  await page.keyboard.press('`');
   await expect(page.getByTestId('pet')).toHaveAttribute('data-form', 'egg');
   await expect(page.getByTestId('pet-name')).toHaveText('Dewstone');
 

@@ -72,8 +72,8 @@ export const TUNING = {
     teen: { sleep: 21, wake: 9 },
     adult: { sleep: 22, wake: 9 },
   },
-  /** Per-adult-form shift in hours (Starwick is nocturnal-leaning). */
-  adultBedtimeShift: { lanternmoss: -1, burrowbun: 0, mirefuzz: 1, starwick: 1 },
+  /** Adult bedtime shift in hours by care outcome (the secret forms are nocturnal-leaning). */
+  adultBedtimeShift: { best: -1, average: 0, poor: 1, secret: 1 },
   /** Exhausted pets nap until energy reaches this. */
   exhaustedWakeEnergy: 60,
 
@@ -137,9 +137,9 @@ export const TUNING = {
   },
 
   evolution: {
-    starwick: { maxMistakes: 0, minDiscipline: 100 },
-    lanternmoss: { maxMistakes: 2, minDiscipline: 75 },
-    burrowbun: { maxMistakes: 5 },
+    secret: { maxMistakes: 0, minDiscipline: 100 },
+    best: { maxMistakes: 2, minDiscipline: 75 },
+    average: { maxMistakes: 5 },
   },
 } as const;
 

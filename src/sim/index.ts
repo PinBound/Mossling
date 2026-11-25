@@ -18,4 +18,4 @@ export * from './actions';
 export * from './catchup';
 export * from './forecast';
 export * from './migrations';
-export * from './species/mossling';
+export * from './species';

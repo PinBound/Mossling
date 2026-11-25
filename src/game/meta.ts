@@ -53,6 +53,8 @@ export interface Meta {
     seenCinematics: string[];
     notifAsked: boolean;
     nudge: 'egg' | 'feed' | 'pet' | 'done';
+    /** Dev Panel: let species whose art isn't finished appear in the egg draw. */
+    devAllSpecies: boolean;
   };
   /** real wall-clock ms of the last time the app was open */
   lastSeenAt: number;
@@ -79,7 +81,13 @@ export function defaultMeta(): Meta {
       timeline: [],
     },
     bests: {},
-    flags: { onboarded: false, seenCinematics: [], notifAsked: false, nudge: 'egg' },
+    flags: {
+      onboarded: false,
+      seenCinematics: [],
+      notifAsked: false,
+      nudge: 'egg',
+      devAllSpecies: false,
+    },
     lastSeenAt: 0,
   };
 }

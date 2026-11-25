@@ -1,5 +1,6 @@
 import { TUNING } from './tuning';
-import type { AdultForm, PetState } from './types';
+import { speciesOf } from './species';
+import type { AdultForm, Outcome, PetState, SpeciesId } from './types';
 
 export interface EvolutionInput {
   childMistakes: number;
@@ -9,28 +10,35 @@ export interface EvolutionInput {
 }
 
 export interface EvolutionThresholds {
-  starwick: { maxMistakes: number; minDiscipline: number };
-  lanternmoss: { maxMistakes: number; minDiscipline: number };
-  burrowbun: { maxMistakes: number };
+  secret: { maxMistakes: number; minDiscipline: number };
+  best: { maxMistakes: number; minDiscipline: number };
+  average: { maxMistakes: number };
+}
+
+/** Which adult the care record earns: the same rule for every species. */
+export function resolveOutcome(
+  input: EvolutionInput,
+  t: EvolutionThresholds = TUNING.evolution,
+): Outcome {
+  const mistakes = input.childMistakes + input.teenMistakes;
+  if (
+    mistakes <= t.secret.maxMistakes &&
+    input.discipline >= t.secret.minDiscipline &&
+    input.sleptFullNightLightsOff
+  ) {
+    return 'secret';
+  }
+  if (mistakes <= t.best.maxMistakes && input.discipline >= t.best.minDiscipline) return 'best';
+  if (mistakes <= t.average.maxMistakes) return 'average';
+  return 'poor';
 }
 
 export function resolveAdultForm(
   input: EvolutionInput,
   t: EvolutionThresholds = TUNING.evolution,
+  species: SpeciesId = 'mossling',
 ): AdultForm {
-  const mistakes = input.childMistakes + input.teenMistakes;
-  if (
-    mistakes <= t.starwick.maxMistakes &&
-    input.discipline >= t.starwick.minDiscipline &&
-    input.sleptFullNightLightsOff
-  ) {
-    return 'starwick';
-  }
-  if (mistakes <= t.lanternmoss.maxMistakes && input.discipline >= t.lanternmoss.minDiscipline) {
-    return 'lanternmoss';
-  }
-  if (mistakes <= t.burrowbun.maxMistakes) return 'burrowbun';
-  return 'mirefuzz';
+  return speciesOf(species).adults[resolveOutcome(input, t)];
 }
 
 export function evolutionInputOf(s: PetState): EvolutionInput {

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { AnimatePresence, motion, useMotionValue } from 'framer-motion';
-import type { Form, GameId } from '../sim';
+import { isEggForm, type Form, type GameId } from '../sim';
 import { useGame } from '../game/store';
 import { bus } from '../game/bus';
 import { PlaceholderPet } from '../pet/PlaceholderPet';
@@ -30,7 +30,7 @@ export function GamePet({
 }) {
   const form = useGame((s) => s.pet.form);
   const z = useMotionValue(0);
-  const src = form === 'egg' ? null : petPose(form, pose);
+  const src = isEggForm(form) ? null : petPose(form, pose);
   return (
     <div className={styles.pet} style={{ transform: `scaleX(${facing})` }}>
       {src ? (
@@ -105,7 +105,7 @@ export function GameShell({ id, children }: { id: GameId; children: (api: GameAp
   const again = () => {
     const p = useGame.getState().pet;
     if (p.stats.energy < 15 || p.sleep) {
-      useGame.getState().toast(copy.tooTired(p.name || 'Your Mossling'));
+      useGame.getState().toast(copy.tooTired(p.name || 'Your little one'));
       return quit();
     }
     finished.current = false;

@@ -1,4 +1,5 @@
 import { createPet, SAVE_VERSION } from './state';
+import { FORM_STAGE, SPECIES } from './species';
 import type { PetState } from './types';
 
 /** The on-disk save. `meta` belongs to the game layer (journal, settings) and is migrated there. */
@@ -48,7 +49,7 @@ export function migrateSave(input: unknown): SaveData {
     v = save.version as number;
   }
   const pet = save.pet as PetState;
-  if (pet.species !== 'mossling' || typeof pet.form !== 'string' || !pet.stats) {
+  if (!(pet.species in SPECIES) || !(pet.form in FORM_STAGE) || !pet.stats) {
     throw new SaveError('The Mossling in this save is unreadable.');
   }
   return {

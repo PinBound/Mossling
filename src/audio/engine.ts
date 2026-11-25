@@ -303,6 +303,24 @@ const VOICE: Record<
   { base: number; spread: number; type: OscillatorType; grumble?: boolean }
 > = {
   egg: { base: 600, spread: 100, type: 'sine' },
+  sporepod: { base: 560, spread: 90, type: 'sine' },
+  pondpearl: { base: 640, spread: 110, type: 'sine' },
+  // Caplings: soft woody plucks, low and round
+  puffkin: { base: 760, spread: 200, type: 'triangle' },
+  caplet: { base: 600, spread: 180, type: 'triangle' },
+  glimcap: { base: 480, spread: 170, type: 'triangle' },
+  moonmorel: { base: 380, spread: 110, type: 'sine' },
+  truffletum: { base: 300, spread: 130, type: 'triangle' },
+  mudpuff: { base: 210, spread: 70, type: 'sawtooth', grumble: true },
+  auroracap: { base: 520, spread: 280, type: 'sine' },
+  // Ripplets: bubbly, liquid chirps
+  wiggle: { base: 940, spread: 300, type: 'sine' },
+  splashlet: { base: 720, spread: 260, type: 'sine' },
+  reedling: { base: 560, spread: 220, type: 'sine' },
+  lotusong: { base: 440, spread: 160, type: 'sine' },
+  bogbelly: { base: 260, spread: 120, type: 'triangle' },
+  muckbottom: { base: 200, spread: 60, type: 'sawtooth', grumble: true },
+  moonripple: { base: 500, spread: 300, type: 'sine' },
   dewdrop: { base: 880, spread: 260, type: 'sine' },
   sprig: { base: 660, spread: 220, type: 'triangle' },
   fernlet: { base: 520, spread: 200, type: 'triangle' },

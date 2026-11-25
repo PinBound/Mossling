@@ -1,21 +1,21 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useMotionValue } from 'framer-motion';
 import type { Form } from '../sim';
-import { MOSSLING } from '../sim';
+import { FORM_STAGE, isEggForm, outcomeOf, speciesOf, type AdultForm } from '../sim';
 import { useGame, type Cinematic } from '../game/store';
 import { bus, haptic } from '../game/bus';
 import { useReducedMotion } from '../game/prefs';
 import { PlaceholderPet } from '../pet/PlaceholderPet';
 import { petImage } from '../assets/manifest';
 
-const shellBack = petImage('egg', 'egg_shell_back');
-const shellFront = petImage('egg', 'egg_shell_front');
 import { emit } from '../scene/particles';
 import { copy, formName } from './copy';
 import { Button } from './primitives';
 import styles from './cinematic.module.css';
 
 const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+
+const isSecret = (f: Form) => FORM_STAGE[f] === 'adult' && outcomeOf(f as AdultForm) === 'secret';
 
 function keyOf(c: Cinematic) {
   return c.kind === 'evolve' ? `evolve:${c.to}` : c.kind === 'leave' ? `leave:${c.how}` : c.kind;
@@ -42,10 +42,9 @@ function Art({
   silhouette?: boolean;
 }) {
   const z = useMotionValue(0);
-  const src =
-    form === 'egg'
-      ? petImage('egg', crack ? (`egg_crack${crack}` as 'egg_crack1') : 'egg_idle')
-      : (petImage(form, blink ? 'blink' : pose) ?? petImage(form, 'idle'));
+  const src = isEggForm(form)
+    ? petImage(form, crack ? (`egg_crack${crack}` as 'egg_crack1') : 'egg_idle')
+    : (petImage(form, blink ? 'blink' : pose) ?? petImage(form, 'idle'));
   return (
     <div
       className={styles.art}
@@ -129,8 +128,8 @@ function CinematicPlayer({ c }: { c: Cinematic }) {
         await wait(1200);
         if (alive) finish();
       } else if (c.kind === 'evolve') {
-        const adult = MOSSLING.formStage[c.to] === 'adult';
-        const star = c.to === 'starwick';
+        const adult = FORM_STAGE[c.to] === 'adult';
+        const star = isSecret(c.to);
         if (star) {
           step(20); // night takes over
           await wait(1600);
@@ -194,11 +193,15 @@ function CinematicPlayer({ c }: { c: Cinematic }) {
 
   if (c.kind === 'hatch') {
     const egg = phase < 5 && phase !== 99;
+    const sp = speciesOf(useGame.getState().pet.species);
+    const eggForm = sp.stageForms.egg;
+    const shellBack = petImage(eggForm, 'egg_shell_back');
+    const shellFront = petImage(eggForm, 'egg_shell_front');
     return (
       <div
         className={styles.overlay}
         role="dialog"
-        aria-label="The Dewstone is hatching"
+        aria-label={`The ${formName(eggForm)} is hatching`}
         data-testid="cinematic"
       >
         <motion.div
@@ -212,7 +215,7 @@ function CinematicPlayer({ c }: { c: Cinematic }) {
               animate={{ rotate: phase ? [0, -6 * phase, 6 * phase, 0] : 0 }}
               transition={{ duration: 0.5, repeat: Infinity }}
             >
-              <Art form="egg" crack={Math.min(3, phase)} />
+              <Art form={eggForm} crack={Math.min(3, phase)} />
             </motion.div>
           ) : (
             <div className={styles.hatched}>
@@ -223,7 +226,7 @@ function CinematicPlayer({ c }: { c: Cinematic }) {
                 transition={{ type: 'spring', stiffness: 160, damping: 12 }}
               >
                 <Art
-                  form="dewdrop"
+                  form={sp.stageForms.baby}
                   pose="happy"
                   blink={phase === 6 || phase === 99 ? false : true}
                 />
@@ -248,7 +251,8 @@ function CinematicPlayer({ c }: { c: Cinematic }) {
   }
 
   if (c.kind === 'evolve') {
-    const starwick = c.to === 'starwick';
+    // The secret adult of every species gets the night-sky constellation reveal.
+    const starwick = isSecret(c.to);
     const revealed = phase >= 30 || phase === 99;
     const showOld = phase === 1 || phase === 3;
     const card = copy.cinematic.evolved(formName(c.from), formName(c.to));
@@ -284,7 +288,7 @@ function CinematicPlayer({ c }: { c: Cinematic }) {
               animate={{ y: 0, opacity: 1, scale: 1 }}
               transition={{ duration: 2.4, ease: [0.2, 0.8, 0.3, 1] }}
             >
-              <Art form="starwick" pose="happy" />
+              <Art form={c.to} pose="happy" />
             </motion.div>
           )}
           {revealed && (
@@ -300,7 +304,7 @@ function CinematicPlayer({ c }: { c: Cinematic }) {
         {starwick && phase === 20 && (
           <p className={styles.caption}>{copy.cinematic.starwickIntro}</p>
         )}
-        {!starwick && MOSSLING.formStage[c.to] === 'adult' && phase === 1 && (
+        {!starwick && FORM_STAGE[c.to] === 'adult' && phase === 1 && (
           <p className={styles.caption}>{copy.cinematic.adultIntro}</p>
         )}
         {revealed && (
@@ -420,7 +424,7 @@ function CinematicPlayer({ c }: { c: Cinematic }) {
             animate={{ scale: 0.8, opacity: 1 }}
             transition={{ type: 'spring', stiffness: 120, damping: 12, delay: 0.4 }}
           >
-            <Art form="egg" />
+            <Art form={speciesOf(c.next).stageForms.egg} />
           </motion.div>
         </div>
       )}
@@ -440,9 +444,11 @@ function CinematicPlayer({ c }: { c: Cinematic }) {
           <p>{text}</p>
           {end && (
             <>
-              <p className={styles.small}>{copy.cinematic.newEgg}</p>
+              <p className={styles.small}>
+                {copy.cinematic.newEgg(formName(speciesOf(c.next).stageForms.egg))}
+              </p>
               <Button onClick={finish} data-testid="cinematic-continue">
-                {copy.cinematic.continue}
+                {copy.cinematic.continue(formName(speciesOf(c.next).stageForms.egg))}
               </Button>
             </>
           )}

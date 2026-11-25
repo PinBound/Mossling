@@ -29,6 +29,15 @@ import {
   ageYears,
   bedtimeFor,
   dayKey,
+  pickSpecies,
+  resolveOutcome,
+  speciesOf,
+  outcomeOf,
+  isEggForm,
+  FORM_STAGE,
+  FORM_SPECIES,
+  SPECIES_IDS,
+  ALL_FORMS,
   type PetState,
   type SimEvent,
 } from './index';
@@ -539,9 +548,9 @@ describe('evolution', () => {
   });
   it('thresholds are tunable', () => {
     const t = {
-      starwick: { maxMistakes: 0, minDiscipline: 100 },
-      lanternmoss: { maxMistakes: 10, minDiscipline: 0 },
-      burrowbun: { maxMistakes: 20 },
+      secret: { maxMistakes: 0, minDiscipline: 100 },
+      best: { maxMistakes: 10, minDiscipline: 0 },
+      average: { maxMistakes: 20 },
     };
     expect(
       resolveAdultForm(
@@ -853,5 +862,84 @@ describe('full life', () => {
     expect(seen.has('EVOLVED:fernlet')).toBe(true);
     expect([...seen].some((x) => /EVOLVED:(starwick|lanternmoss)/.test(x))).toBe(true);
     expect(s.status).toBe('left');
+  });
+});
+
+describe('species', () => {
+  it('every species has an egg, three young stages and four adults', () => {
+    expect(SPECIES_IDS).toEqual(['mossling', 'capling', 'ripplet']);
+    for (const id of SPECIES_IDS) {
+      const sp = speciesOf(id);
+      expect(isEggForm(sp.stageForms.egg)).toBe(true);
+      expect(new Set(sp.adultForms).size).toBe(4);
+      for (const f of [...Object.values(sp.stageForms), ...sp.adultForms]) {
+        expect(FORM_SPECIES[f]).toBe(id);
+        expect(sp.formNames[f]).toBeTruthy();
+      }
+    }
+    expect(new Set(ALL_FORMS).size).toBe(ALL_FORMS.length);
+    expect(speciesOf(undefined).id).toBe('mossling');
+  });
+
+  it('a Capling egg hatches and grows through Capling forms', () => {
+    let s = createPet({ now: T0, seed: 5, tzOffsetMin: 0, species: 'capling' });
+    expect(s.form).toBe('sporepod');
+    s = step(s, 6 * MIN, T0 + 6 * MIN).state;
+    expect(s.form).toBe('puffkin');
+    const r = createRng(s.rngState);
+    const ev: SimEvent[] = [];
+    evolve(s, T0, r, ev);
+    expect(s.form).toBe('caplet');
+    evolve(s, T0, r, ev);
+    expect(s.form).toBe('glimcap');
+    s.careMistakes.child = 9;
+    evolve(s, T0, r, ev);
+    expect(s.form).toBe('mudpuff');
+    expect(FORM_STAGE[s.form]).toBe('adult');
+  });
+
+  it('a Ripplet reaches the matching adult for each care outcome', () => {
+    const base = {
+      childMistakes: 0,
+      teenMistakes: 0,
+      discipline: 100,
+      sleptFullNightLightsOff: true,
+    };
+    expect(resolveAdultForm(base, undefined, 'ripplet')).toBe('moonripple');
+    expect(
+      resolveAdultForm({ ...base, sleptFullNightLightsOff: false }, undefined, 'ripplet'),
+    ).toBe('lotusong');
+    expect(resolveAdultForm({ ...base, childMistakes: 4 }, undefined, 'ripplet')).toBe('bogbelly');
+    expect(resolveAdultForm({ ...base, childMistakes: 9 }, undefined, 'ripplet')).toBe(
+      'muckbottom',
+    );
+    expect(resolveOutcome({ ...base, childMistakes: 9 })).toBe('poor');
+    expect(outcomeOf('auroracap')).toBe('secret');
+  });
+
+  it('adult bedtimes shift by care outcome for every species', () => {
+    const s = petAt('adult');
+    s.species = 'capling';
+    s.form = 'moonmorel';
+    expect(bedtimeFor(s)).toEqual({ sleep: 21, wake: 8 });
+    s.form = 'auroracap';
+    expect(bedtimeFor(s)).toEqual({ sleep: 23, wake: 10 });
+  });
+
+  it('pickSpecies draws by weight from the eligible list only', () => {
+    expect(pickSpecies(['mossling'], 0.99)).toBe('mossling');
+    expect(pickSpecies([], 0.5)).toBe('mossling');
+    expect(pickSpecies(['mossling', 'capling', 'ripplet'], 0)).toBe('mossling');
+    expect(pickSpecies(['mossling', 'capling', 'ripplet'], 0.5)).toBe('capling');
+    expect(pickSpecies(['mossling', 'capling', 'ripplet'], 0.99)).toBe('ripplet');
+    expect(pickSpecies(['capling', 'ripplet'], 0.2)).toBe('capling');
+  });
+
+  it('saves of any species load; unknown species are rejected', () => {
+    const pet = createPet({ now: T0, seed: 2, species: 'ripplet' });
+    expect(migrateSave({ version: SAVE_VERSION, pet }).pet.form).toBe('pondpearl');
+    expect(() =>
+      migrateSave({ version: SAVE_VERSION, pet: { ...pet, species: 'dragon' } }),
+    ).toThrow(/unreadable/);
   });
 });

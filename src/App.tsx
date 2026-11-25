@@ -39,7 +39,7 @@ function useRail() {
 }
 
 /** Device Mode's screen opening is a little wider than tall. */
-export const DEVICE_SCREEN_ASPECT = 1.14;
+export const DEVICE_SCREEN_ASPECT = 1.2;
 
 /** Wide 16:9 on landscape screens (the whole Hollow), tall 3:4 on upright ones (a window that follows the pet). */
 function useLandscape() {
@@ -179,7 +179,7 @@ export function App() {
 
   const stage = (
     <Stage stageRef={stageRef} aspect={aspect}>
-      {!photo && <Hud />}
+      {!photo && !settings.deviceMode && <Hud />}
       {!photo && <NudgeArrow />}
       <Suspense fallback={null}>
         <MinigameHost />
@@ -187,7 +187,7 @@ export function App() {
       <BathOverlay />
       <Cinematics />
       <PhotoMode stageRef={stageRef} />
-      {!photo && <Toasts />}
+      {!photo && !settings.deviceMode && <Toasts />}
     </Stage>
   );
 

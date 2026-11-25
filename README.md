@@ -35,10 +35,15 @@ The Playwright test builds the app and serves it on port 4173. To use a particul
 Press **`** (backtick) or open `/?dev=1`. It provides:
 
 - **Time**: 1× / 10× / 60× / 600× time scale, plus jumps of +10 m, +1 h, +6 h and +24 h. A full life (about 8 days) plays out in about 20 minutes at 600×.
-- **Stage & form**: jump to the next stage, or force-evolve into any adult (including Starwick).
+- **Stage & form**: jump to the next stage, or force-evolve into any adult of the current species (including its secret form).
+- **Species**: lay a new Mossling, Capling or Ripplet egg, and see which species are in the egg draw. A switch lets species whose art isn't finished into the draw, for testing.
 - **Stats**: sliders for every stat.
 - **Events**: sick, poop, false call, starve, the greeting, a falling star, the snail, rain (stopping it brings a rainbow), leave, run away, pass away, golden firefly.
 - **Reset all**: wipes the save, journal and settings.
+
+## Species
+
+Mosslings, Caplings (mushroom folk) and Ripplets (pond folk) are defined in `src/sim/species/catalog.json`. A pet's species is set when its egg is laid, so updates never change a pet already being raised. New eggs are drawn from the species whose art is complete (the first egg is always a Mossling). `NEW_SPECIES_IMAGE_PROMPTS.md` has a prompt for every Capling and Ripplet image (`node scripts/species-prompts.mjs` regenerates it).
 
 ## Adding art
 

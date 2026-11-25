@@ -3,9 +3,9 @@
  * Voice: warm, short, a little whimsical.
  */
 import type { AwaySummary, CallReason, Form, GameId, LifeMode, MistakeReason } from '../sim';
-import { MOSSLING } from '../sim';
+import { FORM_NAMES } from '../sim';
 
-export const formName = (f: Form) => MOSSLING.formNames[f];
+export const formName = (f: Form) => FORM_NAMES[f] ?? f;
 
 export const NAMES = [
   'Pebble',
@@ -83,7 +83,7 @@ export const copy = {
   onboardingSkip: 'Skip',
 
   nudge: {
-    egg: 'Tap the Dewstone',
+    egg: (e: string) => `Tap the ${e}`,
     feed: 'It looks hungry: try Feed',
     pet: 'Give it a gentle pat',
   },
@@ -108,7 +108,7 @@ export const copy = {
   actionHints: {
     feed: 'Offer a meal or a snack',
     play: 'Play a little game',
-    bathe: 'Wash the Hollow (and the Mossling)',
+    bathe: 'Wash the Hollow (and your little one)',
     lights: 'Light or dim the lantern',
     medicine: 'A mushroom tonic for when it’s unwell',
     discipline: 'For fibbing calls and fussy refusals',
@@ -206,7 +206,7 @@ export const copy = {
     photo: 'Photo mode',
     mute: 'Mute',
     unmute: 'Unmute',
-    bell: 'Your Mossling is calling for you',
+    bell: 'Your little one is calling for you',
   },
 
   status: {
@@ -239,7 +239,7 @@ export const copy = {
     sick: (n: string) => `${n} caught a chill.`,
     slept: (_n: string, from: string, to: string) => `It slept from ${from} to ${to}.`,
     evolved: (n: string, f: string) => `${n} grew into a ${f}!`,
-    hatched: 'The Dewstone hatched!',
+    hatched: 'The egg hatched!',
     birthday: (n: string) => `${n} had a birthday.`,
     calm: (n: string) => `${n} pottered about the Hollow, perfectly content.`,
     mistakes: (c: number) => `${c} care slip${c > 1 ? 's' : ''} noted in the notebook.`,
@@ -258,11 +258,11 @@ export const copy = {
     leaveGentle: (f: string) =>
       `${f} looked back at you once more, and then the ferns closed softly behind it. It left you something.`,
     leaveRanAway: (n: string) =>
-      `${n} slipped away into the ferns. It left a note: “I’ll be all right. Please look after the Dewstone.”`,
+      `${n} slipped away into the ferns. It left a note: “I’ll be all right. Please look after the egg.”`,
     passed: (n: string) =>
       `${n} fell asleep beneath the great fern and didn’t wake. The leaves fell softly around a small stone.`,
-    newEgg: 'A new Dewstone glows where it stood.',
-    continue: 'Pick up the Dewstone',
+    newEgg: (e: string) => `A ${e} glows where it stood.`,
+    continue: (e: string) => `Pick up the ${e}`,
   },
 
   greeting: (n: string) => `${n} missed you!`,
@@ -282,7 +282,7 @@ export const copy = {
     tabs: ['Forms', 'Memory Leaves', 'Treasures', 'Timeline'],
     unknown: '???',
     unknownHint: 'Not yet met',
-    noLeaves: 'No Memory Leaves yet. Every Mossling leaves one when it moves on.',
+    noLeaves: 'No Memory Leaves yet. Every little one leaves one when it moves on.',
     leafHow: {
       left: 'Returned to the forest',
       ranaway: 'Wandered away',
@@ -292,7 +292,7 @@ export const copy = {
     goldenFirefly: 'Golden fireflies',
     clover: 'Four-leaf clovers',
     wishes: 'Wishes on falling stars',
-    noTimeline: 'Your care story begins with the first Dewstone.',
+    noTimeline: 'Your care story begins with the first egg.',
     lifetime: 'Lifetime',
   },
 
@@ -308,10 +308,10 @@ export const copy = {
     lifeModes: {
       gentle: {
         name: 'Gentle',
-        desc: 'Mosslings return to the forest when their time comes, or wander off if neglected.',
+        desc: 'Grown-ups return to the forest when their time comes, or wander off if neglected.',
       },
       classic: { name: 'Classic', desc: 'Original handheld rules. Neglect can be fatal.' },
-      eternal: { name: 'Eternal', desc: 'Your grown-up Mossling never leaves.' },
+      eternal: { name: 'Eternal', desc: 'Your grown-up never leaves.' },
     } satisfies Record<LifeMode, { name: string; desc: string }>,
     babysitter: 'Babysitter (pause time)',
     babysitterDesc: (left: string) => `Freezes time for up to 12 hours a day. ${left} left today.`,
@@ -327,7 +327,7 @@ export const copy = {
     import: 'Import save',
     release: 'Release to the forest…',
     releaseConfirm1:
-      'Your Mossling will go to live in the forest, and you will start again with a new Dewstone.',
+      'Your little one will go to live in the forest, and you will start again with a new egg.',
     releaseConfirm2: 'Are you sure? This can’t be undone.',
     releaseYes: 'Yes, release it',
     releaseNo: 'Keep it',
@@ -385,7 +385,7 @@ export const copy = {
 
   aria: {
     pet: (n: string) => `${n}. Tap or drag to pet.`,
-    egg: 'The Dewstone. Tap it.',
+    egg: (e: string) => `The ${e}. Tap it.`,
     dropping: 'A moss pellet',
     star: 'A falling star. Tap it to make a wish.',
   },

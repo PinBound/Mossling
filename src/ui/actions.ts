@@ -26,14 +26,14 @@ export function runAction(id: ActionId) {
   const egg = p.stage === 'egg';
   switch (id) {
     case 'feed':
-      if (egg) return st.toast('The Dewstone hums. It isn’t hungry yet.');
+      if (egg) return st.toast(`The ${n} hums. It isn’t hungry yet.`);
       if (p.sleep) return st.toast(copy.asleep(n));
       st.setPanel(st.panel === 'feed' ? null : 'feed');
       if (st.meta.flags.nudge === 'feed') st.setFlags({ nudge: 'pet' });
       return;
     case 'play': {
       const b = playBlock(p);
-      if (b === 'egg') return st.toast('The Dewstone wobbles happily, but it can’t play yet.');
+      if (b === 'egg') return st.toast(`The ${n} wobbles happily, but it can’t play yet.`);
       if (b === 'too-young') return st.toast(copy.tooLittle(n));
       if (b === 'asleep') return st.toast(copy.asleep(n));
       if (b === 'tired') return st.toast(copy.tooTired(n));
@@ -54,7 +54,7 @@ export function runAction(id: ActionId) {
       st.dispatch({ type: 'lights', on: !p.lightsOn });
       return;
     case 'medicine':
-      if (egg) return st.toast('The Dewstone is perfectly healthy.');
+      if (egg) return st.toast(`The ${n} is perfectly healthy.`);
       if (p.sleep) return st.toast(copy.asleep(n));
       st.dispatch({ type: 'medicine' });
       return;
@@ -64,7 +64,7 @@ export function runAction(id: ActionId) {
       st.dispatch({ type: 'scold' });
       return;
     case 'praise':
-      if (egg) return st.toast('The Dewstone glows a little brighter.');
+      if (egg) return st.toast(`The ${n} glows a little brighter.`);
       if (p.sleep) return st.toast(copy.asleep(n));
       st.dispatch({ type: 'praise' });
       return;

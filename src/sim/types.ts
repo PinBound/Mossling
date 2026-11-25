@@ -1,7 +1,34 @@
 export type Stage = 'egg' | 'baby' | 'child' | 'teen' | 'adult';
+export type SpeciesId = 'mossling' | 'capling' | 'ripplet';
+/** The adult a pet grows into depends on its care: best, average, poor, or the secret one. */
+export type Outcome = 'best' | 'average' | 'poor' | 'secret';
+export type AdultForm =
+  | 'lanternmoss'
+  | 'burrowbun'
+  | 'mirefuzz'
+  | 'starwick'
+  | 'moonmorel'
+  | 'truffletum'
+  | 'mudpuff'
+  | 'auroracap'
+  | 'lotusong'
+  | 'bogbelly'
+  | 'muckbottom'
+  | 'moonripple';
 export type Form =
-  'egg' | 'dewdrop' | 'sprig' | 'fernlet' | 'lanternmoss' | 'burrowbun' | 'mirefuzz' | 'starwick';
-export type AdultForm = 'lanternmoss' | 'burrowbun' | 'mirefuzz' | 'starwick';
+  | 'egg'
+  | 'dewdrop'
+  | 'sprig'
+  | 'fernlet'
+  | 'sporepod'
+  | 'puffkin'
+  | 'caplet'
+  | 'glimcap'
+  | 'pondpearl'
+  | 'wiggle'
+  | 'splashlet'
+  | 'reedling'
+  | AdultForm;
 export type LifeMode = 'gentle' | 'classic' | 'eternal';
 export type LifeStatus = 'alive' | 'left' | 'ranaway' | 'passed';
 export type CallReason = 'hunger' | 'happiness' | 'sick' | 'lights' | 'false';
@@ -50,7 +77,7 @@ export interface SleepState {
 export interface PetState {
   version: number;
   id: string;
-  species: 'mossling';
+  species: SpeciesId;
   name: string;
   form: Form;
   stage: Stage;

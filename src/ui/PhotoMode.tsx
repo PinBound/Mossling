@@ -16,7 +16,7 @@ export function PhotoMode({ stageRef }: { stageRef: React.RefObject<HTMLDivEleme
   const name = pet.name || formName(pet.form);
   const caption =
     pet.stage === 'egg'
-      ? formName('egg')
+      ? formName(pet.form)
       : copy.photo.caption(name, formName(pet.form), ageYears(pet));
   const save = async () => {
     const el = stageRef.current;

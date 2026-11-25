@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useMotionValue } from 'framer-motion';
-import { ALL_FORMS, MOSSLING, type Form } from '../sim';
+import { isEggForm, SPECIES_IDS, speciesOf, type Form } from '../sim';
 import { useGame } from '../game/store';
 import { petImage, propImage, type Pose } from '../assets/manifest';
 
@@ -20,8 +20,9 @@ export function Portrait({
   silhouette?: boolean;
 }) {
   const z = useMotionValue(0);
-  const src =
-    form === 'egg' ? petImage('egg', 'egg_idle') : (petImage(form, pose) ?? petImage(form, 'idle'));
+  const src = isEggForm(form)
+    ? petImage(form, 'egg_idle')
+    : (petImage(form, pose) ?? petImage(form, 'idle'));
   const style = { filter: silhouette ? 'brightness(0) opacity(0.35)' : undefined };
   return (
     <div className={styles.portrait} style={style} aria-hidden="true">
@@ -58,9 +59,20 @@ export function Journal() {
   const j = useGame((s) => s.meta.journal);
   const [tab, setTab] = useState(0);
   const t = copy.journal;
-  const forms = ALL_FORMS.filter(
-    (f) => f !== 'egg' && (!MOSSLING.secretForms.includes(f as never) || j.formsSeen.includes(f)),
-  );
+  // One section per species. Mosslings always show (as silhouettes until met); other species
+  // appear the first time you meet one. Secret forms stay hidden until earned.
+  const sections = SPECIES_IDS.map(speciesOf)
+    .map((sp) => ({
+      sp,
+      forms: [sp.stageForms.baby, sp.stageForms.child, sp.stageForms.teen, ...sp.adultForms].filter(
+        (f) => !sp.secretForms.includes(f as never) || j.formsSeen.includes(f),
+      ),
+    }))
+    .filter(
+      ({ sp }) =>
+        sp.id === 'mossling' ||
+        [sp.stageForms.egg, sp.stageForms.baby].some((f) => j.formsSeen.includes(f)),
+    );
   const lifetime = j.memoryLeaves.reduce(
     (a, l) => ({
       meals: a.meals + l.stats.meals,
@@ -93,20 +105,24 @@ export function Journal() {
         ))}
       </div>
       <div role="tabpanel" className={styles.journalBody}>
-        {tab === 0 && (
-          <ul className={styles.formGrid}>
-            {forms.map((f) => {
-              const seen = j.formsSeen.includes(f);
-              return (
-                <li key={f} className={styles.formCard}>
-                  <Portrait form={f} silhouette={!seen} pose="idle" />
-                  <span className={styles.choiceName}>{seen ? formName(f) : t.unknown}</span>
-                  {!seen && <span className={styles.choiceDesc}>{t.unknownHint}</span>}
-                </li>
-              );
-            })}
-          </ul>
-        )}
+        {tab === 0 &&
+          sections.map(({ sp, forms }) => (
+            <section key={sp.id} aria-label={sp.displayName}>
+              {sections.length > 1 && <h3 className={styles.speciesHead}>{sp.displayName}s</h3>}
+              <ul className={styles.formGrid}>
+                {forms.map((f) => {
+                  const seen = j.formsSeen.includes(f);
+                  return (
+                    <li key={f} className={styles.formCard}>
+                      <Portrait form={f} silhouette={!seen} pose="idle" />
+                      <span className={styles.choiceName}>{seen ? formName(f) : t.unknown}</span>
+                      {!seen && <span className={styles.choiceDesc}>{t.unknownHint}</span>}
+                    </li>
+                  );
+                })}
+              </ul>
+            </section>
+          ))}
         {tab === 1 &&
           (j.memoryLeaves.length === 0 ? (
             <p className={styles.para}>{t.noLeaves}</p>

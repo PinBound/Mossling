@@ -1,14 +1,16 @@
 #!/usr/bin/env node
 // Lists missing art, and checks size and transparency of what's present (PNG or WebP).
 // Usage: npm run assets:check
-import { existsSync, readdirSync, statSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import sharp from 'sharp';
 
 const ROOT = new URL('../src/assets/img/', import.meta.url).pathname;
 const POSES = ['idle', 'blink', 'happy', 'sad', 'eat_open', 'eat_closed', 'sleep', 'sick', 'refuse', 'angry', 'play', 'call', 'surprised'];
 const EGG = ['egg_idle', 'egg_crack1', 'egg_crack2', 'egg_crack3', 'egg_shell_back', 'egg_shell_front'];
-const FORMS = ['dewdrop', 'sprig', 'fernlet', 'lanternmoss', 'burrowbun', 'mirefuzz', 'starwick'];
+// Species, forms and their egg come from the shared catalog, so a new species needs no edits here.
+const CATALOG = JSON.parse(readFileSync(new URL('../src/sim/species/catalog.json', import.meta.url), 'utf8')).species;
+const eggPath = (egg, pose) => (egg === 'egg' ? `pet/egg/${pose}` : `pet/${egg}/${egg}_${pose.replace(/^egg_/, '')}`);
 const LAYERS = ['bg_far', 'bg_mid', 'fg_near'];
 const TIMES = ['dawn', 'day', 'dusk', 'night'];
 const PROPS = ['food_dewberry_mash', 'food_mossbread', 'snack_honeydrop', 'spoon', 'medicine_vial', 'lantern_on', 'lantern_off', 'mushroom_stool', 'birthday_candle_mushroom', 'burrow', 'dropping', 'leaf_ball', 'lilypad', 'lilypad_glow', 'puddle', 'firefly', 'firefly_golden', 'snail', 'four_leaf_clover', 'memory_leaf'];
@@ -16,10 +18,14 @@ const PROPS = ['food_dewberry_mash', 'food_mossbread', 'snack_honeydrop', 'spoon
 const ALIASES = { 'props/firefly_golden': ['props/firefly_gold'], ...Object.fromEntries(TIMES.map((t) => [`scene/fg_near_${t}`, [`scene/fg_${t}`]])) };
 
 const expected = [
-  ...EGG.map((p) => ({ path: `pet/egg/${p}`, kind: 'pet' })),
-  ...FORMS.flatMap((f) => POSES.map((p) => ({ path: `pet/${f}/${f}_${p}`, kind: 'pet' }))),
+  ...CATALOG.flatMap((sp) => [
+    ...EGG.map((p) => ({ path: eggPath(sp.forms.egg, p), kind: 'pet' })),
+    ...[sp.forms.baby, sp.forms.child, sp.forms.teen, ...Object.values(sp.adults)].flatMap((f) =>
+      POSES.map((p) => ({ path: `pet/${f}/${f}_${p}`, kind: 'pet', optional: f === sp.forms.baby && p === 'play' })),
+    ),
+  ]),
   ...LAYERS.flatMap((l) => TIMES.map((t) => ({ path: `scene/${l}_${t}`, kind: l === 'bg_far' ? 'opaque' : 'scene' }))),
-  ...PROPS.map((p) => ({ path: `props/${p}`, kind: 'prop' })),
+  ...PROPS.map((p) => ({ path: `props/${p}`, kind: 'prop', optional: ['burrow', 'leaf_ball'].includes(p) })),
   { path: 'ui/device_shell', kind: 'prop' },
 ];
 
@@ -36,7 +42,7 @@ const known = new Set();
 for (const e of expected) {
   const found = locate(e.path);
   if (!found) {
-    missing.push(e.path);
+    if (!e.optional) missing.push(e.path);
     continue;
   }
   known.add(found);
@@ -73,5 +79,6 @@ if (missing.length) {
   console.log('\nMissing (code placeholders used instead):');
   for (const [g, list] of Object.entries(byGroup)) console.log(`  ${g}: ${list.length === POSES.length ? 'all poses' : list.join(', ')}`);
 }
-console.log(`\n${ok} final · ${problems} with problems · ${missing.length} missing · ${expected.length} expected`);
+const required = expected.filter((e) => !e.optional).length;
+console.log(`\n${ok} final · ${problems} with problems · ${missing.length} missing · ${required} required (+ optional extras)`);
 process.exitCode = problems || extra.length ? 1 : 0;

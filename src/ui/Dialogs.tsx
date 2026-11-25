@@ -4,7 +4,7 @@ import { useGame } from '../game/store';
 import { bus } from '../game/bus';
 import { Button, Sheet } from './primitives';
 import { Icon } from './Icons';
-import { awayLines, copy, NAMES } from './copy';
+import { awayLines, copy, formName, NAMES } from './copy';
 import styles from './ui.module.css';
 
 export function NamingDialog() {
@@ -165,7 +165,7 @@ export function LiveRegion() {
   const status = useGame((s) => {
     const p = s.pet;
     if (p.stage === 'egg' || p.status !== 'alive') return '';
-    const n = p.name || 'Your Mossling';
+    const n = p.name || 'Your little one';
     const a = copy.announce;
     if (p.sleep) return a.asleep(n);
     if (p.sick) return a.sick(n);
@@ -192,7 +192,7 @@ export function NudgeArrow() {
   const blocked = useGame((s) => !!s.panel || !!s.cinematic || !s.meta.flags.onboarded || !!s.game);
   let text: string | null = null;
   let where: 'pet' | 'feed' = 'pet';
-  if (nudge === 'egg' && pet.stage === 'egg') text = copy.nudge.egg;
+  if (nudge === 'egg' && pet.stage === 'egg') text = copy.nudge.egg(formName(pet.form));
   if (nudge === 'feed' && pet.stage !== 'egg' && pet.name) {
     text = copy.nudge.feed;
     where = 'feed';

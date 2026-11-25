@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { HOUR, MIN, TUNING, type AdultForm, type Stats } from '../sim';
+import { HOUR, MIN, SPECIES_IDS, speciesOf, TUNING, type Stats } from '../sim';
+import { speciesArtReady } from '../assets/manifest';
+import { eligibleSpecies } from '../game/store';
 import { useGame } from '../game/store';
 import styles from './dev.module.css';
 
@@ -15,7 +17,6 @@ const STATS: (keyof Stats)[] = [
   'bond',
   'weight',
 ];
-const ADULTS: AdultForm[] = ['lanternmoss', 'burrowbun', 'mirefuzz', 'starwick'];
 
 /** Hidden testing tools. Toggle with the backtick key or open with ?dev=1. */
 export default function DevPanel() {
@@ -88,12 +89,39 @@ export default function DevPanel() {
               <button type="button" onClick={() => st.devEvolve()} data-testid="dev-next-stage">
                 Next stage
               </button>
-              {ADULTS.map((f) => (
+              {speciesOf(p.species).adultForms.map((f) => (
                 <button key={f} type="button" onClick={() => st.devEvolve(f)}>
                   → {f}
                 </button>
               ))}
             </div>
+          </section>
+          <section>
+            <h4>Species</h4>
+            <div className={styles.row}>
+              {SPECIES_IDS.map((id) => (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => st.devNewEgg(id)}
+                  data-testid={`dev-egg-${id}`}
+                >
+                  New {speciesOf(id).displayName} egg
+                </button>
+              ))}
+            </div>
+            <label className={styles.check}>
+              <input
+                type="checkbox"
+                checked={st.meta.flags.devAllSpecies}
+                onChange={(e) => st.setFlags({ devAllSpecies: e.target.checked })}
+              />
+              Include species without finished art in the egg draw
+            </label>
+            <p className={styles.info}>
+              Egg draw now: {eligibleSpecies(st.meta.flags.devAllSpecies).join(', ')} · art
+              complete: {SPECIES_IDS.filter((id) => speciesArtReady(id)).join(', ') || 'none'}
+            </p>
           </section>
           <section>
             <h4>Stats</h4>

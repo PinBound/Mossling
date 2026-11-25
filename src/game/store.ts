@@ -23,19 +23,31 @@ import {
   type PetState,
   type SaveData,
   type SimEvent,
+  type SpeciesId,
+  pickSpecies,
+  speciesOf,
+  SPECIES_IDS,
   type Stats,
 } from '../sim';
 import { bus, haptic } from './bus';
 import { defaultMeta, migrateMeta, type MemoryLeaf, type Meta, type Settings } from './meta';
 import { storage } from './storage';
 import { copy, formName } from '../ui/copy';
+import { speciesArtReady } from '../assets/manifest';
 
 export type PanelId = 'feed' | 'play' | 'status' | 'journal' | 'settings' | 'notif' | null;
 
 export type Cinematic =
   | { kind: 'hatch' }
   | { kind: 'evolve'; from: Form; to: Form }
-  | { kind: 'leave'; how: 'left' | 'ranaway' | 'passed'; form: Form; name: string };
+  | {
+      kind: 'leave';
+      how: 'left' | 'ranaway' | 'passed';
+      form: Form;
+      name: string;
+      /** species of the egg it leaves behind (drawn when it leaves, shown at the end) */
+      next: SpeciesId;
+    };
 
 export type PetAnimKind =
   | 'eat'
@@ -128,6 +140,7 @@ interface GameActions {
   devFalseCall(): void;
   devPoop(): void;
   devReset(): Promise<void>;
+  devNewEgg(species: SpeciesId): void;
 }
 
 export type Store = GameState & GameActions;
@@ -135,9 +148,28 @@ export type Store = GameState & GameActions;
 let toastId = 1;
 let animId = 1;
 
-function freshPet(now: number, lifeMode: Settings['lifeMode']): PetState {
+function freshPet(now: number, lifeMode: Settings['lifeMode'], species: SpeciesId): PetState {
   const seed = seedFrom(`${now}-${Math.random()}`);
-  return createPet({ now, seed, lifeMode, tzOffsetMin: new Date(now).getTimezoneOffset() });
+  return createPet({
+    now,
+    seed,
+    lifeMode,
+    species,
+    tzOffsetMin: new Date(now).getTimezoneOffset(),
+  });
+}
+
+/**
+ * Species of the next egg. The Mossling is always possible; other species join the draw once
+ * all of their art is in the game (or when the Dev Panel's "all species" switch is on).
+ * Pets already alive are never changed, so new species only ever arrive in future eggs.
+ */
+export function eligibleSpecies(devAll: boolean): SpeciesId[] {
+  return SPECIES_IDS.filter((id) => id === 'mossling' || devAll || speciesArtReady(id));
+}
+
+function drawSpecies(devAll: boolean): SpeciesId {
+  return pickSpecies(eligibleSpecies(devAll), Math.random());
 }
 
 function memoryLeafOf(p: PetState, how: MemoryLeaf['how'], at: number): MemoryLeaf {
@@ -196,12 +228,15 @@ export const useGame = create<Store>()((set, get) => {
     for (const e of events) {
       bus.emit({ type: 'sim', event: e, live });
       switch (e.type) {
-        case 'HATCHED':
-          seeForm(meta, 'dewdrop');
-          timeline(meta, e.at, 'A Dewstone hatched.');
+        case 'HATCHED': {
+          const sp = speciesOf(get().pet.species);
+          seeForm(meta, sp.stageForms.egg);
+          seeForm(meta, sp.stageForms.baby);
+          timeline(meta, e.at, `A ${formName(sp.stageForms.egg)} hatched.`);
           metaChanged = true;
           if (live) queue({ kind: 'hatch' });
           break;
+        }
         case 'EVOLVED':
           seeForm(meta, e.to);
           timeline(meta, e.at, `${n} grew into a ${formName(e.to)}.`);
@@ -212,7 +247,13 @@ export const useGame = create<Store>()((set, get) => {
         case 'RAN_AWAY':
         case 'PASSED': {
           const how = e.type === 'LEFT' ? 'left' : e.type === 'RAN_AWAY' ? 'ranaway' : 'passed';
-          queue({ kind: 'leave', how, form: get().pet.form, name: n });
+          queue({
+            kind: 'leave',
+            how,
+            form: get().pet.form,
+            name: n,
+            next: drawSpecies(get().meta.flags.devAllSpecies),
+          });
           break;
         }
         case 'FOUND_CLOVER':
@@ -361,7 +402,13 @@ export const useGame = create<Store>()((set, get) => {
       if (!save) {
         const meta = defaultMeta();
         meta.lastSeenAt = realNow;
-        set({ ready: true, pet: freshPet(realNow, meta.settings.lifeMode), meta, now: realNow });
+        // The very first egg is always a Mossling (the intro story is about its Dewstone).
+        set({
+          ready: true,
+          pet: freshPet(realNow, meta.settings.lifeMode, 'mossling'),
+          meta,
+          now: realNow,
+        });
         await get().save();
         return;
       }
@@ -439,14 +486,14 @@ export const useGame = create<Store>()((set, get) => {
       const [next, ...rest] = st.cinematicQueue;
       set({ cinematic: next ?? null, cinematicQueue: rest });
       if (done?.kind === 'leave') {
-        // The pet left something behind: a Memory Leaf and a fresh Dewstone.
+        // The pet left something behind: a Memory Leaf and a new egg (of the species drawn as it left).
         const p = get().pet;
         const at = get().simNow();
         withMeta((m) => {
           m.journal.memoryLeaves.unshift(memoryLeafOf(p, done.how, at));
           timeline(m, at, copy.journal.leafHow[done.how] + `: ${p.name || 'Little one'}.`);
         });
-        set({ pet: freshPet(at, get().meta.settings.lifeMode) });
+        set({ pet: freshPet(at, get().meta.settings.lifeMode, done.next) });
         get().setFlags({ nudge: 'egg' });
         void get().save();
       }
@@ -522,11 +569,11 @@ export const useGame = create<Store>()((set, get) => {
       if (st.pet.stage !== 'egg') {
         withMeta((m) => {
           m.journal.memoryLeaves.unshift(memoryLeafOf({ ...st.pet, endedAt: at }, 'released', at));
-          timeline(m, at, `${st.pet.name || 'A Mossling'} was released to the forest.`);
+          timeline(m, at, `${st.pet.name || 'A little one'} was released to the forest.`);
         });
       }
       set({
-        pet: freshPet(at, st.meta.settings.lifeMode),
+        pet: freshPet(at, st.meta.settings.lifeMode, drawSpecies(st.meta.flags.devAllSpecies)),
         panel: null,
         cinematic: null,
         cinematicQueue: [],
@@ -602,6 +649,17 @@ export const useGame = create<Store>()((set, get) => {
       const pet = structuredClone(get().pet);
       pet.nextPoopAt = get().simNow();
       set({ pet });
+    },
+    devNewEgg(species) {
+      const at = get().simNow();
+      set({
+        pet: freshPet(at, get().meta.settings.lifeMode, species),
+        cinematic: null,
+        cinematicQueue: [],
+        panel: null,
+      });
+      get().setFlags({ nudge: 'egg' });
+      void get().save();
     },
     async devReset() {
       await storage.clear();

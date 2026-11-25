@@ -1,9 +1,12 @@
 import { createRng } from './rng';
-import type { LifeMode, PetState, Stats } from './types';
+import { speciesOf } from './species';
+import type { LifeMode, PetState, SpeciesId, Stats } from './types';
 
 export const SAVE_VERSION = 2;
 
 export interface CreatePetOptions {
+  /** defaults to the Mossling */
+  species?: SpeciesId;
   now: number;
   seed: number;
   lifeMode?: LifeMode;
@@ -31,9 +34,9 @@ export function createPet(opts: CreatePetOptions): PetState {
   return {
     version: SAVE_VERSION,
     id: opts.id ?? `pet-${opts.seed.toString(36)}-${opts.now.toString(36)}`,
-    species: 'mossling',
+    species: speciesOf(opts.species).id,
     name: '',
-    form: 'egg',
+    form: speciesOf(opts.species).stageForms.egg,
     stage: 'egg',
     status: 'alive',
     lifeMode: opts.lifeMode ?? 'gentle',
@@ -78,7 +81,7 @@ export function createPet(opts: CreatePetOptions): PetState {
       scolds: 0,
       praises: 0,
     },
-    history: [{ stage: 'egg', form: 'egg', at: opts.now }],
+    history: [{ stage: 'egg', form: speciesOf(opts.species).stageForms.egg, at: opts.now }],
     endedAt: 0,
   };
 }

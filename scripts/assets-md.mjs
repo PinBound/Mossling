@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 // Regenerates ASSETS.md from what's in src/assets/img. Run: node scripts/assets-md.mjs
-import { existsSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 const ROOT = new URL('../src/assets/img/', import.meta.url).pathname;
 const POSES = ['idle', 'blink', 'happy', 'sad', 'eat_open', 'eat_closed', 'sleep', 'sick', 'refuse', 'angry', 'play', 'call', 'surprised'];
 const EGG = ['egg_idle', 'egg_crack1', 'egg_crack2', 'egg_crack3', 'egg_shell_back', 'egg_shell_front'];
-const FORMS = ['dewdrop', 'sprig', 'fernlet', 'lanternmoss', 'burrowbun', 'mirefuzz', 'starwick'];
+const CATALOG = JSON.parse(readFileSync(new URL('../src/sim/species/catalog.json', import.meta.url), 'utf8')).species;
+const eggPath = (egg, pose) => (egg === 'egg' ? `pet/egg/${pose}` : `pet/${egg}/${egg}_${pose.replace(/^egg_/, '')}`);
 const L = ['bg_far', 'bg_mid', 'fg_near'];
 const T = ['dawn', 'day', 'dusk', 'night'];
 const P = {
@@ -22,11 +23,23 @@ const st = (b) => (has(b) ? '**final**' : 'placeholder');
 const id = (s) => s.toUpperCase().replace(/_/g, '-');
 let done = 0, total = 0;
 const row = (b, pid, note = '') => { total++; if (has(b)) done++; return `| \`${b}\` | ${st(b)} | ${pid} |${note ? ` ${note} |` : ''}\n`; };
-let body = '## Pet: Dewstone (egg)\n\n| File | Status | Prompt ID |\n|---|---|---|\n';
-for (const p of EGG) body += row(`pet/egg/${p}`, `PET-EGG-${id(p.replace('egg_', ''))}`);
-for (const f of FORMS) {
-  body += `\n## Pet: ${f[0].toUpperCase() + f.slice(1)}\n\n| File | Status | Prompt ID |\n|---|---|---|\n`;
-  for (const p of POSES) body += row(`pet/${f}/${f}_${p}`, `PET-${id(f)}-${id(p)}`);
+let body = '';
+const speciesProgress = [];
+for (const sp of CATALOG) {
+  const before = { done, total };
+  const egg = sp.forms.egg;
+  const name = (f) => sp.names[f] ?? f;
+  body += `## ${sp.displayName}s\n\n### ${name(egg)} (egg)\n\n| File | Status | Prompt ID |\n|---|---|---|\n`;
+  for (const p of EGG) body += row(eggPath(egg, p), `PET-${id(egg)}-${id(p.replace('egg_', ''))}`);
+  for (const f of [sp.forms.baby, sp.forms.child, sp.forms.teen, ...Object.values(sp.adults)]) {
+    body += `\n### ${name(f)}\n\n| File | Status | Prompt ID |\n|---|---|---|\n`;
+    for (const p of POSES) {
+      if (f === sp.forms.baby && p === 'play' && !has(`pet/${f}/${f}_${p}`)) continue; // babies can't play: optional
+      body += row(`pet/${f}/${f}_${p}`, `PET-${id(f)}-${id(p)}`);
+    }
+  }
+  body += '\n';
+  speciesProgress.push(`${sp.displayName}: ${done - before.done} of ${total - before.total}`);
 }
 body += '\n## Scene: The Hollow (16:9)\n\n| File | Status | Prompt ID |\n|---|---|---|\n';
 for (const l of L) for (const t of T) body += row(`scene/${l}_${t}`, `SCENE-${id(l)}-${id(t)}`);
@@ -40,7 +53,7 @@ const head = `# ASSETS
 Living checklist of every art file the game looks for. Paths are relative to \`src/assets/img/\`, without the extension: **.webp or .png both work** (WebP wins if both exist).
 Anything missing falls back to the code-drawn placeholder, so the game runs with any subset.
 
-**Progress: ${done} of ${total} final.**
+**Progress: ${done} of ${total} final** (${speciesProgress.join(' · ')}). A new species joins the egg draw once each of its forms has art.
 
 ## Adding art
 

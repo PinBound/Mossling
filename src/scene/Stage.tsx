@@ -245,7 +245,7 @@ function FallingStar({ at, now }: { at: number; now: number }) {
     useGame.getState().animatePet('wish');
     useGame
       .getState()
-      .toast(copy.toasts.wish(useGame.getState().pet.name || 'Your Mossling'), 'good');
+      .toast(copy.toasts.wish(useGame.getState().pet.name || 'Your little one'), 'good');
     emit('star', 600, 200, 20);
   };
   return (

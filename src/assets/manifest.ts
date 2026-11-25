@@ -10,7 +10,7 @@
  * PNG or WebP both work (WebP wins if both exist). `npm run assets:optimize` converts PNGs to
  * web-sized WebP.
  */
-import type { Form } from '../sim';
+import { isEggForm, SPECIES_IDS, speciesOf, type Form, type SpeciesId } from '../sim';
 import type { TimeOfDay } from '../sim/clock';
 
 const files = import.meta.glob(['./img/**/*.png', './img/**/*.webp'], {
@@ -114,13 +114,62 @@ export const FORM_META: Record<
   burrowbun: { scale: 1.0, anchorY: 900 },
   mirefuzz: { scale: 0.98, anchorY: 900 },
   starwick: { scale: 1.05, anchorY: 900, hover: true },
+  // Caplings
+  sporepod: { scale: 0.62, anchorY: 900 },
+  puffkin: { scale: 0.6, anchorY: 900 },
+  caplet: { scale: 0.8, anchorY: 900 },
+  glimcap: { scale: 0.98, anchorY: 900 },
+  moonmorel: { scale: 1.08, anchorY: 900 },
+  truffletum: { scale: 1.0, anchorY: 900 },
+  mudpuff: { scale: 0.95, anchorY: 900 },
+  auroracap: { scale: 1.05, anchorY: 900, hover: true },
+  // Ripplets
+  pondpearl: { scale: 0.62, anchorY: 900 },
+  wiggle: { scale: 0.6, anchorY: 900 },
+  splashlet: { scale: 0.8, anchorY: 900 },
+  reedling: { scale: 0.98, anchorY: 900 },
+  lotusong: { scale: 1.05, anchorY: 900 },
+  bogbelly: { scale: 1.0, anchorY: 900 },
+  muckbottom: { scale: 0.95, anchorY: 900 },
+  moonripple: { scale: 1.05, anchorY: 900, hover: true },
 };
 
 const find = (path: string): string | null =>
   files[`./img/${path}.webp`] ?? files[`./img/${path}.png`] ?? null;
 
+/**
+ * The Mossling egg keeps its original paths (pet/egg/egg_idle). Other eggs follow the same
+ * pattern as every other form: pet/sporepod/sporepod_idle, pet/sporepod/sporepod_crack1, …
+ */
 export function petImage(form: Form, pose: Pose | EggPose): string | null {
-  return find(`pet/${form}/${form === 'egg' ? pose : `${form}_${pose}`}`);
+  if (form === 'egg') return find(`pet/egg/${pose}`);
+  const p = isEggForm(form) ? pose.replace(/^egg_/, '') : pose;
+  return find(`pet/${form}/${form}_${p}`);
+}
+
+/** File (without extension) the game looks for, for one form and pose. */
+export function petPath(form: Form, pose: Pose | EggPose): string {
+  if (form === 'egg') return `pet/egg/${pose}`;
+  return `pet/${form}/${form}_${isEggForm(form) ? pose.replace(/^egg_/, '') : pose}`;
+}
+
+/**
+ * A species joins the egg draw once every one of its forms has art (each form's idle image,
+ * and the egg's idle and crack images). Until then its eggs only come from the Dev Panel, so
+ * players never meet a half-drawn species.
+ */
+export function speciesArtReady(id: SpeciesId): boolean {
+  const s = speciesOf(id);
+  const egg = s.stageForms.egg;
+  if (
+    !(['egg_idle', 'egg_crack1', 'egg_crack2', 'egg_crack3'] as const).every((p) =>
+      petImage(egg, p),
+    )
+  )
+    return false;
+  return [s.stageForms.baby, s.stageForms.child, s.stageForms.teen, ...s.adultForms].every((f) =>
+    petImage(f, 'idle'),
+  );
 }
 
 /** A form "has art" once its idle pose exists; other poses then fall back to idle. */
@@ -145,17 +194,12 @@ export function uiImage(icon: string): string | null {
 /** Every expected file (relative to src/assets/img), for ASSETS.md and `npm run assets:check`. */
 export function expectedFiles(): string[] {
   const out: string[] = [];
-  for (const p of EGG_POSES) out.push(`pet/egg/${p}.png`);
-  for (const f of [
-    'dewdrop',
-    'sprig',
-    'fernlet',
-    'lanternmoss',
-    'burrowbun',
-    'mirefuzz',
-    'starwick',
-  ])
-    for (const p of POSES) out.push(`pet/${f}/${f}_${p}.png`);
+  for (const id of SPECIES_IDS) {
+    const sp = speciesOf(id);
+    for (const p of EGG_POSES) out.push(`${petPath(sp.stageForms.egg, p)}.png`);
+    for (const f of [sp.stageForms.baby, sp.stageForms.child, sp.stageForms.teen, ...sp.adultForms])
+      for (const p of POSES) out.push(`${petPath(f, p)}.png`);
+  }
   for (const l of SCENE_LAYERS) for (const t of TIMES) out.push(`scene/${l}_${t}.png`);
   for (const p of PROPS) out.push(`props/${p}.png`);
   out.push('ui/device_shell.png');

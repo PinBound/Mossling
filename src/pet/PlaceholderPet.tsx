@@ -5,7 +5,8 @@
  */
 import { memo } from 'react';
 import { motion, type MotionValue } from 'framer-motion';
-import type { Form } from '../sim';
+import { FORM_STAGE, outcomeOf, type AdultForm, type Form } from '../sim';
+import { SpeciesArt, hasSpeciesArt, speciesAnchors } from './PlaceholderSpecies';
 import type { Pose } from '../assets/manifest';
 
 export interface ArtProps {
@@ -60,7 +61,8 @@ function expression(
     surprised: { eye: 'surprised', mouth: 'o' },
   };
   const e = { ...base[pose] };
-  if (form === 'mirefuzz' && e.eye === 'open') {
+  // The 'poor care' adults (Mirefuzz, Mudpuff, Muckbottom) look unimpressed by default.
+  if (FORM_STAGE[form] === 'adult' && outcomeOf(form as AdultForm) === 'poor' && e.eye === 'open') {
     e.eye = 'half';
     e.mouth = 'smirk';
   }
@@ -318,7 +320,7 @@ function Mouth({ x, y, s, kind }: { x: number; y: number; s: number; kind: Mouth
   return <g transform={`translate(${x} ${y})`}>{el}</g>;
 }
 
-function Face(props: {
+export function Face(props: {
   cx: number;
   cy: number;
   s: number;
@@ -1133,19 +1135,21 @@ const Body = memo(function Body({ form, pose }: { form: Form; pose: Pose }) {
 });
 
 /** Face position, eye gap, scale and sprout base per form, in the 1024 frame. */
-const LAYOUT: Record<
-  Exclude<Form, 'egg'>,
-  {
-    cx: number;
-    cy: number;
-    s: number;
-    gap: number;
-    sx: number;
-    sy: number;
-    body: string;
-    cheek?: string;
-    sproutScale?: number;
-  }
+const LAYOUT: Partial<
+  Record<
+    Exclude<Form, 'egg'>,
+    {
+      cx: number;
+      cy: number;
+      s: number;
+      gap: number;
+      sx: number;
+      sy: number;
+      body: string;
+      cheek?: string;
+      sproutScale?: number;
+    }
+  >
 > = {
   dewdrop: { cx: 512, cy: 715, s: 1.05, gap: 78, sx: 512, sy: 526, body: '#cfe8d5' },
   sprig: { cx: 512, cy: 590, s: 1, gap: 74, sx: 512, sy: 414, body: '#7fa36b' },
@@ -1184,6 +1188,7 @@ const LAYOUT: Record<
 };
 
 export const PlaceholderPet = memo(function PlaceholderPet(p: ArtProps) {
+  if (hasSpeciesArt(p.form)) return <SpeciesArt {...p} />;
   if (p.form === 'egg') {
     return (
       <svg viewBox="0 0 1024 1024" width="100%" height="100%" style={{ overflow: 'visible' }}>
@@ -1191,7 +1196,7 @@ export const PlaceholderPet = memo(function PlaceholderPet(p: ArtProps) {
       </svg>
     );
   }
-  const L = LAYOUT[p.form];
+  const L = LAYOUT[p.form as Exclude<Form, 'egg'>]!;
   return (
     <svg
       viewBox="0 0 1024 1024"
@@ -1228,9 +1233,10 @@ export const PlaceholderPet = memo(function PlaceholderPet(p: ArtProps) {
 
 /** Where the sprout and face sit, as fractions of the art box (used for particles and hit-testing). */
 export function anchors(form: Form) {
+  if (hasSpeciesArt(form)) return speciesAnchors(form);
   if (form === 'egg')
     return { head: { x: 0.5, y: 0.45 }, mouth: { x: 0.5, y: 0.7 }, sprout: { x: 0.5, y: 0.37 } };
-  const L = LAYOUT[form];
+  const L = LAYOUT[form as Exclude<Form, 'egg'>]!;
   return {
     head: { x: L.cx / 1024, y: L.cy / 1024 },
     mouth: { x: L.cx / 1024, y: (L.cy + 66 * L.s) / 1024 },

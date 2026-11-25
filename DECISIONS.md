@@ -55,6 +55,21 @@ Choices made where the spec was silent or ambiguous, plus any deviations from it
 - **Eggshell halves** (`egg_shell_back` / `egg_shell_front`) frame the new Dewdrop at the end of the hatching scene.
 - **Missing poses** of a form fall back to that form's idle pose; for example, `dewdrop_play` isn't in this drop.
 
+## Species (Capling and Ripplet)
+
+- **Three species share one engine.** Mosslings, Caplings (mushroom folk) and Ripplets (pond folk) are defined in `src/sim/species/catalog.json`. Each species has an egg, a baby, a child, a teen, and four adults keyed by care outcome (best, average, poor, secret). The evolution rule and all tuning are shared, so every species is equally hard to raise and the secret form needs the same perfect care. The game, the asset manifest, `assets:check`, `ASSETS.md` and the prompt pack all read the catalog, so a fourth species is a catalog entry plus placeholder art.
+- **New species only arrive in future eggs.** A pet's species is fixed when its egg is laid and stored in the save, so an update never changes a pet already being raised. When a pet leaves or is released, the next egg is drawn from the eligible species by catalog weight (currently equal). The very first egg is always a Mossling, because the intro story is about its Dewstone.
+- **A species is only eligible once its art is complete.** That means every form has at least its idle image, and the egg has its idle and crack images. Until then its eggs only come from the Dev Panel (Species: New … egg, or the "include species without finished art" switch). Players never meet a half-drawn species, and dropping in the last image is all it takes to switch one on: no code change and no new release logic.
+- **Placeholders for the new species** are drawn by a small shape kit in `src/pet/PlaceholderSpecies.tsx`: body shape, head feature, extras. The head feature (cap, lily leaf, reed, lotus, moon) sways and droops like the Mossling sprout.
+- **Shared Hollow, shared props.** No new scenes or props are needed. Each species gets its own voice range in the babble synth, and the "poor care" adults of every species default to half-lidded eyes. The secret adult of every species gets the night-sky constellation reveal.
+- **The Journal** shows Mosslings always, and each other species the first time you meet one. Secret forms stay hidden until earned.
+
+## Device Mode
+
+- **The screen is clipped to the shell's leaf-shaped opening**, traced from the art's alpha channel, so the Hollow never shows outside it. The stage takes the opening's shape (about 1.2:1) and keeps the camera that follows the pet.
+- **Nothing is overlaid on the small screen.** A one-line readout (name, age, bell, pause) sits on the shell under the opening. The eight care icons (tap directly, or cycle with A and pick with B), a hint line and the menu buttons sit in rows under the device, and toasts float above it.
+- **The device is sized to the phone's height**, leaving room for those rows.
+
 ## Deviations from the stack
 
 - None in libraries. Versions are pinned to a mutually compatible set: Vite 6, Vitest 3, `@vitejs/plugin-react` 4, React 18, vite-plugin-pwa 1, Framer Motion (`framer-motion@^14`), and `@playwright/test` matching the installed browser.

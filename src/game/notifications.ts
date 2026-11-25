@@ -46,7 +46,7 @@ export function scheduleReminders() {
   if (pet.status !== 'alive' || pet.stage === 'egg' || pet.pause.active) return;
   const now = st.simNow();
   const f = forecast(pet, now);
-  const n = pet.name || 'Your Mossling';
+  const n = pet.name || 'Your little one';
   const plan = (simAt: number | null, body: string) => {
     if (simAt === null || quiet(simAt, pet.tzOffsetMin)) return;
     const realDelay = (simAt - now) / Math.max(1, st.timeScale);

@@ -1,0 +1,38 @@
+{
+  "_comment": "Every species the game knows. The sim, the asset manifest and the art scripts all read this file. Adding a species = a new entry here + its placeholder art + (later) its images. 'weight' is its chance in the egg draw once its art is complete.",
+  "species": [
+    {
+      "id": "mossling",
+      "displayName": "Mossling",
+      "weight": 1,
+      "forms": { "egg": "egg", "baby": "dewdrop", "child": "sprig", "teen": "fernlet" },
+      "adults": { "best": "lanternmoss", "average": "burrowbun", "poor": "mirefuzz", "secret": "starwick" },
+      "names": {
+        "egg": "Dewstone", "dewdrop": "Dewdrop", "sprig": "Sprig", "fernlet": "Fernlet",
+        "lanternmoss": "Lanternmoss", "burrowbun": "Burrowbun", "mirefuzz": "Mirefuzz", "starwick": "Starwick"
+      }
+    },
+    {
+      "id": "capling",
+      "displayName": "Capling",
+      "weight": 1,
+      "forms": { "egg": "sporepod", "baby": "puffkin", "child": "caplet", "teen": "glimcap" },
+      "adults": { "best": "moonmorel", "average": "truffletum", "poor": "mudpuff", "secret": "auroracap" },
+      "names": {
+        "sporepod": "Spore Pod", "puffkin": "Puffkin", "caplet": "Caplet", "glimcap": "Glimcap",
+        "moonmorel": "Moonmorel", "truffletum": "Truffletum", "mudpuff": "Mudpuff", "auroracap": "Auroracap"
+      }
+    },
+    {
+      "id": "ripplet",
+      "displayName": "Ripplet",
+      "weight": 1,
+      "forms": { "egg": "pondpearl", "baby": "wiggle", "child": "splashlet", "teen": "reedling" },
+      "adults": { "best": "lotusong", "average": "bogbelly", "poor": "muckbottom", "secret": "moonripple" },
+      "names": {
+        "pondpearl": "Pond Pearl", "wiggle": "Wiggle", "splashlet": "Splashlet", "reedling": "Reedling",
+        "lotusong": "Lotusong", "bogbelly": "Bogbelly", "muckbottom": "Muckbottom", "moonripple": "Moonripple"
+      }
+    }
+  ]
+}
