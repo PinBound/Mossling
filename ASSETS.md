@@ -3,7 +3,7 @@
 Living checklist of every art file the game looks for. Paths are relative to `src/assets/img/`, without the extension: **.webp or .png both work** (WebP wins if both exist).
 Anything missing falls back to the code-drawn placeholder, so the game runs with any subset.
 
-**Progress: 225 of 322 final** (Mossling: 97 of 97 · Capling: 96 of 96 · Ripplet: 0 of 96). A new species joins the egg draw once each of its forms has art.
+**Progress: 321 of 322 final** (Mossling: 97 of 97 · Capling: 96 of 96 · Ripplet: 96 of 96). A new species joins the egg draw once each of its forms has art.
 
 ## Adding art
 
@@ -298,137 +298,137 @@ Prompt IDs follow `PET-{FORM}-{POSE}`, `SCENE-{LAYER}-{TIME}` and `PROP-{NAME}`.
 
 | File | Status | Prompt ID |
 |---|---|---|
-| `pet/pondpearl/pondpearl_idle` | placeholder | PET-PONDPEARL-IDLE |
-| `pet/pondpearl/pondpearl_crack1` | placeholder | PET-PONDPEARL-CRACK1 |
-| `pet/pondpearl/pondpearl_crack2` | placeholder | PET-PONDPEARL-CRACK2 |
-| `pet/pondpearl/pondpearl_crack3` | placeholder | PET-PONDPEARL-CRACK3 |
-| `pet/pondpearl/pondpearl_shell_back` | placeholder | PET-PONDPEARL-SHELL-BACK |
-| `pet/pondpearl/pondpearl_shell_front` | placeholder | PET-PONDPEARL-SHELL-FRONT |
+| `pet/pondpearl/pondpearl_idle` | **final** | PET-PONDPEARL-IDLE |
+| `pet/pondpearl/pondpearl_crack1` | **final** | PET-PONDPEARL-CRACK1 |
+| `pet/pondpearl/pondpearl_crack2` | **final** | PET-PONDPEARL-CRACK2 |
+| `pet/pondpearl/pondpearl_crack3` | **final** | PET-PONDPEARL-CRACK3 |
+| `pet/pondpearl/pondpearl_shell_back` | **final** | PET-PONDPEARL-SHELL-BACK |
+| `pet/pondpearl/pondpearl_shell_front` | **final** | PET-PONDPEARL-SHELL-FRONT |
 
 ### Wiggle
 
 | File | Status | Prompt ID |
 |---|---|---|
-| `pet/wiggle/wiggle_idle` | placeholder | PET-WIGGLE-IDLE |
-| `pet/wiggle/wiggle_blink` | placeholder | PET-WIGGLE-BLINK |
-| `pet/wiggle/wiggle_happy` | placeholder | PET-WIGGLE-HAPPY |
-| `pet/wiggle/wiggle_sad` | placeholder | PET-WIGGLE-SAD |
-| `pet/wiggle/wiggle_eat_open` | placeholder | PET-WIGGLE-EAT-OPEN |
-| `pet/wiggle/wiggle_eat_closed` | placeholder | PET-WIGGLE-EAT-CLOSED |
-| `pet/wiggle/wiggle_sleep` | placeholder | PET-WIGGLE-SLEEP |
-| `pet/wiggle/wiggle_sick` | placeholder | PET-WIGGLE-SICK |
-| `pet/wiggle/wiggle_refuse` | placeholder | PET-WIGGLE-REFUSE |
-| `pet/wiggle/wiggle_angry` | placeholder | PET-WIGGLE-ANGRY |
-| `pet/wiggle/wiggle_call` | placeholder | PET-WIGGLE-CALL |
-| `pet/wiggle/wiggle_surprised` | placeholder | PET-WIGGLE-SURPRISED |
+| `pet/wiggle/wiggle_idle` | **final** | PET-WIGGLE-IDLE |
+| `pet/wiggle/wiggle_blink` | **final** | PET-WIGGLE-BLINK |
+| `pet/wiggle/wiggle_happy` | **final** | PET-WIGGLE-HAPPY |
+| `pet/wiggle/wiggle_sad` | **final** | PET-WIGGLE-SAD |
+| `pet/wiggle/wiggle_eat_open` | **final** | PET-WIGGLE-EAT-OPEN |
+| `pet/wiggle/wiggle_eat_closed` | **final** | PET-WIGGLE-EAT-CLOSED |
+| `pet/wiggle/wiggle_sleep` | **final** | PET-WIGGLE-SLEEP |
+| `pet/wiggle/wiggle_sick` | **final** | PET-WIGGLE-SICK |
+| `pet/wiggle/wiggle_refuse` | **final** | PET-WIGGLE-REFUSE |
+| `pet/wiggle/wiggle_angry` | **final** | PET-WIGGLE-ANGRY |
+| `pet/wiggle/wiggle_call` | **final** | PET-WIGGLE-CALL |
+| `pet/wiggle/wiggle_surprised` | **final** | PET-WIGGLE-SURPRISED |
 
 ### Splashlet
 
 | File | Status | Prompt ID |
 |---|---|---|
-| `pet/splashlet/splashlet_idle` | placeholder | PET-SPLASHLET-IDLE |
-| `pet/splashlet/splashlet_blink` | placeholder | PET-SPLASHLET-BLINK |
-| `pet/splashlet/splashlet_happy` | placeholder | PET-SPLASHLET-HAPPY |
-| `pet/splashlet/splashlet_sad` | placeholder | PET-SPLASHLET-SAD |
-| `pet/splashlet/splashlet_eat_open` | placeholder | PET-SPLASHLET-EAT-OPEN |
-| `pet/splashlet/splashlet_eat_closed` | placeholder | PET-SPLASHLET-EAT-CLOSED |
-| `pet/splashlet/splashlet_sleep` | placeholder | PET-SPLASHLET-SLEEP |
-| `pet/splashlet/splashlet_sick` | placeholder | PET-SPLASHLET-SICK |
-| `pet/splashlet/splashlet_refuse` | placeholder | PET-SPLASHLET-REFUSE |
-| `pet/splashlet/splashlet_angry` | placeholder | PET-SPLASHLET-ANGRY |
-| `pet/splashlet/splashlet_play` | placeholder | PET-SPLASHLET-PLAY |
-| `pet/splashlet/splashlet_call` | placeholder | PET-SPLASHLET-CALL |
-| `pet/splashlet/splashlet_surprised` | placeholder | PET-SPLASHLET-SURPRISED |
+| `pet/splashlet/splashlet_idle` | **final** | PET-SPLASHLET-IDLE |
+| `pet/splashlet/splashlet_blink` | **final** | PET-SPLASHLET-BLINK |
+| `pet/splashlet/splashlet_happy` | **final** | PET-SPLASHLET-HAPPY |
+| `pet/splashlet/splashlet_sad` | **final** | PET-SPLASHLET-SAD |
+| `pet/splashlet/splashlet_eat_open` | **final** | PET-SPLASHLET-EAT-OPEN |
+| `pet/splashlet/splashlet_eat_closed` | **final** | PET-SPLASHLET-EAT-CLOSED |
+| `pet/splashlet/splashlet_sleep` | **final** | PET-SPLASHLET-SLEEP |
+| `pet/splashlet/splashlet_sick` | **final** | PET-SPLASHLET-SICK |
+| `pet/splashlet/splashlet_refuse` | **final** | PET-SPLASHLET-REFUSE |
+| `pet/splashlet/splashlet_angry` | **final** | PET-SPLASHLET-ANGRY |
+| `pet/splashlet/splashlet_play` | **final** | PET-SPLASHLET-PLAY |
+| `pet/splashlet/splashlet_call` | **final** | PET-SPLASHLET-CALL |
+| `pet/splashlet/splashlet_surprised` | **final** | PET-SPLASHLET-SURPRISED |
 
 ### Reedling
 
 | File | Status | Prompt ID |
 |---|---|---|
-| `pet/reedling/reedling_idle` | placeholder | PET-REEDLING-IDLE |
-| `pet/reedling/reedling_blink` | placeholder | PET-REEDLING-BLINK |
-| `pet/reedling/reedling_happy` | placeholder | PET-REEDLING-HAPPY |
-| `pet/reedling/reedling_sad` | placeholder | PET-REEDLING-SAD |
-| `pet/reedling/reedling_eat_open` | placeholder | PET-REEDLING-EAT-OPEN |
-| `pet/reedling/reedling_eat_closed` | placeholder | PET-REEDLING-EAT-CLOSED |
-| `pet/reedling/reedling_sleep` | placeholder | PET-REEDLING-SLEEP |
-| `pet/reedling/reedling_sick` | placeholder | PET-REEDLING-SICK |
-| `pet/reedling/reedling_refuse` | placeholder | PET-REEDLING-REFUSE |
-| `pet/reedling/reedling_angry` | placeholder | PET-REEDLING-ANGRY |
-| `pet/reedling/reedling_play` | placeholder | PET-REEDLING-PLAY |
-| `pet/reedling/reedling_call` | placeholder | PET-REEDLING-CALL |
-| `pet/reedling/reedling_surprised` | placeholder | PET-REEDLING-SURPRISED |
+| `pet/reedling/reedling_idle` | **final** | PET-REEDLING-IDLE |
+| `pet/reedling/reedling_blink` | **final** | PET-REEDLING-BLINK |
+| `pet/reedling/reedling_happy` | **final** | PET-REEDLING-HAPPY |
+| `pet/reedling/reedling_sad` | **final** | PET-REEDLING-SAD |
+| `pet/reedling/reedling_eat_open` | **final** | PET-REEDLING-EAT-OPEN |
+| `pet/reedling/reedling_eat_closed` | **final** | PET-REEDLING-EAT-CLOSED |
+| `pet/reedling/reedling_sleep` | **final** | PET-REEDLING-SLEEP |
+| `pet/reedling/reedling_sick` | **final** | PET-REEDLING-SICK |
+| `pet/reedling/reedling_refuse` | **final** | PET-REEDLING-REFUSE |
+| `pet/reedling/reedling_angry` | **final** | PET-REEDLING-ANGRY |
+| `pet/reedling/reedling_play` | **final** | PET-REEDLING-PLAY |
+| `pet/reedling/reedling_call` | **final** | PET-REEDLING-CALL |
+| `pet/reedling/reedling_surprised` | **final** | PET-REEDLING-SURPRISED |
 
 ### Lotusong
 
 | File | Status | Prompt ID |
 |---|---|---|
-| `pet/lotusong/lotusong_idle` | placeholder | PET-LOTUSONG-IDLE |
-| `pet/lotusong/lotusong_blink` | placeholder | PET-LOTUSONG-BLINK |
-| `pet/lotusong/lotusong_happy` | placeholder | PET-LOTUSONG-HAPPY |
-| `pet/lotusong/lotusong_sad` | placeholder | PET-LOTUSONG-SAD |
-| `pet/lotusong/lotusong_eat_open` | placeholder | PET-LOTUSONG-EAT-OPEN |
-| `pet/lotusong/lotusong_eat_closed` | placeholder | PET-LOTUSONG-EAT-CLOSED |
-| `pet/lotusong/lotusong_sleep` | placeholder | PET-LOTUSONG-SLEEP |
-| `pet/lotusong/lotusong_sick` | placeholder | PET-LOTUSONG-SICK |
-| `pet/lotusong/lotusong_refuse` | placeholder | PET-LOTUSONG-REFUSE |
-| `pet/lotusong/lotusong_angry` | placeholder | PET-LOTUSONG-ANGRY |
-| `pet/lotusong/lotusong_play` | placeholder | PET-LOTUSONG-PLAY |
-| `pet/lotusong/lotusong_call` | placeholder | PET-LOTUSONG-CALL |
-| `pet/lotusong/lotusong_surprised` | placeholder | PET-LOTUSONG-SURPRISED |
+| `pet/lotusong/lotusong_idle` | **final** | PET-LOTUSONG-IDLE |
+| `pet/lotusong/lotusong_blink` | **final** | PET-LOTUSONG-BLINK |
+| `pet/lotusong/lotusong_happy` | **final** | PET-LOTUSONG-HAPPY |
+| `pet/lotusong/lotusong_sad` | **final** | PET-LOTUSONG-SAD |
+| `pet/lotusong/lotusong_eat_open` | **final** | PET-LOTUSONG-EAT-OPEN |
+| `pet/lotusong/lotusong_eat_closed` | **final** | PET-LOTUSONG-EAT-CLOSED |
+| `pet/lotusong/lotusong_sleep` | **final** | PET-LOTUSONG-SLEEP |
+| `pet/lotusong/lotusong_sick` | **final** | PET-LOTUSONG-SICK |
+| `pet/lotusong/lotusong_refuse` | **final** | PET-LOTUSONG-REFUSE |
+| `pet/lotusong/lotusong_angry` | **final** | PET-LOTUSONG-ANGRY |
+| `pet/lotusong/lotusong_play` | **final** | PET-LOTUSONG-PLAY |
+| `pet/lotusong/lotusong_call` | **final** | PET-LOTUSONG-CALL |
+| `pet/lotusong/lotusong_surprised` | **final** | PET-LOTUSONG-SURPRISED |
 
 ### Bogbelly
 
 | File | Status | Prompt ID |
 |---|---|---|
-| `pet/bogbelly/bogbelly_idle` | placeholder | PET-BOGBELLY-IDLE |
-| `pet/bogbelly/bogbelly_blink` | placeholder | PET-BOGBELLY-BLINK |
-| `pet/bogbelly/bogbelly_happy` | placeholder | PET-BOGBELLY-HAPPY |
-| `pet/bogbelly/bogbelly_sad` | placeholder | PET-BOGBELLY-SAD |
-| `pet/bogbelly/bogbelly_eat_open` | placeholder | PET-BOGBELLY-EAT-OPEN |
-| `pet/bogbelly/bogbelly_eat_closed` | placeholder | PET-BOGBELLY-EAT-CLOSED |
-| `pet/bogbelly/bogbelly_sleep` | placeholder | PET-BOGBELLY-SLEEP |
-| `pet/bogbelly/bogbelly_sick` | placeholder | PET-BOGBELLY-SICK |
-| `pet/bogbelly/bogbelly_refuse` | placeholder | PET-BOGBELLY-REFUSE |
-| `pet/bogbelly/bogbelly_angry` | placeholder | PET-BOGBELLY-ANGRY |
-| `pet/bogbelly/bogbelly_play` | placeholder | PET-BOGBELLY-PLAY |
-| `pet/bogbelly/bogbelly_call` | placeholder | PET-BOGBELLY-CALL |
-| `pet/bogbelly/bogbelly_surprised` | placeholder | PET-BOGBELLY-SURPRISED |
+| `pet/bogbelly/bogbelly_idle` | **final** | PET-BOGBELLY-IDLE |
+| `pet/bogbelly/bogbelly_blink` | **final** | PET-BOGBELLY-BLINK |
+| `pet/bogbelly/bogbelly_happy` | **final** | PET-BOGBELLY-HAPPY |
+| `pet/bogbelly/bogbelly_sad` | **final** | PET-BOGBELLY-SAD |
+| `pet/bogbelly/bogbelly_eat_open` | **final** | PET-BOGBELLY-EAT-OPEN |
+| `pet/bogbelly/bogbelly_eat_closed` | **final** | PET-BOGBELLY-EAT-CLOSED |
+| `pet/bogbelly/bogbelly_sleep` | **final** | PET-BOGBELLY-SLEEP |
+| `pet/bogbelly/bogbelly_sick` | **final** | PET-BOGBELLY-SICK |
+| `pet/bogbelly/bogbelly_refuse` | **final** | PET-BOGBELLY-REFUSE |
+| `pet/bogbelly/bogbelly_angry` | **final** | PET-BOGBELLY-ANGRY |
+| `pet/bogbelly/bogbelly_play` | **final** | PET-BOGBELLY-PLAY |
+| `pet/bogbelly/bogbelly_call` | **final** | PET-BOGBELLY-CALL |
+| `pet/bogbelly/bogbelly_surprised` | **final** | PET-BOGBELLY-SURPRISED |
 
 ### Muckbottom
 
 | File | Status | Prompt ID |
 |---|---|---|
-| `pet/muckbottom/muckbottom_idle` | placeholder | PET-MUCKBOTTOM-IDLE |
-| `pet/muckbottom/muckbottom_blink` | placeholder | PET-MUCKBOTTOM-BLINK |
-| `pet/muckbottom/muckbottom_happy` | placeholder | PET-MUCKBOTTOM-HAPPY |
-| `pet/muckbottom/muckbottom_sad` | placeholder | PET-MUCKBOTTOM-SAD |
-| `pet/muckbottom/muckbottom_eat_open` | placeholder | PET-MUCKBOTTOM-EAT-OPEN |
-| `pet/muckbottom/muckbottom_eat_closed` | placeholder | PET-MUCKBOTTOM-EAT-CLOSED |
-| `pet/muckbottom/muckbottom_sleep` | placeholder | PET-MUCKBOTTOM-SLEEP |
-| `pet/muckbottom/muckbottom_sick` | placeholder | PET-MUCKBOTTOM-SICK |
-| `pet/muckbottom/muckbottom_refuse` | placeholder | PET-MUCKBOTTOM-REFUSE |
-| `pet/muckbottom/muckbottom_angry` | placeholder | PET-MUCKBOTTOM-ANGRY |
-| `pet/muckbottom/muckbottom_play` | placeholder | PET-MUCKBOTTOM-PLAY |
-| `pet/muckbottom/muckbottom_call` | placeholder | PET-MUCKBOTTOM-CALL |
-| `pet/muckbottom/muckbottom_surprised` | placeholder | PET-MUCKBOTTOM-SURPRISED |
+| `pet/muckbottom/muckbottom_idle` | **final** | PET-MUCKBOTTOM-IDLE |
+| `pet/muckbottom/muckbottom_blink` | **final** | PET-MUCKBOTTOM-BLINK |
+| `pet/muckbottom/muckbottom_happy` | **final** | PET-MUCKBOTTOM-HAPPY |
+| `pet/muckbottom/muckbottom_sad` | **final** | PET-MUCKBOTTOM-SAD |
+| `pet/muckbottom/muckbottom_eat_open` | **final** | PET-MUCKBOTTOM-EAT-OPEN |
+| `pet/muckbottom/muckbottom_eat_closed` | **final** | PET-MUCKBOTTOM-EAT-CLOSED |
+| `pet/muckbottom/muckbottom_sleep` | **final** | PET-MUCKBOTTOM-SLEEP |
+| `pet/muckbottom/muckbottom_sick` | **final** | PET-MUCKBOTTOM-SICK |
+| `pet/muckbottom/muckbottom_refuse` | **final** | PET-MUCKBOTTOM-REFUSE |
+| `pet/muckbottom/muckbottom_angry` | **final** | PET-MUCKBOTTOM-ANGRY |
+| `pet/muckbottom/muckbottom_play` | **final** | PET-MUCKBOTTOM-PLAY |
+| `pet/muckbottom/muckbottom_call` | **final** | PET-MUCKBOTTOM-CALL |
+| `pet/muckbottom/muckbottom_surprised` | **final** | PET-MUCKBOTTOM-SURPRISED |
 
 ### Moonripple
 
 | File | Status | Prompt ID |
 |---|---|---|
-| `pet/moonripple/moonripple_idle` | placeholder | PET-MOONRIPPLE-IDLE |
-| `pet/moonripple/moonripple_blink` | placeholder | PET-MOONRIPPLE-BLINK |
-| `pet/moonripple/moonripple_happy` | placeholder | PET-MOONRIPPLE-HAPPY |
-| `pet/moonripple/moonripple_sad` | placeholder | PET-MOONRIPPLE-SAD |
-| `pet/moonripple/moonripple_eat_open` | placeholder | PET-MOONRIPPLE-EAT-OPEN |
-| `pet/moonripple/moonripple_eat_closed` | placeholder | PET-MOONRIPPLE-EAT-CLOSED |
-| `pet/moonripple/moonripple_sleep` | placeholder | PET-MOONRIPPLE-SLEEP |
-| `pet/moonripple/moonripple_sick` | placeholder | PET-MOONRIPPLE-SICK |
-| `pet/moonripple/moonripple_refuse` | placeholder | PET-MOONRIPPLE-REFUSE |
-| `pet/moonripple/moonripple_angry` | placeholder | PET-MOONRIPPLE-ANGRY |
-| `pet/moonripple/moonripple_play` | placeholder | PET-MOONRIPPLE-PLAY |
-| `pet/moonripple/moonripple_call` | placeholder | PET-MOONRIPPLE-CALL |
-| `pet/moonripple/moonripple_surprised` | placeholder | PET-MOONRIPPLE-SURPRISED |
+| `pet/moonripple/moonripple_idle` | **final** | PET-MOONRIPPLE-IDLE |
+| `pet/moonripple/moonripple_blink` | **final** | PET-MOONRIPPLE-BLINK |
+| `pet/moonripple/moonripple_happy` | **final** | PET-MOONRIPPLE-HAPPY |
+| `pet/moonripple/moonripple_sad` | **final** | PET-MOONRIPPLE-SAD |
+| `pet/moonripple/moonripple_eat_open` | **final** | PET-MOONRIPPLE-EAT-OPEN |
+| `pet/moonripple/moonripple_eat_closed` | **final** | PET-MOONRIPPLE-EAT-CLOSED |
+| `pet/moonripple/moonripple_sleep` | **final** | PET-MOONRIPPLE-SLEEP |
+| `pet/moonripple/moonripple_sick` | **final** | PET-MOONRIPPLE-SICK |
+| `pet/moonripple/moonripple_refuse` | **final** | PET-MOONRIPPLE-REFUSE |
+| `pet/moonripple/moonripple_angry` | **final** | PET-MOONRIPPLE-ANGRY |
+| `pet/moonripple/moonripple_play` | **final** | PET-MOONRIPPLE-PLAY |
+| `pet/moonripple/moonripple_call` | **final** | PET-MOONRIPPLE-CALL |
+| `pet/moonripple/moonripple_surprised` | **final** | PET-MOONRIPPLE-SURPRISED |
 
 
 ## Scene: The Hollow (16:9)
